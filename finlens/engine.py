@@ -6,7 +6,7 @@ import time
 from finlens.finance import EvidenceError, compare, fact_citation, select_fact
 from finlens.models import METRICS, UNIT_LABELS, AskRequest
 from finlens.providers import ModelConfig, ProviderError, make_provider
-from finlens.retrieval import bm25, content_terms, cosine, rrf
+from finlens.retrieval import bm25, content_terms, cosine, financial_query, rrf
 from finlens.store import Store
 from finlens.text import normalize
 
@@ -54,7 +54,7 @@ class Engine:
 
     def retrieve(self, request: AskRequest):
         chunks = self.store.chunks(request.company, request.years, request.scope, request.dataset)
-        sparse = bm25(request.question, chunks, max(request.top_k, 20))
+        sparse = bm25(financial_query(request.question), chunks, max(request.top_k, 20))
         if not self.config.embed_model:
             return sparse[:request.top_k], "bm25", []
         cached = self.store.embeddings(self.config.embed_model)

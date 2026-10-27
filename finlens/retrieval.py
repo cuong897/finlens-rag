@@ -4,8 +4,26 @@ from collections import Counter
 import math
 
 from finlens.text import tokens
+from finlens.text import normalize
 
 STOPWORDS = set("la va cua co cac cho trong mot nhung voi tu den thi nay bao cao nam hay nhu nao bao nhieu ve toi gi vi sao tai khi the".split())
+
+FINANCIAL_TERMS = {
+    "doanh thu thuan": "net revenue", "doanh thu": "revenue",
+    "loi nhuan sau thue": "profit after tax", "loi nhuan gop": "gross profit",
+    "tong tai san": "total assets", "no phai tra": "liabilities",
+    "von chu so huu": "owners equity", "phai thu khach hang": "trade receivables",
+    "hang ton kho": "inventories", "dong tien kinh doanh": "cash flows operating activities",
+    "bao cao ket qua kinh doanh": "consolidated income statement",
+    "bang can doi ke toan": "consolidated balance sheet",
+}
+
+
+def financial_query(query: str):
+    """Deterministic bilingual aliases for lexical retrieval; no LLM call."""
+    normalized = normalize(query)
+    extra = [english for vietnamese, english in FINANCIAL_TERMS.items() if vietnamese in normalized]
+    return query + (" " + " ".join(extra) if extra else "")
 
 
 def content_terms(text: str):

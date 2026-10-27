@@ -5,7 +5,7 @@ from pathlib import Path
 import pymupdf
 
 from finlens.ingest import IngestError, ingest_pdf, seed_demo
-from finlens.retrieval import bm25
+from finlens.retrieval import bm25, financial_query
 from finlens.store import Store
 from finlens.text import chunk_page
 
@@ -36,6 +36,13 @@ class DataTests(unittest.TestCase):
         self.assertEqual(hits[0]["page"], 2)
         self.assertEqual(hits[0]["document_id"], "demo-ANPHAT-2024")
         self.assertEqual(bm25("xyznonexistent", self.store.chunks()), [])
+
+    def test_vietnamese_metric_can_retrieve_english_statement(self):
+        chunks = [{"id": 1, "text": "Consolidated balance sheet: Total assets and liabilities."},
+                  {"id": 2, "text": "Consolidated income statement: Net revenue from sales and services."}]
+        hits = bm25(financial_query("Doanh thu thuần trên báo cáo kết quả kinh doanh"), chunks)
+        self.assertEqual(hits[0]["id"], 2)
+        self.assertEqual(bm25(financial_query("CEO salary"), chunks), [])
 
     def test_invalid_and_scan_pdf_rejected_without_artifacts(self):
         with self.assertRaises(IngestError):

@@ -5,7 +5,7 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="FinLens local financial document assistant")
-    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "local", "prepare-local", "gemini", "public-pilot"], nargs="?", default="serve")
+    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "local", "prepare-local", "gemini", "public-pilot", "check-pilot"], nargs="?", default="serve")
     parser.add_argument("--data-dir", default=None)
     parser.add_argument("--env-file", default=None, help="Explicit local configuration file; never prints values")
     parser.add_argument("--host", default="127.0.0.1")
@@ -71,6 +71,11 @@ def main():
     elif args.command == "public-pilot":
         from finlens.public_pilot import import_pilot
         result = import_pilot(store, args.with_reviewed_facts)
+    elif args.command == "check-pilot":
+        from finlens.pilot_check import check_pilot
+        result = check_pilot(store, args.output_dir)
+        print(json.dumps({k: v for k, v in result.items() if k not in {"results", "comparisons"}}, ensure_ascii=True, indent=2))
+        raise SystemExit(0 if result["passed"] == result["cases"] else 1)
     elif args.command == "index":
         from finlens.engine import Engine
         result = Engine(store).index_embeddings(rebuild=args.rebuild)
