@@ -1,7 +1,7 @@
 'use strict';
 
 const $ = (selector) => document.querySelector(selector);
-const state = { documents: [], facts: [], catalog: {}, source: null, view: 'analysis', busy: false, revision: 0 };
+const state = { documents: [], facts: [], catalog: {}, source: null, view: 'analysis', busy: false, revision: 0, suggestions: [], suggestionRevision: 0 };
 const statusLabels = { answered: 'Kết quả có nguồn dẫn', evidence_found: 'Đã tìm thấy đoạn nguồn liên quan', partial: 'Đã trả lời một phần câu hỏi', insufficient_evidence: 'Cần thêm bằng chứng' };
 const modeLabels = { calculated: 'Tính từ chỉ tiêu xác nhận', extractive: 'Trích xuất nguồn', generated: 'Diễn giải bằng AI' };
 let toastTimer;
@@ -105,7 +105,85 @@ async function refresh() {
   if (!$('#fact-document').options.length) $('#fact-document').append(option('', 'Hãy nhập PDF của bạn trước'));
   $('#fact-button').disabled = !$('#fact-document').value;
   $('#fact-preview').disabled = !$('#fact-document').value;
+  const suggestionDocument = $('#suggestion-document').value;
+  $('#suggestion-document').replaceChildren(...state.documents.filter(d => !d.is_demo && d.has_pdf).map(d => option(d.id, `${d.company} · ${d.report_year}`)));
+  if ([...$('#suggestion-document').options].some(o => o.value === suggestionDocument)) $('#suggestion-document').value = suggestionDocument;
+  if (!$('#suggestion-document').options.length) $('#suggestion-document').append(option('', 'Hãy nhập PDF trước'));
+  $('#suggestion-button').disabled = !$('#suggestion-document').value;
+  $('#suggestion-page').max = state.documents.find(d => d.id === $('#suggestion-document').value)?.page_count || 250;
+  renderSuggestions();
 }
+
+function clearSuggestions() {
+  state.suggestionRevision += 1;
+  state.suggestions = [];
+  $('#suggestion-list').replaceChildren(); $('#suggestion-warnings').replaceChildren();
+  $('#suggestion-status').textContent = 'Chọn trang bảng số liệu rồi bấm Tìm số liệu trên trang.';
+  $('#suggestion-button').disabled = !$('#suggestion-document').value;
+  $('#suggestion-button').textContent = 'Tìm số liệu trên trang ↗';
+  $('#draft-proof').hidden = true;
+}
+
+function renderSuggestions() {
+  $('#suggestion-list').replaceChildren();
+  for (const candidate of state.suggestions) {
+    const card = node('article', 'suggestion-card');
+    const content = node('div');
+    const confirmed = state.facts.some(f => f.verified && f.document_id === candidate.document_id && f.page === candidate.page && f.metric === candidate.metric && f.year === candidate.year && f.value === candidate.value && f.unit === candidate.unit && f.currency === candidate.currency);
+    content.append(node('strong', '', `${candidate.label} · ${candidate.year}`),
+      node('div', 'doc-meta', `${formatNumber(candidate.value)} ${state.catalog.units[candidate.unit]} ${candidate.currency}`),
+      node('div', 'doc-meta', confirmed ? 'Đã có bản xác nhận trên trang này' : 'Bản nháp · chưa dùng để tính toán'));
+    const choose = node('button', 'button secondary', 'Đối chiếu ↗'); choose.type = 'button';
+    choose.addEventListener('click', () => {
+      $('#fact-document').value = candidate.document_id; $('#fact-page').value = candidate.page;
+      $('#fact-page').max = state.documents.find(d => d.id === candidate.document_id)?.page_count || 250;
+      $('#fact-metric').value = candidate.metric; $('#fact-year').value = candidate.year;
+      $('#fact-value').value = candidate.value; $('#fact-unit').value = candidate.unit; $('#fact-currency').value = candidate.currency;
+      $('#fact-note').value = `Đối chiếu dòng ${candidate.source_label}, cột ${candidate.year}, trang PDF ${candidate.page}; đơn vị ${state.catalog.units[candidate.unit]} ${candidate.currency}.`.slice(0, 600);
+      $('#fact-confirm').checked = false;
+      const pdf = node('a', 'text-link', 'Mở PDF gốc để kiểm tra ↗');
+      pdf.href = `/api/documents/${encodeURIComponent(candidate.document_id)}/pdf#page=${candidate.page}`;
+      pdf.target = '_blank'; pdf.rel = 'noopener';
+      $('#draft-proof').replaceChildren(node('strong', '', 'Đang đối chiếu bản nháp'), node('p', '', `Giá trị gốc: ${candidate.raw_value} · Cột năm ${candidate.year} · Trang ${candidate.page}`), node('p', 'draft-row', candidate.row_excerpt), pdf);
+      $('#draft-proof').hidden = false;
+      $('.fact-entry').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    card.append(content, choose); $('#suggestion-list').append(card);
+  }
+}
+
+async function loadSuggestions() {
+  const documentId = $('#suggestion-document').value;
+  const page = Number($('#suggestion-page').value);
+  if (!documentId) return;
+  const revision = ++state.suggestionRevision;
+  state.suggestions = []; renderSuggestions(); $('#suggestion-warnings').replaceChildren();
+  $('#suggestion-button').disabled = true; $('#suggestion-button').textContent = 'Đang đọc trang…';
+  $('#suggestion-status').textContent = 'Đang đọc bảng trên máy này…';
+  try {
+    const result = await api(`/api/documents/${encodeURIComponent(documentId)}/suggestions?page=${page}`);
+    if (revision !== state.suggestionRevision) return;
+    state.suggestions = result.candidates;
+    $('#suggestion-status').textContent = `${result.candidates.length} đề xuất. ${result.notice}`;
+    $('#suggestion-warnings').replaceChildren(...result.warnings.map(w => node('p', 'warning', w)));
+    renderSuggestions();
+  } catch (error) { if (revision === state.suggestionRevision) $('#suggestion-status').textContent = error.message; }
+  finally { if (revision === state.suggestionRevision) { $('#suggestion-button').disabled = false; $('#suggestion-button').textContent = 'Tìm số liệu trên trang ↗'; } }
+}
+
+$('#suggestion-form').addEventListener('submit', event => { event.preventDefault(); loadSuggestions(); });
+$('#suggestion-document').addEventListener('change', () => {
+  clearSuggestions(); $('#suggestion-page').value = 1;
+  $('#suggestion-page').max = state.documents.find(d => d.id === $('#suggestion-document').value)?.page_count || 250;
+});
+$('#suggestion-page').addEventListener('input', clearSuggestions);
+$('#source-suggest').addEventListener('click', () => {
+  if (!state.source) return;
+  clearSuggestions(); setView('facts');
+  $('#suggestion-document').value = state.source.documentId; $('#suggestion-page').value = state.source.page;
+  $('#suggestion-page').max = state.documents.find(d => d.id === state.source.documentId)?.page_count || 250;
+  loadSuggestions(); $('.suggestion-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 
 function renderDocuments() {
   $('#document-list').replaceChildren();
@@ -180,6 +258,7 @@ async function openSource(documentId, page) {
     $('#prev-page').disabled = page <= 1;
     $('#next-page').disabled = page >= (metadata?.page_count || page);
     $('#source-pdf').hidden = !source.document.has_pdf;
+    $('#source-suggest').hidden = !source.document.has_pdf;
     $('#source-pdf').href = `/api/documents/${encodeURIComponent(documentId)}/pdf#page=${page}`;
     if (window.innerWidth < 1000) $('.source-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (error) { toast(error.message, true); }
@@ -285,6 +364,7 @@ $('#fact-form').addEventListener('submit', async event => {
     await post('/api/facts', { document_id: $('#fact-document').value, page: Number($('#fact-page').value), metric: $('#fact-metric').value, year: Number($('#fact-year').value), value: $('#fact-value').value.trim(), unit: $('#fact-unit').value, currency: $('#fact-currency').value, confirmed: $('#fact-confirm').checked, note: $('#fact-note').value.trim() });
     resetAnalysis();
     await refresh(); $('#fact-value').value = ''; $('#fact-confirm').checked = false;
+    $('#draft-proof').hidden = true;
     toast('Đã lưu chỉ tiêu và trang nguồn. Bạn có thể dùng để tính toán.');
   } catch (error) { toast(error.message, true); }
   finally { $('#fact-button').disabled = !$('#fact-document').value; }
@@ -306,6 +386,7 @@ $('#year-options').addEventListener('change', resetAnalysis);
 $('#prev-page').addEventListener('click', () => { if (state.source) openSource(state.source.documentId, state.source.page - 1); });
 $('#next-page').addEventListener('click', () => { if (state.source) openSource(state.source.documentId, state.source.page + 1); });
 $('#fact-document').addEventListener('change', () => {
+  $('#fact-confirm').checked = false; $('#draft-proof').hidden = true;
   const document = state.documents.find(d => d.id === $('#fact-document').value);
   if (document) { $('#fact-year').value = document.report_year; $('#fact-page').value = 1; $('#fact-page').max = document.page_count; }
 });

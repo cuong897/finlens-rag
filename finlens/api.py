@@ -17,6 +17,7 @@ from finlens.ingest import MAX_PDF_BYTES, IngestError, ingest_pdf, seed_demo
 from finlens.models import METRICS, UNIT_LABELS, AskRequest, CompareRequest, FactRequest
 from finlens.providers import ModelConfig, ProviderError, gemini_key_configured
 from finlens.store import Store
+from finlens.suggestions import suggest_page
 
 
 def create_app(data_dir=None, config=None):
@@ -100,6 +101,25 @@ def create_app(data_dir=None, config=None):
     def facts(company: str | None = None, scope: Literal["consolidated", "standalone"] | None = None,
               dataset: Literal["demo", "real", "all"] = "all"):
         return store.facts(company=company, scope=scope, dataset=dataset)
+
+    @app.get("/api/documents/{document_id}/suggestions")
+    def suggestions(document_id: str, page: int = Query(ge=1, le=250)):
+        document = store.get_document(document_id)
+        if not document or not store.page(document_id, page):
+            raise HTTPException(404, "Không tìm thấy tài liệu hoặc trang nguồn.")
+        path = store.pdf_path(document_id)
+        if document["is_demo"] or not path:
+            raise HTTPException(409, "Đề xuất số liệu cần PDF gốc. Hãy chọn tài liệu bạn đã nhập.")
+        try:
+            result = suggest_page(path, document_id, page)
+        except ValueError as exc:
+            raise HTTPException(422, str(exc)) from exc
+        existing = {(f["metric"], f["year"], f["value"], f["unit"], f["currency"])
+                    for f in store.facts(document["company"], document["scope"], "real")
+                    if f["document_id"] == document_id and f["page"] == page and f["verified"]}
+        for candidate in result["candidates"]:
+            candidate["already_confirmed"] = (candidate["metric"], candidate["year"], candidate["value"], candidate["unit"], candidate["currency"]) in existing
+        return {"document_id": document_id, "page": page, **result}
 
     @app.post("/api/facts", status_code=201)
     def confirm_fact(request: FactRequest):
