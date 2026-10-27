@@ -19,6 +19,7 @@ FINANCIAL_TERMS = {
     "tai san ngan han": "current assets", "no ngan han": "short-term liabilities",
     "kha nang tra no": "current assets short-term liabilities cash flows operating activities interest expense",
     "kha nang thanh toan": "current assets short-term liabilities cash flows operating activities",
+    "chi phi lai vay": "interest expense borrowing costs",
 }
 
 

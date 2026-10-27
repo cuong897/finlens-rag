@@ -13,6 +13,7 @@ METRICS = {
     "equity": "Vốn chủ sở hữu", "cash": "Tiền và tương đương tiền",
     "receivables": "Phải thu khách hàng", "inventory": "Hàng tồn kho",
     "current_assets": "Tài sản ngắn hạn", "current_liabilities": "Nợ ngắn hạn",
+    "interest_expense": "Chi phí lãi vay",
 }
 UNITS = {"one": "1", "thousand": "1000", "million": "1000000", "billion": "1000000000"}
 UNIT_LABELS = {"one": "đơn vị", "thousand": "nghìn", "million": "triệu", "billion": "tỷ"}

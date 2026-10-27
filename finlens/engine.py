@@ -2,6 +2,7 @@
 
 import re
 import time
+from decimal import Decimal
 
 from finlens.finance import EvidenceError, compare, debt_capacity, fact_citation, select_fact
 from finlens.models import METRICS, UNIT_LABELS, AskRequest
@@ -21,6 +22,7 @@ ALIASES = {
     "inventory": ["hang ton kho"],
     "current_assets": ["tai san ngan han", "current assets"],
     "current_liabilities": ["no ngan han", "current liabilities", "short-term liabilities"],
+    "interest_expense": ["chi phi lai vay", "interest expense"],
 }
 
 
@@ -79,6 +81,7 @@ class Engine:
                   "ratios": [], "missing_inputs": [],
                   "generation_attempted": False, "generation_error": None,
                   "generation_model": None, "generation_attempts": [], "fallback_used": False,
+                  "premise_check": None,
                   "company": request.company, "years": request.years, "dataset": request.dataset}
 
         def finish():
@@ -127,20 +130,55 @@ class Engine:
             result["answer"] = "Hãy chọn đúng hai năm để so sánh; cần xác định rõ năm gốc."
             return finish()
         numeric_answer = []
+
+        def record_comparisons(comparisons):
+            result["comparisons"] = comparisons
+            for i, item in enumerate(comparisons):
+                citations = item["citations"]
+                for j, citation in enumerate(citations):
+                    citation["id"] = f"F{i * 2 + j + 1}"
+                result["citations"].extend(citations)
+                growth = f"; thay đổi {item['growth_percent']}%" if item["growth_percent"] is not None else ""
+                numeric_answer.append(f"{item['label']}: {item['from_year']} = {item['from_value']}, {item['to_year']} = {item['to_value']} {item['unit_label']} {item['currency']}; chênh lệch {item['delta']}{growth}. [{citations[0]['id']}] [{citations[1]['id']}]")
+                if item["note"]:
+                    result["warnings"].append(item["note"])
+
+        # A "why did X rise?" question must not make the model rationalize a
+        # change that verified figures contradict. One year implies prior-year
+        # comparison, stated explicitly; two years use the selected baseline.
+        if len(metrics) == 1 and wants_reason and wants_change and len(years) in {1, 2}:
+            pair = years if len(years) == 2 else [years[0] - 1, years[0]]
+            try:
+                item = compare(self.store, request.company, metrics[0], *pair, request.scope, request.dataset)
+                record_comparisons([item])
+                if len(years) == 1:
+                    result["warnings"].append(f"Đối chiếu với năm liền trước: {pair[0]} → {pair[1]}.")
+                # Verified decimals carry the exact sign; the model never decides
+                # the direction or computes the percentage.
+                delta = Decimal(item["delta"])
+                sign = 1 if delta > 0 else -1 if delta < 0 else 0
+                has_up = bool(re.search(r"\btang\b", normalized))
+                has_down = bool(re.search(r"\bgiam\b", normalized))
+                negated = bool(re.search(r"\b(khong|chua)\s+(?:con\s+)?(?:tang|giam)\b", normalized))
+                expected = (1 if has_up else -1) if has_up != has_down and not negated else None
+                result["premise_check"] = {"from_year": pair[0], "to_year": pair[1],
+                                           "direction": "increase" if sign > 0 else "decrease" if sign < 0 else "unchanged",
+                                           "contradicted": expected is not None and expected != sign}
+                if result["premise_check"]["contradicted"]:
+                    direction = "tăng" if sign > 0 else "giảm" if sign < 0 else "không đổi"
+                    result.update(status="answered", mode="calculated", answer="\n\n".join(
+                        [f"Giả định trong câu hỏi chưa khớp số liệu đã xác nhận: {item['label']} {direction} trong năm {pair[1]} so với {pair[0]}."] + numeric_answer +
+                        ["Cần kiểm tra lại chiều biến động trước khi giải thích nguyên nhân."]))
+                    return finish()
+                if not causal_reason:
+                    result.update(status="answered", mode="calculated", answer="\n\n".join(numeric_answer))
+                    return finish()
+            except EvidenceError as exc:
+                result["warnings"].append("Chưa kiểm chứng được chiều biến động: " + str(exc))
         try:
-            if metrics and wants_change and len(years) == 2 and (wants_numbers or not wants_reason):
-                comparisons = [compare(self.store, request.company, metric, years[0], years[1], request.scope, request.dataset) for metric in metrics]
-                result["comparisons"] = comparisons
-                for i, item in enumerate(comparisons):
-                    citations = item["citations"]
-                    for j, citation in enumerate(citations):
-                        citation["id"] = f"F{i * 2 + j + 1}"
-                    result["citations"].extend(citations)
-                    growth = f"; thay đổi {item['growth_percent']}%" if item["growth_percent"] is not None else ""
-                    numeric_answer.append(f"{item['label']}: {item['from_year']} = {item['from_value']}, {item['to_year']} = {item['to_value']} {item['unit_label']} {item['currency']}; chênh lệch {item['delta']}{growth}. [{citations[0]['id']}] [{citations[1]['id']}]")
-                    if item["note"]:
-                        result["warnings"].append(item["note"])
-            elif metrics and wants_numbers and not wants_change and len(years) == 1:
+            if not numeric_answer and metrics and wants_change and len(years) == 2 and (wants_numbers or not wants_reason):
+                record_comparisons([compare(self.store, request.company, metric, years[0], years[1], request.scope, request.dataset) for metric in metrics])
+            elif not numeric_answer and metrics and wants_numbers and not wants_change and len(years) == 1:
                 for i, metric in enumerate(metrics):
                     fact = select_fact(self.store, request.company, metric, years[0], request.scope, request.dataset)
                     citation = fact_citation(fact, f"F{i + 1}")
@@ -183,6 +221,7 @@ class Engine:
                     result["generation_model"] = self.config.chat_model
                 if generated == "KHONG_DU_DU_LIEU":
                     result.update(status="partial" if numeric_answer else "insufficient_evidence",
+                                  mode="calculated" if numeric_answer else "extractive",
                                   answer="\n\n".join(numeric_answer + ["Không đủ bằng chứng để trả lời phần giải thích."]))
                     return finish()
                 if not valid_citations(generated, evidence):

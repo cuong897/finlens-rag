@@ -117,6 +117,49 @@ class EngineTests(unittest.TestCase):
         self.assertEqual([a["status"] for a in result["generation_attempts"]], ["failed", "succeeded"])
         self.assertTrue(result["citations"])
 
+    def test_false_increase_premise_is_corrected_without_calling_model(self):
+        self.add_fact(metric="interest_expense", year=2023, value="800")
+        self.add_fact(metric="interest_expense", year=2024, value="500")
+        class NoCalls:
+            def generate(self, *args):
+                raise AssertionError("Do not rationalize a false premise")
+        engine = Engine(self.store, ModelConfig(chat_model="fake"), NoCalls())
+        for years in ([2024], [2023, 2024]):
+            result = engine.answer(self.request("Vì sao chi phí lãi vay tăng trong năm 2024?", years=years))
+            self.assertEqual(result["status"], "answered")
+            self.assertEqual(result["mode"], "calculated")
+            self.assertFalse(result["generation_attempted"])
+            self.assertTrue(result["premise_check"]["contradicted"])
+            self.assertEqual(result["comparisons"][0]["growth_percent"], "-37.50")
+            self.assertIn("giảm", result["answer"])
+
+    def test_neutral_change_question_returns_comparison_without_cause_invention(self):
+        self.add_fact(metric="interest_expense", year=2023, value="800")
+        self.add_fact(metric="interest_expense", year=2024, value="500")
+        result = self.engine.answer(self.request("Chi phí lãi vay thay đổi như thế nào trong năm 2024?", years=[2024]))
+        self.assertEqual(result["mode"], "calculated")
+        self.assertFalse(result["premise_check"]["contradicted"])
+        self.assertEqual(len(result["comparisons"]), 1)
+
+    def test_correct_premise_retains_numbers_when_model_abstains(self):
+        self.add_fact(metric="interest_expense", year=2023, value="500")
+        self.add_fact(metric="interest_expense", year=2024, value="800")
+        class Abstain:
+            def generate(self, *args):
+                return "KHONG_DU_DU_LIEU"
+        engine = Engine(self.store, ModelConfig(chat_model="fake"), Abstain())
+        result = engine.answer(self.request("Vì sao chi phí lãi vay tăng năm 2024?", years=[2024]))
+        self.assertEqual(result["status"], "partial")
+        self.assertEqual(result["mode"], "calculated")
+        self.assertIn("60.00%", result["answer"])
+        self.assertTrue(result["citations"])
+
+    def test_negated_change_does_not_trigger_incorrect_premise_correction(self):
+        self.add_fact(metric="interest_expense", year=2023, value="800")
+        self.add_fact(metric="interest_expense", year=2024, value="500")
+        result = self.engine.answer(self.request("Vì sao chi phí lãi vay không tăng năm 2024?", years=[2024]))
+        self.assertFalse(result["premise_check"]["contradicted"])
+
     def test_year_alone_does_not_count_as_semantic_evidence(self):
         result = self.engine.answer(self.request("CEO nhận lương bao nhiêu năm 2024?", years=[2024]))
         self.assertEqual(result["status"], "insufficient_evidence")
