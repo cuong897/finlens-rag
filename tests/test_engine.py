@@ -11,7 +11,7 @@ import pymupdf
 from finlens.api import create_app
 from finlens.engine import Engine, valid_citations
 from finlens.finance import EvidenceError, compare
-from finlens.ingest import ingest_pdf, seed_demo
+from finlens.ingest import seed_demo
 from finlens.models import AskRequest
 from finlens.providers import ModelConfig, Ollama, ProviderError
 from finlens.store import Store
@@ -112,6 +112,7 @@ class EngineTests(unittest.TestCase):
         self.assertIn("Các đoạn nguồn", result["answer"])
         self.assertTrue(result["citations"])
         self.assertTrue(all(c["company"] == "An Phát Demo" and c["report_year"] == 2024 for c in result["citations"]))
+        self.assertTrue(all(c["page"] == 2 for c in result["citations"]), "Do not cite generic table headers as explanations")
 
     def test_invalid_model_citation_falls_back(self):
         class Fake:
@@ -188,6 +189,15 @@ class EngineTests(unittest.TestCase):
             for change in [{"value": "NaN"}, {"value": "1,200"}, {"confirmed": False}, {"metric": "invented"}]:
                 self.assertEqual(client.post("/api/facts", json={**base, **change}).status_code, 422)
             self.assertEqual(client.get("/api/documents/unknown/pages/1").status_code, 404)
+
+    def test_api_blocks_foreign_host_and_serves_web_assets(self):
+        with TestClient(create_app(self.tmp.name, ModelConfig())) as client:
+            self.assertEqual(client.get("/", headers={"Host": "malicious.example"}).status_code, 400)
+            for route, marker in [("/", "FinLens"), ("/app.js", "renderAnswer"), ("/styles.css", ".sidebar")]:
+                response = client.get(route)
+                self.assertEqual(response.status_code, 200)
+                self.assertIn(marker, response.text)
+            self.assertEqual(client.get("/openapi.json").status_code, 200)
 
 
 class ProviderTests(unittest.TestCase):

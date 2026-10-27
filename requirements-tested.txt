@@ -1,0 +1,6 @@
+# Direct dependencies verified locally on Python 3.13.5.
+fastapi==0.136.1
+uvicorn==0.47.0
+httpx==0.28.1
+pymupdf==1.28.2
+pydantic==2.11.7

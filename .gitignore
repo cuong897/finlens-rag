@@ -9,4 +9,6 @@ data/
 coverage.xml
 .coverage
 artifacts/
+build/
+dist/
 *.egg-info/

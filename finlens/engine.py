@@ -6,9 +6,9 @@ import time
 from finlens.finance import EvidenceError, compare, fact_citation, select_fact
 from finlens.models import METRICS, UNIT_LABELS, AskRequest
 from finlens.providers import ModelConfig, Ollama, ProviderError
-from finlens.retrieval import bm25, cosine, rrf, STOPWORDS
+from finlens.retrieval import bm25, content_terms, cosine, rrf
 from finlens.store import Store
-from finlens.text import normalize, tokens
+from finlens.text import normalize
 
 ALIASES = {
     "revenue": ["doanh thu", "revenue"],
@@ -37,10 +37,12 @@ class Engine:
         self.config = config or ModelConfig.from_env()
         self.provider = provider or Ollama(self.config)
 
-    def index_embeddings(self):
+    def index_embeddings(self, rebuild=False):
         model = self.config.embed_model
         if not model:
             raise ProviderError("Hãy cấu hình FINLENS_EMBED_MODEL trước khi lập chỉ mục ngữ nghĩa.")
+        if rebuild:
+            self.store.clear_embeddings(model)
         chunks = self.store.chunks()
         cached = self.store.embeddings(model)
         missing = [c for c in chunks if c["id"] not in cached]
@@ -153,12 +155,12 @@ class Engine:
                 result["warnings"].append(str(exc) + " Đã chuyển sang trích xuất nguồn.")
         # Extract sentences rather than pretending retrieval alone proves an answer.
         excerpts = []
-        query_terms = {t for t in tokens(request.question) if not (t.isdigit() and 1990 <= int(t) <= 2100)} - STOPWORDS
+        query_terms = content_terms(request.question)
         for citation in evidence[:3]:
             sentences = re.split(r"(?<=[.!?])\s+|\n", citation["excerpt"])
-            candidates = [(len((set(tokens(s)) - STOPWORDS) & query_terms), s.strip()) for s in sentences if len(s.strip()) >= 25]
+            candidates = [(len(content_terms(s) & query_terms), s.strip()) for s in sentences if len(s.strip()) >= 25]
             candidates.sort(key=lambda pair: -pair[0])
-            if candidates and candidates[0][0] > 0:
+            if candidates and candidates[0][0] >= min(2, len(query_terms)) and query_terms:
                 excerpts.append(f"“{candidates[0][1]}” [{citation['id']}]")
                 result["citations"].append(citation)
         if excerpts:

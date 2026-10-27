@@ -147,7 +147,7 @@ function renderFacts() {
       revoke.title = 'Thu hồi xác nhận; có thể nhập lại từ trang nguồn';
       revoke.addEventListener('click', async () => {
         revoke.disabled = true;
-        try { await api(`/api/facts/${fact.id}`, { method: 'DELETE' }); await refresh(); toast('Đã thu hồi chỉ tiêu. Bạn có thể xác nhận lại từ trang nguồn.'); }
+        try { await api(`/api/facts/${fact.id}`, { method: 'DELETE' }); resetAnalysis(); await refresh(); toast('Đã thu hồi chỉ tiêu. Bạn có thể xác nhận lại từ trang nguồn.'); }
         catch (error) { toast(error.message, true); revoke.disabled = false; }
       });
       actions.append(revoke);
@@ -161,8 +161,10 @@ function renderFacts() {
 }
 
 async function openSource(documentId, page) {
+  const revision = state.revision;
   try {
     const source = await api(`/api/documents/${encodeURIComponent(documentId)}/pages/${page}`);
+    if (revision !== state.revision) return;
     state.source = { documentId, page };
     setView('analysis');
     $('#source-empty').hidden = true; $('#source-content').hidden = false;
@@ -262,6 +264,7 @@ $('#fact-form').addEventListener('submit', async event => {
   $('#fact-button').disabled = true;
   try {
     await post('/api/facts', { document_id: $('#fact-document').value, page: Number($('#fact-page').value), metric: $('#fact-metric').value, year: Number($('#fact-year').value), value: $('#fact-value').value.trim(), unit: $('#fact-unit').value, currency: $('#fact-currency').value, confirmed: $('#fact-confirm').checked, note: $('#fact-note').value.trim() });
+    resetAnalysis();
     await refresh(); $('#fact-value').value = ''; $('#fact-confirm').checked = false;
     toast('Đã lưu chỉ tiêu và trang nguồn. Bạn có thể dùng để tính toán.');
   } catch (error) { toast(error.message, true); }

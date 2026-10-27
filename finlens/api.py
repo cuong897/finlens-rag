@@ -8,6 +8,7 @@ from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.concurrency import run_in_threadpool
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from finlens import __version__
 from finlens.engine import Engine
@@ -19,7 +20,8 @@ from finlens.store import Store
 
 
 def create_app(data_dir=None, config=None):
-    app = FastAPI(title="FinLens", version=__version__)
+    app = FastAPI(title="FinLens", version=__version__, docs_url=None, redoc_url=None)
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "[::1]", "testserver"])
     store = Store(data_dir or os.environ.get("FINLENS_DATA_DIR", "data"))
     engine = Engine(store, config or ModelConfig.from_env())
     app.state.store = store

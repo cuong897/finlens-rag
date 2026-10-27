@@ -185,3 +185,7 @@ class Store:
         with self.connection() as db:
             db.executemany("INSERT OR REPLACE INTO embeddings VALUES (?,?,?)",
                            [(cid, model, json.dumps(vector)) for cid, vector in pairs])
+
+    def clear_embeddings(self, model: str):
+        with self.connection() as db:
+            db.execute("DELETE FROM embeddings WHERE model=?", (model,))
