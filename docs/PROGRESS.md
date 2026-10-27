@@ -54,3 +54,12 @@
 2. Thu thập 15 báo cáo công khai, ghi nguồn/quyền sử dụng, đối chiếu parser và gán nhãn.
 3. Tạo bộ development/test độc lập, bổ sung reranker/OCR theo lỗi thực tế.
 4. Thêm xác thực, phân quyền và worker trước khi triển khai nhiều người dùng.
+
+## 27/10/2026 — M5: Ollama cục bộ theo lựa chọn người dùng
+
+- Xác nhận phần cứng RTX 4060 Laptop 8 GB VRAM, khoảng 16 GB RAM; ổ D đủ dung lượng.
+- Chọn Qwen3 4B Q4_K_M và BGE-M3, không dùng API trả phí.
+- Tải Ollama portable 0.40.11 từ GitHub chính thức, kiểm tra SHA-256 theo metadata release trước khi giải nén.
+- Launcher `local` chỉ cho localhost và mô hình local; dịch vụ do launcher mở có cloud tắt, model ở `data/ollama/models` và không tự khởi động cùng Windows.
+- Có chế độ chuẩn bị mô hình riêng và lệnh mở ứng dụng đơn giản; dùng lại mô hình sẵn có khi chạy offline.
+- 4 test mới cho cấu hình local, từ chối cloud/remote, payload chat không thinking và kiểm tra tải hoàn tất đã đạt. Chạy mô hình thật sẽ được ghi ở mốc tiếp theo.

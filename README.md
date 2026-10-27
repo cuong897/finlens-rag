@@ -36,6 +36,23 @@ Linux/macOS: thay `.\.venv\Scripts\python.exe` bằng `.venv/bin/python`. Cơ s�
 
 ## Bật RAG với mô hình cục bộ (tùy chọn)
 
+### Cấu hình Ollama đã chọn cho máy này
+
+GPU RTX 4060 Laptop 8 GB, RAM khoảng 16 GB: dùng `qwen3:4b` để trả lời và `bge-m3:latest` cho embedding đa ngôn ngữ. Cài bản portable chính thức trong thư mục dữ liệu dự án, không thêm PATH hoặc tự khởi động cùng Windows:
+
+```powershell
+python scripts/setup_ollama.py
+python -m finlens local
+```
+
+Hoặc sau khi setup, mở `run-local.cmd`. Lệnh `local` khởi động/reuse Ollama trên localhost, chỉ tải mô hình còn thiếu, lập embedding còn thiếu và mở FinLens. Mô hình đã có thì có thể khởi động lại không cần kết nối registry. Dữ liệu runtime/model ở `data/ollama/`, không được commit. Riêng lượt cài đầu cần tải khoảng 1,6 GB runtime và 3,7 GB mô hình.
+
+Ollama do launcher khởi động có `OLLAMA_NO_CLOUD=1`; local profile từ chối địa chỉ máy chủ bên ngoài và tên mô hình `:cloud`. Thư mục model ở ổ D khi chạy từ repo này. Ollama có thể lưu khóa nhận diện cục bộ trong thư mục hồ sơ mặc định của tài khoản; launcher không thay HOME hoặc cài dịch vụ hệ thống.
+
+`python -m finlens prepare-local` chỉ chuẩn bị server/mô hình, không mở ứng dụng. Trên Linux/macOS, cài và khởi động Ollama chính thức trước; `local` có thể reuse dịch vụ đó.
+
+### Tùy chỉnh mô hình
+
 Mặc định: **BM25 + trích xuất nguồn + tính toán Decimal**. Không tự tải mô hình, gọi dịch vụ AI hay gửi tài liệu ra ngoài. BM25 là baseline từ khóa, không phải dense retrieval.
 
 Để dùng mô hình, cài Ollama từ nguồn chính thức và tải mô hình chat/embedding phù hợp với máy. Cấu hình tên các mô hình bạn đã cài:
@@ -50,7 +67,7 @@ python -m finlens serve
 
 Nhập thêm tài liệu thì chạy `index` lại. Nếu thay trọng số nhưng giữ tên mô hình, chạy `python -m finlens index --rebuild`. Dừng và chạy lại server sau khi đổi cấu hình. Có thể chỉ cấu hình một mô hình để thử riêng generation hoặc dense retrieval. `.env.example` là hướng dẫn; ứng dụng không tự đọc `.env`.
 
-Khi đủ embedding, truy xuất dùng **BM25 + cosine similarity + RRF**. Khi mô hình lỗi hoặc citation sai, hệ thống quay về tìm kiếm từ khóa/trích xuất và trả thông báo. Ngưỡng cosine 0.25 cần hiệu chỉnh trên bộ development thật. Adapter đã test bằng phản hồi giả lập; chưa đo chất lượng hoặc độ trễ với mô hình thật trên máy hiện tại.
+Khi đủ embedding, truy xuất dùng **BM25 + cosine similarity + RRF**. Khi mô hình lỗi hoặc citation sai, hệ thống quay về tìm kiếm từ khóa/trích xuất và trả thông báo. Ngưỡng cosine 0.25 cần hiệu chỉnh trên bộ development thật. Chat được gọi với `think=false`, context 8192 token, giới hạn 700 token đầu ra để dành tài nguyên cho câu trả lời có nguồn.
 
 Tham khảo API: [Ollama embed](https://docs.ollama.com/api/embed), [Ollama chat](https://docs.ollama.com/api/chat).
 

@@ -70,8 +70,8 @@ class Ollama:
         )
         import json
         result = self._post("/api/chat", {
-            "model": self.config.chat_model, "stream": False,
-            "options": {"temperature": 0, "num_predict": 700},
+            "model": self.config.chat_model, "stream": False, "think": False,
+            "options": {"temperature": 0, "num_predict": 700, "num_ctx": 8192},
             "messages": [{"role": "system", "content": system},
                          {"role": "user", "content": json.dumps({"question": question,
                           "evidence": [{"id": c["id"], "text": c["excerpt"]} for c in evidence]}, ensure_ascii=False)}],
