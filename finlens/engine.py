@@ -74,6 +74,7 @@ class Engine:
         started = time.perf_counter()
         result = {"status": "insufficient_evidence", "mode": "extractive", "retrieval": "bm25",
                   "answer": "", "citations": [], "comparisons": [], "warnings": [],
+                  "generation_attempted": False, "generation_error": None,
                   "company": request.company, "years": request.years, "dataset": request.dataset}
 
         def finish():
@@ -138,6 +139,7 @@ class Engine:
                      "is_demo": bool(h["is_demo"]), "excerpt": h["text"], "score": h["score"],
                      "url": f"/api/documents/{h['document_id']}/pages/{h['page']}"} for i, h in enumerate(hits, 1)]
         if self.config.chat_model:
+            result["generation_attempted"] = True
             try:
                 generated = self.provider.generate(request.question, evidence)
                 if generated == "KHONG_DU_DU_LIEU":
@@ -152,6 +154,7 @@ class Engine:
                 result["warnings"].append("Nguồn dẫn đã được kiểm tra tồn tại; cần đối chiếu nội dung suy luận với tài liệu.")
                 return finish()
             except ProviderError as exc:
+                result["generation_error"] = {"code": exc.code, "retryable": exc.retryable}
                 result["warnings"].append(str(exc) + " Đã chuyển sang trích xuất nguồn.")
         # Extract sentences rather than pretending retrieval alone proves an answer.
         excerpts = []

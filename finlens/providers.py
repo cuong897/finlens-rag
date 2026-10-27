@@ -9,7 +9,10 @@ import httpx
 
 
 class ProviderError(RuntimeError):
-    pass
+    def __init__(self, message: str, *, code="provider_error", retryable=False):
+        super().__init__(message)
+        self.code = code
+        self.retryable = retryable
 
 
 @dataclass(frozen=True)
@@ -174,7 +177,7 @@ class Gemini:
 
     def generate(self, question: str, evidence: list[dict]):
         if not gemini_key_configured():
-            raise ProviderError("Chưa cấu hình GEMINI_API_KEY. Điền key vào .env rồi chạy lại bằng --env-file .env.")
+            raise ProviderError("Chưa cấu hình GEMINI_API_KEY. Điền key vào .env rồi chạy lại bằng --env-file .env.", code="missing_key")
         schema, system, user = grounded_request(question, evidence)
         payload = {
             "systemInstruction": {"parts": [{"text": system}]},
@@ -192,18 +195,20 @@ class Gemini:
                 with httpx.Client(timeout=60, trust_env=False) as client:
                     response = client.post(url, headers=headers, json=payload)
             if response.status_code == 429:
-                raise ProviderError("Gemini đã hết hạn mức hoặc đang giới hạn tốc độ. Không tự chuyển sang gói/model trả phí; hãy thử lại sau.")
+                raise ProviderError("Gemini đã hết hạn mức hoặc đang giới hạn tốc độ. Không tự chuyển sang gói/model trả phí; hãy thử lại sau.", code="rate_limited", retryable=True)
             if response.status_code in {401, 403}:
-                raise ProviderError("Gemini chưa chấp nhận API key hoặc project chưa có quyền truy cập. Kiểm tra key và Free tier trong AI Studio.")
+                raise ProviderError("Gemini chưa chấp nhận API key hoặc project chưa có quyền truy cập. Kiểm tra key và Free tier trong AI Studio.", code="access_denied")
             if response.status_code == 404:
-                raise ProviderError("Model Gemini chưa khả dụng cho API key này. Kiểm tra model trong AI Studio.")
+                raise ProviderError("Model Gemini chưa khả dụng cho API key này. Kiểm tra model trong AI Studio.", code="model_unavailable")
             if response.status_code in {500, 502, 503, 504}:
-                raise ProviderError("Gemini đang quá tải hoặc tạm thời không phục vụ. Hãy thử lại sau; không tự chuyển model hoặc phát sinh lượt gọi khác.")
+                raise ProviderError("Gemini đang quá tải hoặc tạm thời không phục vụ. Hãy thử lại sau; không tự chuyển model hoặc phát sinh lượt gọi khác.", code="service_unavailable", retryable=True)
             response.raise_for_status()
             data = response.json()
+        except httpx.TimeoutException as exc:
+            raise ProviderError("Gemini chưa trả lời trong thời gian chờ. Hãy thử lại sau; hệ thống không tự gửi thêm yêu cầu.", code="timeout", retryable=True) from exc
         except (httpx.HTTPError, ValueError) as exc:
             # Do not expose request headers, keys, provider response bodies or URLs.
-            raise ProviderError("Chưa gọi được Gemini hoặc phản hồi không hợp lệ. Hãy thử lại; không tự gọi lại hoặc dùng model trả phí.") from exc
+            raise ProviderError("Chưa gọi được Gemini hoặc phản hồi không hợp lệ. Hãy thử lại; không tự gọi lại hoặc dùng model trả phí.", code="request_failed") from exc
         try:
             candidate = data["candidates"][0]
             if not isinstance(candidate, dict):

@@ -58,6 +58,7 @@ class GeminiTests(unittest.TestCase):
                     Gemini(self.config, client).generate("Vì sao?", EVIDENCE)
         self.assertEqual(len(calls), 1)
         self.assertIn("hạn mức", str(caught.exception))
+        self.assertEqual(caught.exception.code, "rate_limited")
         self.assertNotIn("unit-test-key", str(caught.exception))
 
     def test_invalid_source_and_incomplete_output_are_rejected(self):
@@ -78,6 +79,17 @@ class GeminiTests(unittest.TestCase):
                 with self.assertRaisesRegex(ProviderError, "quá tải"):
                     Gemini(self.config, client).generate("Vì sao?", EVIDENCE)
         self.assertEqual(len(calls), 1)
+
+    def test_timeout_is_distinguished_from_access_or_quota_error(self):
+        def handler(request):
+            raise httpx.ReadTimeout("hidden request details", request=request)
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "unit-test-key"}):
+            with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+                with self.assertRaises(ProviderError) as caught:
+                    Gemini(self.config, client).generate("Vì sao?", EVIDENCE)
+        self.assertEqual(caught.exception.code, "timeout")
+        self.assertTrue(caught.exception.retryable)
+        self.assertNotIn("unit-test-key", str(caught.exception))
 
     def test_embedding_channel_stays_local(self):
         class LocalEmbedding:
