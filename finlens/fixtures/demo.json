@@ -1,0 +1,50 @@
+[
+  {
+    "code": "ANPHAT", "company": "An Phát Demo", "year": 2023,
+    "pages": [
+      "DỮ LIỆU GIẢ LẬP — DOANH NGHIỆP HƯ CẤU\nAn Phát Demo | Báo cáo hợp nhất năm 2023\nĐơn vị: tỷ VND\nChỉ tiêu | Giá trị năm 2023\nDoanh thu thuần | 1000\nLợi nhuận sau thuế | 100\nTổng tài sản | 2000\nNợ phải trả | 800\nDòng tiền thuần từ hoạt động kinh doanh | 140",
+      "DỮ LIỆU GIẢ LẬP\nAn Phát Demo — Thuyết minh năm 2023\nDoanh thu thuần đạt 1000 tỷ VND. Hoạt động chủ yếu là phân phối thiết bị công nghiệp trong nước. Lợi nhuận sau thuế đạt 100 tỷ VND. Chi phí vận chuyển và chi phí lãi vay ảnh hưởng đến biên lợi nhuận. Công ty chưa cung cấp dữ liệu về phát thải carbon trong tài liệu này."
+    ],
+    "facts": {"revenue": "1000", "net_income": "100", "total_assets": "2000", "liabilities": "800", "operating_cash_flow": "140"}
+  },
+  {
+    "code": "ANPHAT", "company": "An Phát Demo", "year": 2024,
+    "pages": [
+      "DỮ LIỆU GIẢ LẬP — DOANH NGHIỆP HƯ CẤU\nAn Phát Demo | Báo cáo hợp nhất năm 2024\nĐơn vị: tỷ VND\nChỉ tiêu | Giá trị năm 2024\nDoanh thu thuần | 1250\nLợi nhuận sau thuế | 90\nTổng tài sản | 2300\nNợ phải trả | 1100\nDòng tiền thuần từ hoạt động kinh doanh | 70",
+      "DỮ LIỆU GIẢ LẬP\nAn Phát Demo — Thuyết minh năm 2024\nDoanh thu thuần đạt 1250 tỷ VND nhờ mở rộng mạng lưới phân phối tại miền Trung. Lợi nhuận sau thuế đạt 90 tỷ VND. Theo thuyết minh, chi phí nguyên vật liệu và chi phí lãi vay tăng làm thu hẹp biên lợi nhuận. Dòng tiền kinh doanh đạt 70 tỷ VND do tăng khoản phải thu khách hàng."
+    ],
+    "facts": {"revenue": "1250", "net_income": "90", "total_assets": "2300", "liabilities": "1100", "operating_cash_flow": "70"}
+  },
+  {
+    "code": "ANPHAT", "company": "An Phát Demo", "year": 2025,
+    "pages": [
+      "DỮ LIỆU GIẢ LẬP — DOANH NGHIỆP HƯ CẤU\nAn Phát Demo | Báo cáo hợp nhất năm 2025\nĐơn vị: tỷ VND\nChỉ tiêu | Giá trị năm 2025\nDoanh thu thuần | 1400\nLợi nhuận sau thuế | 126\nTổng tài sản | 2500\nNợ phải trả | 1150\nDòng tiền thuần từ hoạt động kinh doanh | 180",
+      "DỮ LIỆU GIẢ LẬP\nAn Phát Demo — Thuyết minh năm 2025\nDoanh thu thuần đạt 1400 tỷ VND. Lợi nhuận sau thuế đạt 126 tỷ VND nhờ kiểm soát chi phí và cải thiện cơ cấu sản phẩm. Dòng tiền kinh doanh đạt 180 tỷ VND sau khi thu hồi khoản phải thu khách hàng."
+    ],
+    "facts": {"revenue": "1400", "net_income": "126", "total_assets": "2500", "liabilities": "1150", "operating_cash_flow": "180"}
+  },
+  {
+    "code": "BINHMINH", "company": "Bình Minh Demo", "year": 2023,
+    "pages": [
+      "DỮ LIỆU GIẢ LẬP — DOANH NGHIỆP HƯ CẤU\nBình Minh Demo | Báo cáo hợp nhất năm 2023\nĐơn vị: tỷ VND\nDoanh thu thuần | 800\nLợi nhuận sau thuế | 64\nTổng tài sản | 1500\nNợ phải trả | 500\nDòng tiền thuần từ hoạt động kinh doanh | 80",
+      "DỮ LIỆU GIẢ LẬP\nBình Minh Demo — Thuyết minh năm 2023\nHoạt động chính là phân phối thiết bị công nghiệp. Doanh thu thuần đạt 800 tỷ VND. Lợi nhuận sau thuế đạt 64 tỷ VND. Mạng lưới khách hàng tập trung tại miền Nam."
+    ],
+    "facts": {"revenue": "800", "net_income": "64", "total_assets": "1500", "liabilities": "500", "operating_cash_flow": "80"}
+  },
+  {
+    "code": "BINHMINH", "company": "Bình Minh Demo", "year": 2024,
+    "pages": [
+      "DỮ LIỆU GIẢ LẬP — DOANH NGHIỆP HƯ CẤU\nBình Minh Demo | Báo cáo hợp nhất năm 2024\nĐơn vị: tỷ VND\nDoanh thu thuần | 960\nLợi nhuận sau thuế | 96\nTổng tài sản | 1700\nNợ phải trả | 550\nDòng tiền thuần từ hoạt động kinh doanh | 120",
+      "DỮ LIỆU GIẢ LẬP\nBình Minh Demo — Thuyết minh năm 2024\nDoanh thu thuần đạt 960 tỷ VND nhờ tăng số lượng hợp đồng phân phối. Lợi nhuận sau thuế đạt 96 tỷ VND. Biên lợi nhuận cải thiện nhờ giảm chi phí logistics và tối ưu tồn kho."
+    ],
+    "facts": {"revenue": "960", "net_income": "96", "total_assets": "1700", "liabilities": "550", "operating_cash_flow": "120"}
+  },
+  {
+    "code": "BINHMINH", "company": "Bình Minh Demo", "year": 2025,
+    "pages": [
+      "DỮ LIỆU GIẢ LẬP — DOANH NGHIỆP HƯ CẤU\nBình Minh Demo | Báo cáo hợp nhất năm 2025\nĐơn vị: tỷ VND\nDoanh thu thuần | 1056\nLợi nhuận sau thuế | 110\nTổng tài sản | 1900\nNợ phải trả | 600\nDòng tiền thuần từ hoạt động kinh doanh | 135",
+      "DỮ LIỆU GIẢ LẬP\nBình Minh Demo — Thuyết minh năm 2025\nDoanh thu thuần đạt 1056 tỷ VND. Lợi nhuận sau thuế đạt 110 tỷ VND. Công ty tiếp tục mở rộng hợp đồng bảo trì thiết bị và cải thiện dòng tiền kinh doanh."
+    ],
+    "facts": {"revenue": "1056", "net_income": "110", "total_assets": "1900", "liabilities": "600", "operating_cash_flow": "135"}
+  }
+]
