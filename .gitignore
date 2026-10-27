@@ -12,3 +12,12 @@ artifacts/
 build/
 dist/
 *.egg-info/
+
+# Local project documentation
+README*
+docs/
+*.md
+*.rst
+*.pdf
+*.docx
+*.pptx
