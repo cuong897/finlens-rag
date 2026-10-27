@@ -295,7 +295,11 @@ async function init() {
   try {
     const [health, catalog] = await Promise.all([api('/api/health'), api('/api/catalog')]);
     state.catalog = catalog;
-    $('#model-status').replaceChildren(node('span', 'status-dot'), document.createTextNode(health.answer_mode === 'generated' ? 'AI đã cấu hình · có nguồn dẫn' : 'Trích xuất nguồn · cục bộ'));
+    const providerLabel = health.chat_provider === 'gemini'
+      ? (health.chat_ready ? `${health.chat_model} · API` : 'Gemini · cần API key')
+      : (health.answer_mode === 'generated' ? 'AI đã cấu hình · có nguồn dẫn' : 'Trích xuất nguồn · cục bộ');
+    $('#model-status').replaceChildren(node('span', 'status-dot'), document.createTextNode(providerLabel));
+    $('#provider-notice').hidden = health.chat_provider !== 'gemini';
     $('#fact-metric').replaceChildren(...Object.entries(catalog.metrics).map(([key, label]) => option(key, label)));
     await refresh();
     if (state.documents.some(d => !d.is_demo)) { $('#dataset').value = 'real'; updateFilters(false); }

@@ -5,13 +5,41 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="FinLens local financial document assistant")
-    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "local", "prepare-local"], nargs="?", default="serve")
-    parser.add_argument("--data-dir", default=os.environ.get("FINLENS_DATA_DIR", "data"))
+    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "local", "prepare-local", "gemini"], nargs="?", default="serve")
+    parser.add_argument("--data-dir", default=None)
+    parser.add_argument("--env-file", default=None, help="Explicit local configuration file; never prints values")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--output-dir", default="artifacts")
     parser.add_argument("--rebuild", action="store_true", help="Rebuild embeddings for the configured model")
     args = parser.parse_args()
+    if args.env_file:
+        from finlens.environment import load_env_file
+        try:
+            load_env_file(args.env_file)
+        except ValueError as exc:
+            parser.error(str(exc))
+    args.data_dir = args.data_dir or os.environ.get("FINLENS_DATA_DIR", "data")
+    if args.command == "gemini":
+        from dataclasses import replace
+        from finlens.providers import ModelConfig
+        config = ModelConfig.from_env()
+        config = replace(config, chat_provider="gemini", chat_model=config.chat_model or "gemini-3.8-flash",
+                         embed_model=config.embed_model or "bge-m3:latest")
+        from finlens.local import ensure_server
+        from finlens.engine import Engine
+        from finlens.store import Store
+        from finlens.providers import ProviderError
+        try:
+            ensure_server(config, args.data_dir)
+            print(json.dumps(Engine(Store(args.data_dir), config).index_embeddings(), ensure_ascii=True))
+        except ProviderError as exc:
+            # Gemini also works with keyword retrieval if local embeddings are unavailable.
+            print(str(exc) + " Using BM25 until the embedding service is ready.")
+        import uvicorn
+        from finlens.api import create_app
+        uvicorn.run(create_app(args.data_dir, config), host=args.host, port=args.port)
+        return
     if args.command in {"local", "prepare-local"}:
         from finlens.local import prepare_local
         config = prepare_local(args.data_dir)

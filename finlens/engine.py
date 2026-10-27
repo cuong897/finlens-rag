@@ -5,7 +5,7 @@ import time
 
 from finlens.finance import EvidenceError, compare, fact_citation, select_fact
 from finlens.models import METRICS, UNIT_LABELS, AskRequest
-from finlens.providers import ModelConfig, Ollama, ProviderError
+from finlens.providers import ModelConfig, ProviderError, make_provider
 from finlens.retrieval import bm25, content_terms, cosine, rrf
 from finlens.store import Store
 from finlens.text import normalize
@@ -35,7 +35,7 @@ class Engine:
     def __init__(self, store: Store, config: ModelConfig | None = None, provider=None):
         self.store = store
         self.config = config or ModelConfig.from_env()
-        self.provider = provider or Ollama(self.config)
+        self.provider = provider or make_provider(self.config)
 
     def index_embeddings(self, rebuild=False):
         model = self.config.embed_model

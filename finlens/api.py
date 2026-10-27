@@ -15,7 +15,7 @@ from finlens.engine import Engine
 from finlens.finance import EvidenceError, compare
 from finlens.ingest import MAX_PDF_BYTES, IngestError, ingest_pdf, seed_demo
 from finlens.models import METRICS, UNIT_LABELS, AskRequest, CompareRequest, FactRequest
-from finlens.providers import ModelConfig, ProviderError
+from finlens.providers import ModelConfig, ProviderError, gemini_key_configured
 from finlens.store import Store
 
 
@@ -43,9 +43,12 @@ def create_app(data_dir=None, config=None):
 
     @app.get("/api/health")
     def health():
+        ready = bool(engine.config.chat_model) and (engine.config.chat_provider != "gemini" or gemini_key_configured())
         return {"status": "ok", "version": __version__, "chat_model": engine.config.chat_model or None,
                 "embedding_model": engine.config.embed_model or None,
-                "answer_mode": "generated" if engine.config.chat_model else "extractive"}
+                "chat_provider": engine.config.chat_provider, "chat_ready": ready,
+                "setup_required": ["GEMINI_API_KEY"] if engine.config.chat_provider == "gemini" and not ready else [],
+                "answer_mode": "generated" if ready else "extractive"}
 
     @app.get("/api/catalog")
     def catalog():
