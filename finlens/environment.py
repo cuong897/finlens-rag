@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 ALLOWED = {"FINLENS_PROVIDER", "FINLENS_CHAT_MODEL", "FINLENS_EMBED_MODEL", "FINLENS_DATA_DIR",
-           "OLLAMA_BASE_URL", "GEMINI_API_KEY"}
+           "OLLAMA_BASE_URL", "GEMINI_API_KEY", "FINLENS_FALLBACK_MODELS"}
 
 
 def load_env_file(path: str | Path):

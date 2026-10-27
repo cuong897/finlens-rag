@@ -188,9 +188,23 @@ async function openSource(documentId, page) {
 function renderAnswer(result) {
   $('#result-empty').hidden = true; $('#result-content').hidden = false;
   $('#result-title').textContent = statusLabels[result.status] || result.status;
-  $('#result-meta').textContent = `${modeLabels[result.mode]} · ${result.latency_ms} ms`;
+  $('#result-meta').textContent = `${modeLabels[result.mode]}${result.generation_model && result.mode === 'generated' ? ` · ${result.generation_model}${result.fallback_used ? ' (dự phòng)' : ''}` : ''} · ${result.latency_ms} ms`;
   $('#answer-text').textContent = result.answer;
   $('#comparison-tables').replaceChildren();
+  for (const ratio of result.ratios || []) {
+    const card = node('article', 'comparison-card');
+    card.append(node('div', 'comparison-top', ratio.label));
+    const table = node('table');
+    const head = node('thead'); const headers = node('tr');
+    const body = node('tbody'); const row = node('tr');
+    for (const observation of ratio.values) {
+      headers.append(node('th', '', String(observation.year)));
+      row.append(node('td', '', `${formatNumber(observation.value)} ${ratio.unit}`));
+    }
+    head.append(headers); body.append(row); table.append(head, body);
+    card.append(table, node('div', 'formula', `Công thức: ${ratio.formula}`));
+    $('#comparison-tables').append(card);
+  }
   for (const comparison of result.comparisons) {
     const card = node('article', 'comparison-card');
     const heading = node('div', 'comparison-top');
@@ -301,7 +315,7 @@ async function init() {
     const [health, catalog] = await Promise.all([api('/api/health'), api('/api/catalog')]);
     state.catalog = catalog;
     const providerLabel = health.chat_provider === 'gemini'
-      ? (health.chat_ready ? `${health.chat_model} · API` : 'Gemini · cần API key')
+      ? (health.chat_ready ? `${health.chat_model} · ${health.fallback_models?.length || 0} dự phòng` : 'Gemini · cần API key')
       : (health.answer_mode === 'generated' ? 'AI đã cấu hình · có nguồn dẫn' : 'Trích xuất nguồn · cục bộ');
     $('#model-status').replaceChildren(node('span', 'status-dot'), document.createTextNode(providerLabel));
     $('#provider-notice').hidden = health.chat_provider !== 'gemini';

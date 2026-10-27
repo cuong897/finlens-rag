@@ -1,6 +1,6 @@
 """Explicit, reproducible import of a small public-document pilot corpus.
 
-Original PDFs stay local. Metadata, checksums and six visually reviewed scalar
+Original PDFs stay local. Metadata, checksums and visually reviewed scalar
 facts are versioned; this module never sends document content to a chat API.
 """
 
@@ -76,7 +76,8 @@ def import_pilot(store: Store, with_reviewed_facts=False, client=None):
             for fact in report["facts"]:
                 note = (f"Đối chiếu trực quan PDF bởi trợ lý ngày 27/10/2026; dòng {fact['label']}, "
                         f"cột {fact['year']}, đơn vị VND; trang PDF {fact['page']}, trang in {fact['printed_page']}. "
-                        "net_income là lợi nhuận sau thuế toàn tập đoàn, gồm lợi ích không kiểm soát.")
+                        + ("net_income là lợi nhuận sau thuế toàn tập đoàn, gồm lợi ích không kiểm soát."
+                           if fact["metric"] == "net_income" else ""))
                 store.add_fact({"document_id": document_id, "page": fact["page"], "metric": fact["metric"],
                                 "year": fact["year"], "value": fact["value"], "unit": "one", "currency": "VND",
                                 "verified": True, "note": note})

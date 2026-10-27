@@ -1,7 +1,8 @@
 """Verify a running FinLens/Gemini integration using synthetic documents only.
 
-Stops on the first provider outage. A fallback is a failure of live generation,
-never counted as a successful Gemini answer. No API keys are read by this tool.
+Stops if all generation options fail. Extractive fallback never counts as AI
+success; validated model failover records the actual model and attempt history.
+No API keys are read by this tool.
 """
 
 import argparse
@@ -51,6 +52,10 @@ def run_checks(client, base_url, cases=CASES, interval=15, pause=time.sleep):
             checks["mode"] = answer["mode"] == case["mode"]
         if case.get("mode") == "generated":
             checks["real_generation_attempted"] = answer.get("generation_attempted") is True
+            checks["actual_model_recorded"] = bool(answer.get("generation_model"))
+            checks["successful_attempt_recorded"] = any(
+                a.get("status") == "succeeded" and a.get("model") == answer.get("generation_model")
+                for a in answer.get("generation_attempts", []))
             checks["hybrid_retrieval"] = answer["retrieval"] == "hybrid_rrf"
             checks["has_generated_source"] = any(c["id"].startswith("S") for c in answer["citations"])
         if "source_page" in case:

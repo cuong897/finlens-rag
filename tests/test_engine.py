@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import httpx
 from fastapi.testclient import TestClient
@@ -13,7 +14,7 @@ from finlens.engine import Engine, valid_citations
 from finlens.finance import EvidenceError, compare
 from finlens.ingest import seed_demo
 from finlens.models import AskRequest
-from finlens.providers import ModelConfig, Ollama, ProviderError
+from finlens.providers import GeminiFallback, ModelConfig, Ollama, ProviderError
 from finlens.store import Store
 
 
@@ -94,6 +95,27 @@ class EngineTests(unittest.TestCase):
     def test_unknown_question_no_evidence(self):
         result = self.engine.answer(self.request("xyzunknown kryptonite?", years=[2024]))
         self.assertEqual(result["status"], "insufficient_evidence")
+
+    def test_fallback_answer_records_actual_model_and_attempt_history(self):
+        calls = []
+        def handler(request):
+            calls.append(request)
+            if len(calls) == 1:
+                return httpx.Response(503)
+            claim = {"abstain": False, "statements": [{"text": "Chi phí logistics giảm.", "sources": ["S1"]}]}
+            return httpx.Response(200, json={"candidates": [{"finishReason": "STOP", "content": {"parts": [{"text": json.dumps(claim)}]}}]})
+        config = ModelConfig(chat_model="gemini-3.8-flash", chat_provider="gemini")
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "unit-secret"}):
+            with httpx.Client(transport=httpx.MockTransport(handler)) as client:
+                engine = Engine(self.store, config, GeminiFallback(config, client))
+                result = engine.answer(self.request("Giải thích chi phí logistics năm 2024", company="Bình Minh Demo", years=[2024]))
+        self.assertEqual(result["status"], "answered")
+        self.assertEqual(result["mode"], "generated")
+        self.assertEqual(result["generation_model"], "gemini-3.6-flash")
+        self.assertTrue(result["fallback_used"])
+        self.assertIsNone(result["generation_error"])
+        self.assertEqual([a["status"] for a in result["generation_attempts"]], ["failed", "succeeded"])
+        self.assertTrue(result["citations"])
 
     def test_year_alone_does_not_count_as_semantic_evidence(self):
         result = self.engine.answer(self.request("CEO nhận lương bao nhiêu năm 2024?", years=[2024]))

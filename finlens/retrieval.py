@@ -16,6 +16,9 @@ FINANCIAL_TERMS = {
     "hang ton kho": "inventories", "dong tien kinh doanh": "cash flows operating activities",
     "bao cao ket qua kinh doanh": "consolidated income statement",
     "bang can doi ke toan": "consolidated balance sheet",
+    "tai san ngan han": "current assets", "no ngan han": "short-term liabilities",
+    "kha nang tra no": "current assets short-term liabilities cash flows operating activities interest expense",
+    "kha nang thanh toan": "current assets short-term liabilities cash flows operating activities",
 }
 
 

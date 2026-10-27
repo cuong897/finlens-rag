@@ -29,6 +29,8 @@ def check_pilot(store, output_dir="artifacts/public-pilot"):
         if not document:
             raise ValueError("Chưa nhập đủ báo cáo. Chạy public-pilot và index trước.")
         for fact in source["facts"]:
+            if fact["metric"] not in QUERIES:
+                continue
             question = QUERIES[fact["metric"]].format(year=source["year"])
             hits, mode, warnings = engine.retrieve(AskRequest(question=question, company=source["company"],
                                                             years=[source["year"]], scope=source["scope"], dataset="real"))

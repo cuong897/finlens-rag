@@ -47,6 +47,7 @@ def create_app(data_dir=None, config=None):
         return {"status": "ok", "version": __version__, "chat_model": engine.config.chat_model or None,
                 "embedding_model": engine.config.embed_model or None,
                 "chat_provider": engine.config.chat_provider, "chat_ready": ready,
+                "fallback_models": list(getattr(engine.provider, "models", ()))[1:],
                 "setup_required": ["GEMINI_API_KEY"] if engine.config.chat_provider == "gemini" and not ready else [],
                 "answer_mode": "generated" if ready else "extractive"}
 

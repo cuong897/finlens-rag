@@ -10,6 +10,69 @@ class EvidenceError(ValueError):
     pass
 
 
+DEBT_RATIOS = (
+    ("current_ratio", "Hệ số thanh toán hiện hành", "current_assets", "current_liabilities", "lần", 1),
+    ("operating_cash_coverage", "Dòng tiền kinh doanh / nợ ngắn hạn cuối kỳ", "operating_cash_flow", "current_liabilities", "%", 100),
+    ("liabilities_to_assets", "Nợ phải trả / tổng tài sản", "liabilities", "total_assets", "%", 100),
+)
+
+
+def debt_capacity(store, company, years, scope="consolidated", dataset="real"):
+    """Supported liquidity proxies, never a fabricated debt-service ratio.
+
+    Each ratio requires complete, non-conflicting verified inputs for every
+    requested year. Currency, unit and corpus checks apply to all components.
+    """
+    if not 1 <= len(years) <= 2:
+        raise EvidenceError("Hãy chọn một hoặc hai năm để phân tích khả năng trả nợ.")
+    citations, source_ids, ratios, missing = [], {}, [], []
+    def cite(fact):
+        key = fact["id"]
+        if key not in source_ids:
+            source_ids[key] = f"F{len(citations) + 1}"
+            citations.append(fact_citation(fact, source_ids[key]))
+        return source_ids[key]
+
+    for key, label, numerator, denominator, unit, scale in DEBT_RATIOS:
+        values, problems = [], []
+        for year in sorted(years):
+            inputs = []
+            for metric in (numerator, denominator):
+                try:
+                    inputs.append(select_fact(store, company, metric, year, scope, dataset))
+                except EvidenceError as exc:
+                    problems.append(str(exc))
+            if len(inputs) != 2:
+                continue
+            left, right = inputs
+            if left["currency"] != right["currency"] or bool(left["is_demo"]) != bool(right["is_demo"]):
+                problems.append(f"Không tính {label} năm {year}: khác tiền tệ hoặc trộn dữ liệu thật và giả lập.")
+                continue
+            with localcontext() as ctx:
+                ctx.prec = 50
+                top = Decimal(left["value"]) * Decimal(UNITS[left["unit"]])
+                bottom = Decimal(right["value"]) * Decimal(UNITS[right["unit"]])
+                if bottom <= 0:
+                    problems.append(f"Không tính {label} năm {year}: mẫu số phải lớn hơn 0.")
+                    continue
+                value = top / bottom * scale
+                displayed = format(value.quantize(Decimal("0.01")), "f")
+            values.append({"year": year, "value": displayed,
+                           "numerator": format(top, "f"), "denominator": format(bottom, "f"),
+                           "currency": left["currency"], "is_demo": bool(left["is_demo"]), "_facts": inputs})
+        if len({(v["currency"], v["is_demo"]) for v in values}) > 1:
+            problems.append(f"Không so sánh {label}: hai kỳ khác tiền tệ hoặc nguồn thật và giả lập.")
+        if problems:
+            missing.extend(problems)
+            continue
+        for value in values:
+            value["sources"] = [cite(fact) for fact in value.pop("_facts")]
+            value.pop("is_demo")
+        ratios.append({"metric": key, "label": label, "unit": unit, "values": values,
+                       "formula": f"{METRICS[numerator]} / {METRICS[denominator]}" + (" × 100" if scale == 100 else "")})
+    return {"ratios": ratios, "citations": citations, "missing_inputs": list(dict.fromkeys(missing))}
+
+
 def fact_citation(fact: dict, label: str):
     return {"id": label, "document_id": fact["document_id"], "page": fact["page"],
             "company": fact["company"], "report_year": fact["report_year"],

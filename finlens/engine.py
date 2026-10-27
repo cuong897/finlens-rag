@@ -3,7 +3,7 @@
 import re
 import time
 
-from finlens.finance import EvidenceError, compare, fact_citation, select_fact
+from finlens.finance import EvidenceError, compare, debt_capacity, fact_citation, select_fact
 from finlens.models import METRICS, UNIT_LABELS, AskRequest
 from finlens.providers import ModelConfig, ProviderError, make_provider
 from finlens.retrieval import bm25, content_terms, cosine, financial_query, rrf
@@ -19,6 +19,8 @@ ALIASES = {
     "gross_profit": ["loi nhuan gop"], "equity": ["von chu so huu"],
     "cash": ["tien va tuong duong tien"], "receivables": ["phai thu khach hang"],
     "inventory": ["hang ton kho"],
+    "current_assets": ["tai san ngan han", "current assets"],
+    "current_liabilities": ["no ngan han", "current liabilities", "short-term liabilities"],
 }
 
 
@@ -74,7 +76,9 @@ class Engine:
         started = time.perf_counter()
         result = {"status": "insufficient_evidence", "mode": "extractive", "retrieval": "bm25",
                   "answer": "", "citations": [], "comparisons": [], "warnings": [],
+                  "ratios": [], "missing_inputs": [],
                   "generation_attempted": False, "generation_error": None,
+                  "generation_model": None, "generation_attempts": [], "fallback_used": False,
                   "company": request.company, "years": request.years, "dataset": request.dataset}
 
         def finish():
@@ -91,6 +95,31 @@ class Engine:
         normalized = normalize(request.question)
         metrics = [metric for metric, aliases in ALIASES.items() if any(a in normalized for a in aliases)]
         wants_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nhu the nao", "nho dau", "yeu to", "dong luc"])
+        debt_intent = any(word in normalized for word in ["kha nang tra no", "kha nang thanh toan", "thanh toan hien hanh"])
+        causal_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nho dau", "yeu to", "dong luc"])
+        if debt_intent and not causal_reason:
+            try:
+                analysis = debt_capacity(self.store, request.company, years, request.scope, request.dataset)
+            except EvidenceError as exc:
+                result["answer"] = str(exc)
+                return finish()
+            result.update(analysis)
+            paragraphs = []
+            for ratio in analysis["ratios"]:
+                observations = []
+                for value in ratio["values"]:
+                    refs = " ".join(f"[{source}]" for source in value["sources"])
+                    observations.append(f"{value['year']}: {value['value']} {ratio['unit']} {refs}")
+                paragraphs.append(f"{ratio['label']}: " + "; ".join(observations) + f". Công thức: {ratio['formula']}.")
+            if analysis["missing_inputs"]:
+                paragraphs.append("Cần bổ sung hoặc đối chiếu số liệu: " + " ".join(analysis["missing_inputs"]))
+            if paragraphs:
+                result.update(answer="\n\n".join(paragraphs), mode="calculated",
+                              status=("partial" if analysis["missing_inputs"] else "answered") if analysis["ratios"] else "insufficient_evidence")
+            else:
+                result["answer"] = "Chưa có số liệu đã xác nhận để tính chỉ số thanh toán."
+            result["warnings"].append("Các chỉ số phản ánh thanh khoản và cơ cấu nguồn vốn; dòng tiền kinh doanh chia nợ ngắn hạn dùng số dư cuối kỳ. Chưa tính DSCR vì thiếu nghĩa vụ trả gốc và lãi đến hạn theo lịch vay; chưa đủ để kết luận chắc chắn khả năng trả nợ. Phần này tính cục bộ, không cần API AI.")
+            return finish()
         wants_change = any(word in normalized for word in ["tang", "giam", "so sanh", "chenh lech", "thay doi"])
         wants_numbers = any(word in normalized for word in ["bao nhieu", "dat", "gia tri", "so lieu", "so sanh", "chenh lech", "%", "ty le"])
         wants_numbers = wants_numbers or bool(metrics and years and not wants_reason)
@@ -141,7 +170,17 @@ class Engine:
         if self.config.chat_model:
             result["generation_attempted"] = True
             try:
-                generated = self.provider.generate(request.question, evidence)
+                if hasattr(self.provider, "generate_with_report"):
+                    generation = self.provider.generate_with_report(request.question, evidence)
+                    generated = generation.text
+                    result["generation_model"] = generation.model
+                    result["generation_attempts"] = generation.attempts
+                    result["fallback_used"] = generation.model != self.config.chat_model
+                    if result["fallback_used"]:
+                        result["warnings"].append(f"Đã dùng mô hình dự phòng {generation.model} vì mô hình ưu tiên chưa phục vụ được.")
+                else:
+                    generated = self.provider.generate(request.question, evidence)
+                    result["generation_model"] = self.config.chat_model
                 if generated == "KHONG_DU_DU_LIEU":
                     result.update(status="partial" if numeric_answer else "insufficient_evidence",
                                   answer="\n\n".join(numeric_answer + ["Không đủ bằng chứng để trả lời phần giải thích."]))
@@ -155,10 +194,11 @@ class Engine:
                 return finish()
             except ProviderError as exc:
                 result["generation_error"] = {"code": exc.code, "retryable": exc.retryable}
+                result["generation_attempts"] = exc.attempts
                 result["warnings"].append(str(exc) + " Đã chuyển sang trích xuất nguồn.")
         # Extract sentences rather than pretending retrieval alone proves an answer.
         excerpts = []
-        query_terms = content_terms(request.question)
+        query_terms = content_terms(financial_query(request.question))
         for citation in evidence[:3]:
             sentences = re.split(r"(?<=[.!?])\s+|\n", citation["excerpt"])
             candidates = [(len(content_terms(s) & query_terms), s.strip()) for s in sentences if len(s.strip()) >= 25]

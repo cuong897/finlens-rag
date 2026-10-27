@@ -1,18 +1,22 @@
 """Explicitly selected generation providers with local Ollama embeddings."""
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import json
 import math
 import os
+import threading
+import time
 
 import httpx
 
 
 class ProviderError(RuntimeError):
-    def __init__(self, message: str, *, code="provider_error", retryable=False):
+    def __init__(self, message: str, *, code="provider_error", retryable=False, retry_after=0, attempts=None):
         super().__init__(message)
         self.code = code
         self.retryable = retryable
+        self.retry_after = retry_after
+        self.attempts = attempts or []
 
 
 @dataclass(frozen=True)
@@ -21,6 +25,7 @@ class ModelConfig:
     chat_model: str = ""
     embed_model: str = ""
     chat_provider: str = "ollama"
+    fallback_models: tuple[str, ...] = ("gemini-3.6-flash", "gemini-3.5-flash-lite")
 
     @classmethod
     def from_env(cls):
@@ -30,7 +35,9 @@ class ModelConfig:
         default_model = "gemini-3.8-flash" if provider == "gemini" else ""
         return cls(os.environ.get("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/"),
                    os.environ.get("FINLENS_CHAT_MODEL", default_model).strip(),
-                   os.environ.get("FINLENS_EMBED_MODEL", "").strip(), provider)
+                   os.environ.get("FINLENS_EMBED_MODEL", "").strip(), provider,
+                   tuple(dict.fromkeys(x.strip() for x in os.environ.get(
+                       "FINLENS_FALLBACK_MODELS", "gemini-3.6-flash,gemini-3.5-flash-lite").split(",") if x.strip())))
 
 
 def grounded_request(question: str, evidence: list[dict]):
@@ -175,14 +182,14 @@ class Gemini:
     def embed(self, texts):
         return self.embedder.embed(texts)
 
-    def generate(self, question: str, evidence: list[dict]):
+    def generate(self, question: str, evidence: list[dict], *, timeout=60):
         if not gemini_key_configured():
             raise ProviderError("Chưa cấu hình GEMINI_API_KEY. Điền key vào .env rồi chạy lại bằng --env-file .env.", code="missing_key")
         schema, system, user = grounded_request(question, evidence)
         payload = {
             "systemInstruction": {"parts": [{"text": system}]},
             "contents": [{"role": "user", "parts": [{"text": user}]}],
-            "generationConfig": {"temperature": 0, "maxOutputTokens": 2048,
+            "generationConfig": {"maxOutputTokens": 2048,
                                  "thinkingConfig": {"thinkingLevel": "LOW"},
                                  "responseMimeType": "application/json", "responseJsonSchema": schema},
         }
@@ -190,30 +197,38 @@ class Gemini:
         headers = {"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip(), "Content-Type": "application/json"}
         try:
             if self.client:
-                response = self.client.post(url, headers=headers, json=payload, timeout=60)
+                response = self.client.post(url, headers=headers, json=payload, timeout=timeout)
             else:
-                with httpx.Client(timeout=60, trust_env=False) as client:
+                with httpx.Client(timeout=timeout, trust_env=False) as client:
                     response = client.post(url, headers=headers, json=payload)
             if response.status_code == 429:
-                raise ProviderError("Gemini đã hết hạn mức hoặc đang giới hạn tốc độ. Không tự chuyển sang gói/model trả phí; hãy thử lại sau.", code="rate_limited", retryable=True)
+                retry_after = response.headers.get("Retry-After", "60")
+                retry_after = min(3600, max(60, int(retry_after))) if retry_after.isdigit() else 60
+                raise ProviderError("Gemini đã hết hạn mức hoặc đang giới hạn tốc độ.", code="rate_limited", retryable=True, retry_after=retry_after)
             if response.status_code in {401, 403}:
                 raise ProviderError("Gemini chưa chấp nhận API key hoặc project chưa có quyền truy cập. Kiểm tra key và Free tier trong AI Studio.", code="access_denied")
             if response.status_code == 404:
                 raise ProviderError("Model Gemini chưa khả dụng cho API key này. Kiểm tra model trong AI Studio.", code="model_unavailable")
             if response.status_code in {500, 502, 503, 504}:
-                raise ProviderError("Gemini đang quá tải hoặc tạm thời không phục vụ. Hãy thử lại sau; không tự chuyển model hoặc phát sinh lượt gọi khác.", code="service_unavailable", retryable=True)
+                raise ProviderError("Gemini đang quá tải hoặc tạm thời không phục vụ.", code="service_unavailable", retryable=True)
+            if response.status_code in {400, 402}:
+                raise ProviderError("Gemini từ chối cấu hình yêu cầu; cần kiểm tra kết nối trong AI Studio.", code="invalid_request")
             response.raise_for_status()
             data = response.json()
         except httpx.TimeoutException as exc:
-            raise ProviderError("Gemini chưa trả lời trong thời gian chờ. Hãy thử lại sau; hệ thống không tự gửi thêm yêu cầu.", code="timeout", retryable=True) from exc
+            raise ProviderError("Gemini chưa trả lời trong thời gian chờ.", code="timeout", retryable=True) from exc
         except (httpx.HTTPError, ValueError) as exc:
             # Do not expose request headers, keys, provider response bodies or URLs.
-            raise ProviderError("Chưa gọi được Gemini hoặc phản hồi không hợp lệ. Hãy thử lại; không tự gọi lại hoặc dùng model trả phí.", code="request_failed") from exc
+            raise ProviderError("Chưa gọi được Gemini hoặc phản hồi không hợp lệ.", code="request_failed", retryable=True) from exc
         try:
+            if isinstance(data, dict) and isinstance(data.get("promptFeedback"), dict) and data["promptFeedback"].get("blockReason"):
+                raise ProviderError("Mô hình không thể trả lời yêu cầu này.", code="blocked")
             candidate = data["candidates"][0]
             if not isinstance(candidate, dict):
                 raise ValueError("Invalid candidate")
             if candidate.get("finishReason") != "STOP":
+                if candidate.get("finishReason") in {"SAFETY", "RECITATION", "PROHIBITED_CONTENT", "BLOCKLIST"}:
+                    raise ProviderError("Mô hình không thể trả lời yêu cầu này.", code="blocked")
                 raise ValueError("Incomplete or blocked generation")
             parts = candidate["content"]["parts"]
             if not isinstance(parts, list) or any(not isinstance(part, dict) for part in parts):
@@ -224,5 +239,78 @@ class Gemini:
             raise ProviderError("Gemini không trả câu trả lời hoàn chỉnh có cấu trúc. Đã giữ nguyên các bằng chứng nguồn.") from exc
 
 
+@dataclass(frozen=True)
+class Generation:
+    text: str
+    model: str
+    attempts: list[dict]
+
+
+class GeminiFallback(Gemini):
+    """Bounded sequential failover; no retries of the same model in one request.
+
+    Cooldowns are shared by requests in this process. A per-model lease prevents
+    concurrent callers from hammering an unhealthy model. Request reports remain
+    local variables so provenance cannot leak between concurrent questions.
+    """
+
+    def __init__(self, config, client=None, embedder=None, *, clock=time.monotonic):
+        super().__init__(config, client, embedder)
+        self.models = tuple(dict.fromkeys((config.chat_model, *config.fallback_models)))
+        if len(self.models) > 3 or any(model not in self.FREE_TIER_MODELS for model in self.models):
+            raise ValueError("Chuỗi dự phòng chỉ nhận tối đa 3 model Gemini có Free tier trong FinLens.")
+        self.clock = clock
+        self.lock = threading.Lock()
+        self.states = {model: {"until": 0, "failures": 0, "busy": False} for model in self.models}
+        self.access_until = 0
+
+    def generate(self, question, evidence):
+        return self.generate_with_report(question, evidence).text
+
+    def generate_with_report(self, question, evidence):
+        attempts = []
+        deadline = self.clock() + 30
+        last_error = None
+        for model in self.models:
+            remaining = deadline - self.clock()
+            if remaining < 1:
+                break
+            with self.lock:
+                state = self.states[model]
+                if self.access_until > self.clock():
+                    raise ProviderError("Kết nối Gemini đang tạm nghỉ sau lỗi quyền truy cập.", code="access_denied", attempts=attempts)
+                if state["busy"] or state["until"] > self.clock():
+                    attempts.append({"model": model, "status": "skipped", "code": "busy" if state["busy"] else "cooldown"})
+                    continue
+                state["busy"] = True
+            try:
+                backend = Gemini(replace(self.config, chat_model=model), self.client, self.embedder)
+                answer = backend.generate(question, evidence, timeout=min(10, remaining))
+                attempts.append({"model": model, "status": "succeeded"})
+                with self.lock:
+                    state.update(until=0, failures=0)
+                # A grounded abstention is a valid answer, not an outage. Do not
+                # shop across models until one invents a satisfying response.
+                return Generation(answer, model, attempts)
+            except ProviderError as exc:
+                last_error = exc
+                attempts.append({"model": model, "status": "failed", "code": exc.code})
+                with self.lock:
+                    if exc.code != "blocked":
+                        state["failures"] = min(6, state["failures"] + 1)
+                        state["until"] = self.clock() + max(exc.retry_after, min(300, 60 * 2 ** (state["failures"] - 1)))
+                    if exc.code in {"access_denied", "missing_key", "invalid_request"}:
+                        self.access_until = self.clock() + 60
+                if exc.code in {"access_denied", "missing_key", "invalid_request", "blocked"}:
+                    exc.attempts = attempts
+                    raise
+            finally:
+                with self.lock:
+                    state["busy"] = False
+        raise ProviderError("Các mô hình AI đang bận hoặc chưa trả được câu trả lời có nguồn hợp lệ.",
+                            code=last_error.code if last_error else "temporarily_unavailable",
+                            retryable=True, attempts=attempts)
+
+
 def make_provider(config: ModelConfig):
-    return Gemini(config) if config.chat_provider == "gemini" else Ollama(config)
+    return GeminiFallback(config) if config.chat_provider == "gemini" else Ollama(config)
