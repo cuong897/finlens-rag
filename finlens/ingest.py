@@ -23,6 +23,10 @@ def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: 
         raise IngestError("PDF vượt giới hạn 20 MB.")
     if not content.startswith(b"%PDF-"):
         raise IngestError("Tệp không có định dạng PDF hợp lệ.")
+    digest = hashlib.sha256(content).hexdigest()
+    existing = store.find_document(company.strip(), year, scope, digest)
+    if existing:
+        return {"document": existing, "created": False}
     pages, warnings = [], []
     try:
         with pymupdf.open(stream=content, filetype="pdf") as pdf:
@@ -62,7 +66,7 @@ def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: 
         document, created = store.add_document({
             "id": document_id, "company": company.strip(), "report_year": year, "scope": scope,
             "filename": filename.replace("\\", "/").split("/")[-1][:180],
-            "sha256": hashlib.sha256(content).hexdigest(), "is_demo": False,
+            "sha256": digest, "is_demo": False,
             "pdf_path": relative_path, "warnings": warnings,
         }, pages)
         if not created:

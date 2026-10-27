@@ -5,13 +5,14 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="FinLens local financial document assistant")
-    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "local", "prepare-local", "gemini"], nargs="?", default="serve")
+    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "local", "prepare-local", "gemini", "public-pilot"], nargs="?", default="serve")
     parser.add_argument("--data-dir", default=None)
     parser.add_argument("--env-file", default=None, help="Explicit local configuration file; never prints values")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--output-dir", default="artifacts")
     parser.add_argument("--rebuild", action="store_true", help="Rebuild embeddings for the configured model")
+    parser.add_argument("--with-reviewed-facts", action="store_true", help="Include six pilot facts already visually checked against source PDFs")
     args = parser.parse_args()
     if args.env_file:
         from finlens.environment import load_env_file
@@ -67,6 +68,9 @@ def main():
     if args.command == "seed":
         from finlens.ingest import seed_demo
         result = seed_demo(store)
+    elif args.command == "public-pilot":
+        from finlens.public_pilot import import_pilot
+        result = import_pilot(store, args.with_reviewed_facts)
     elif args.command == "index":
         from finlens.engine import Engine
         result = Engine(store).index_embeddings(rebuild=args.rebuild)

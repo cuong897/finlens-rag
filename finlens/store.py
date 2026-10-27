@@ -52,6 +52,10 @@ class Store:
                     model TEXT NOT NULL, vector TEXT NOT NULL,
                     PRIMARY KEY(chunk_id, model)
                 );
+                CREATE TABLE IF NOT EXISTS document_sources (
+                    document_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
+                    url TEXT NOT NULL, publisher TEXT NOT NULL, retrieved_at TEXT NOT NULL
+                );
             """)
 
     @contextmanager
@@ -90,6 +94,12 @@ class Store:
                                (document["id"], number, chunk))
         return self.get_document(document["id"]), True
 
+    def find_document(self, company: str, year: int, scope: str, sha256: str):
+        with self.connection() as db:
+            row = db.execute("SELECT id FROM documents WHERE company=? AND report_year=? AND scope=? AND sha256=?",
+                             (company, year, scope, sha256)).fetchone()
+        return self.get_document(row[0]) if row else None
+
     @staticmethod
     def _document(row):
         result = dict(row)
@@ -100,8 +110,15 @@ class Store:
 
     def get_document(self, document_id: str):
         with self.connection() as db:
-            row = db.execute("SELECT * FROM documents WHERE id=?", (document_id,)).fetchone()
+            row = db.execute("""SELECT d.*,s.url AS source_url,s.publisher AS source_publisher,
+                s.retrieved_at AS source_retrieved_at FROM documents d
+                LEFT JOIN document_sources s ON s.document_id=d.id WHERE d.id=?""", (document_id,)).fetchone()
             return self._document(row) if row else None
+
+    def record_source(self, document_id: str, url: str, publisher: str):
+        with self.connection() as db:
+            db.execute("INSERT OR IGNORE INTO document_sources VALUES (?,?,?,?)",
+                       (document_id, url, publisher, datetime.now(timezone.utc).isoformat()))
 
     def pdf_path(self, document_id: str):
         with self.connection() as db:
@@ -113,10 +130,12 @@ class Store:
 
     def documents(self):
         with self.connection() as db:
-            rows = db.execute("""SELECT d.*, (SELECT count(*) FROM pages p
+            rows = db.execute("""SELECT d.*,s.url AS source_url,s.publisher AS source_publisher,
+                    s.retrieved_at AS source_retrieved_at, (SELECT count(*) FROM pages p
                     WHERE p.document_id=d.id) AS page_count,
                     (SELECT count(*) FROM chunks c WHERE c.document_id=d.id) AS chunk_count
-                    FROM documents d ORDER BY company, report_year DESC""").fetchall()
+                    FROM documents d LEFT JOIN document_sources s ON s.document_id=d.id
+                    ORDER BY company, report_year DESC""").fetchall()
             return [self._document(row) for row in rows]
 
     def page(self, document_id: str, number: int):

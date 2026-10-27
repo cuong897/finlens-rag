@@ -116,6 +116,11 @@ function renderDocuments() {
     const title = node('p', 'doc-title', `${document.company} · ${document.report_year}`);
     if (document.is_demo) title.append(node('span', 'demo-tag', 'GIẢ LẬP'));
     details.append(title, node('div', 'doc-meta', `${document.scope === 'consolidated' ? 'Hợp nhất' : 'Riêng lẻ'} · ${document.page_count} trang · ${document.chunk_count} đoạn nguồn`), node('div', 'doc-meta', document.filename));
+    if (document.source_url && /^https:\/\//.test(document.source_url)) {
+      const source = node('a', 'doc-meta', `Nguồn: ${document.source_publisher || 'Website công bố'} ↗`);
+      source.href = document.source_url; source.target = '_blank'; source.rel = 'noopener noreferrer';
+      details.append(source);
+    }
     if (document.warnings.length) details.append(node('div', 'doc-meta', document.warnings.join(' ')));
     const button = node('button', '', 'Xem ↗');
     button.addEventListener('click', () => openSource(document.id, 1));

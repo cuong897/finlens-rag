@@ -1,0 +1,26 @@
+[
+  {
+    "company": "FPT", "year": 2023, "scope": "consolidated",
+    "filename": "FPT_2023_annual.pdf",
+    "url": "https://fpt.com/api/media/annual_report_fpt_2023_en_4287f2041d.pdf",
+    "publisher": "FPT Corporation", "language": "en", "pages": 209,
+    "sha256": "ff9315e1da78ccd4cfca9b75cc12946c73a761e125bfa512aeedf6417fda796c",
+    "facts": [
+      {"metric": "revenue", "year": 2023, "value": "52617900827385", "page": 148, "printed_page": 147, "label": "Net revenue from sales of goods and rendering of services"},
+      {"metric": "net_income", "year": 2023, "value": "7788049739616", "page": 149, "printed_page": 148, "label": "Profit after tax"},
+      {"metric": "total_assets", "year": 2023, "value": "60282827532899", "page": 145, "printed_page": 144, "label": "TOTAL ASSETS"}
+    ]
+  },
+  {
+    "company": "FPT", "year": 2024, "scope": "consolidated",
+    "filename": "FPT_2024_annual.pdf",
+    "url": "https://fpt.com/api/media/fpt_annual_report_2024_63d63bc4cd.pdf",
+    "publisher": "FPT Corporation", "language": "en", "pages": 213,
+    "sha256": "fa791cffcea5e14e287af9df36f4ac8b5dd8a21c4a13be46495b30a56e3ee1c4",
+    "facts": [
+      {"metric": "revenue", "year": 2024, "value": "62848794351367", "page": 151, "printed_page": 151, "label": "Net revenue from sales of goods and rendering of services"},
+      {"metric": "net_income", "year": 2024, "value": "9427422530444", "page": 152, "printed_page": 152, "label": "Profit after tax"},
+      {"metric": "total_assets", "year": 2024, "value": "71999995678620", "page": 148, "printed_page": 148, "label": "TOTAL ASSETS"}
+    ]
+  }
+]
