@@ -95,6 +95,16 @@ class EngineTests(unittest.TestCase):
         result = self.engine.answer(self.request("xyzunknown kryptonite?", years=[2024]))
         self.assertEqual(result["status"], "insufficient_evidence")
 
+    def test_year_alone_does_not_count_as_semantic_evidence(self):
+        result = self.engine.answer(self.request("CEO nhận lương bao nhiêu năm 2024?", years=[2024]))
+        self.assertEqual(result["status"], "insufficient_evidence")
+        self.assertEqual(result["citations"], [])
+
+    def test_why_question_not_misrouted_to_two_year_comparison(self):
+        result = self.engine.answer(self.request("Vì sao tăng khoản phải thu khách hàng?", years=[2024]))
+        self.assertEqual(result["status"], "evidence_found")
+        self.assertTrue(any(c["page"] == 2 for c in result["citations"]))
+
     def test_extractive_response_is_explicit(self):
         result = self.engine.answer(self.request("Vì sao chi phí lãi vay tăng?", years=[2024]))
         self.assertEqual(result["status"], "evidence_found")

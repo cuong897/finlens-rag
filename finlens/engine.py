@@ -91,12 +91,12 @@ class Engine:
         wants_change = any(word in normalized for word in ["tang", "giam", "so sanh", "chenh lech", "thay doi"])
         wants_numbers = any(word in normalized for word in ["bao nhieu", "dat", "gia tri", "so lieu", "so sanh", "chenh lech", "%", "ty le"])
         wants_numbers = wants_numbers or bool(metrics and years and not wants_reason)
-        if metrics and wants_change and len(years) != 2:
+        if metrics and wants_change and len(years) != 2 and not wants_reason:
             result["answer"] = "Hãy chọn đúng hai năm để so sánh; cần xác định rõ năm gốc."
             return finish()
         numeric_answer = []
         try:
-            if metrics and wants_change and len(years) == 2:
+            if metrics and wants_change and len(years) == 2 and (wants_numbers or not wants_reason):
                 comparisons = [compare(self.store, request.company, metric, years[0], years[1], request.scope, request.dataset) for metric in metrics]
                 result["comparisons"] = comparisons
                 for i, item in enumerate(comparisons):
@@ -153,7 +153,7 @@ class Engine:
                 result["warnings"].append(str(exc) + " Đã chuyển sang trích xuất nguồn.")
         # Extract sentences rather than pretending retrieval alone proves an answer.
         excerpts = []
-        query_terms = set(tokens(request.question)) - STOPWORDS
+        query_terms = {t for t in tokens(request.question) if not (t.isdigit() and 1990 <= int(t) <= 2100)} - STOPWORDS
         for citation in evidence[:3]:
             sentences = re.split(r"(?<=[.!?])\s+|\n", citation["excerpt"])
             candidates = [(len((set(tokens(s)) - STOPWORDS) & query_terms), s.strip()) for s in sentences if len(s.strip()) >= 25]

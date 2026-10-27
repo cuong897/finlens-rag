@@ -9,7 +9,7 @@ STOPWORDS = set("la va cua co cac cho trong mot nhung voi tu den thi nay bao cao
 
 
 def bm25(query: str, chunks: list[dict], limit: int = 5):
-    query_tokens = set(tokens(query)) - STOPWORDS
+    query_tokens = {t for t in tokens(query) if not (t.isdigit() and 1990 <= int(t) <= 2100)} - STOPWORDS
     if not chunks or not query_tokens:
         return []
     documents = [tokens(c["text"]) for c in chunks]

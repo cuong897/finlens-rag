@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#112720">
+  <title>FinLens · Đọc số liệu, hiểu câu chuyện</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23112720'/%3E%3Cpath d='M11 29V11h18v5H17v3h10v5H17v5' fill='%23c9ed90'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Đến nội dung chính</a>
+  <aside class="sidebar">
+    <a class="brand" href="/"><span class="brand-icon">F</span>FinLens<span class="brand-dot">.</span></a>
+    <div class="workspace-label">KHÔNG GIAN PHÂN TÍCH</div>
+    <nav aria-label="Điều hướng chính">
+      <button class="nav-item active" data-view="analysis" aria-current="page"><span aria-hidden="true">◈</span> Phân tích báo cáo</button>
+      <button class="nav-item" data-view="library"><span aria-hidden="true">▤</span> Kho tài liệu <span id="nav-count" class="count">0</span></button>
+      <button class="nav-item" data-view="facts"><span aria-hidden="true">▦</span> Chỉ tiêu xác nhận</button>
+    </nav>
+    <div class="sidebar-note"><span class="small-label">TỪ TÀI LIỆU ĐẾN BẰNG CHỨNG</span><p>Mỗi con số đều có một nơi để kiểm chứng.</p><span class="note-line"></span></div>
+    <div class="sidebar-bottom"><span class="status-dot"></span> Không gian cục bộ <span class="version">v0.1</span></div>
+  </aside>
+
+  <main id="main">
+    <header class="topbar"><div>Không gian làm việc <span class="slash">/</span> <span id="breadcrumb">Phân tích báo cáo</span></div><span id="model-status" class="system-status"><span class="status-dot"></span> Đang kết nối</span></header>
+    <div class="page-content">
+      <div class="page-heading"><div><span class="eyebrow">FINANCIAL DOCUMENT INTELLIGENCE</span><h1>Đọc số liệu.<br class="mobile-break"> Hiểu câu chuyện.</h1><p>Khám phá báo cáo tài chính với bằng chứng ngay bên cạnh.</p></div><button id="seed-button" class="button secondary">＋ Nạp dữ liệu demo</button></div>
+
+      <section class="stats" aria-label="Tổng quan dữ liệu">
+        <article class="stat-card"><div class="stat-label">Tài liệu trong kho <span aria-hidden="true">▤</span></div><div class="stat-value" id="stat-documents">0</div><span class="stat-foot">Báo cáo có nguồn truy xuất</span></article>
+        <article class="stat-card"><div class="stat-label">Doanh nghiệp <span aria-hidden="true">◫</span></div><div class="stat-value" id="stat-companies">0</div><span class="stat-foot">Phân tách theo từng doanh nghiệp</span></article>
+        <article class="stat-card accent"><div class="stat-label">Chỉ tiêu đã xác nhận <span aria-hidden="true">✓</span></div><div class="stat-value" id="stat-facts">0</div><span class="stat-foot">Sẵn sàng đối chiếu và tính toán</span></article>
+      </section>
+
+      <div class="dataset-notice" id="dataset-notice"><span aria-hidden="true">ⓘ</span><span>Dữ liệu demo là giả lập của doanh nghiệp hư cấu. Chọn “Tài liệu của tôi” để làm việc với PDF bạn tải lên.</span></div>
+
+      <section id="view-analysis" class="view">
+        <div class="analysis-grid">
+          <div class="analysis-column">
+            <section class="panel question-panel">
+              <div class="panel-heading"><div><span class="eyebrow">01 / ĐẶT CÂU HỎI</span><h2>Bạn muốn tìm hiểu điều gì?</h2></div><span class="pill">Có nguồn dẫn</span></div>
+              <form id="ask-form">
+                <div class="filter-row"><label>Nguồn dữ liệu<select id="dataset"><option value="demo">Dữ liệu demo · giả lập</option><option value="real">Tài liệu của tôi</option></select></label><label>Doanh nghiệp<select id="company" required></select></label><label>Phạm vi<select id="scope"><option value="consolidated">Hợp nhất</option><option value="standalone">Riêng lẻ</option></select></label></div>
+                <fieldset class="year-field"><legend>Năm báo cáo</legend><div id="year-options" class="year-options"></div></fieldset>
+                <label class="sr-only" for="question">Câu hỏi về báo cáo</label>
+                <textarea id="question" rows="3" maxlength="1200" required placeholder="Ví dụ: So sánh doanh thu và lợi nhuận sau thuế năm 2023 và 2024"></textarea>
+                <div class="question-footer"><span>Con số rõ ràng. Nguồn có thể kiểm tra.</span><button id="ask-button" class="button primary" type="submit">Phân tích <span aria-hidden="true">↗</span></button></div>
+              </form>
+              <div class="suggestions"><span>THỬ MỘT CÂU HỎI</span><button type="button" data-question="So sánh doanh thu và lợi nhuận sau thuế năm 2023 và 2024">Doanh thu & lợi nhuận ↗</button><button type="button" data-question="Vì sao chi phí lãi vay tăng trong năm 2024?">Giải thích chi phí ↗</button><button type="button" data-question="Dòng tiền kinh doanh năm 2024 là bao nhiêu?">Dòng tiền kinh doanh ↗</button></div>
+            </section>
+
+            <section class="panel result-panel" aria-live="polite" aria-busy="false" id="result-panel">
+              <div class="panel-heading"><div><span class="eyebrow">02 / KẾT QUẢ PHÂN TÍCH</span><h2 id="result-title">Bắt đầu từ một câu hỏi hay.</h2></div><span class="small-label" id="result-meta"></span></div>
+              <div id="result-empty" class="empty-state"><div class="empty-mark" aria-hidden="true">↗</div><h3>Từ báo cáo dài đến thông tin cần tìm.</h3><p>Chọn doanh nghiệp, năm báo cáo và đặt câu hỏi.<br>Kết quả sẽ đi kèm bằng chứng để bạn đối chiếu.</p><div class="empty-steps"><span>1. Chọn tài liệu</span><span>2. Đặt câu hỏi</span><span>3. Kiểm chứng</span></div></div>
+              <div id="result-content" hidden><div id="comparison-tables"></div><div id="answer-text" class="answer-text"></div><div id="answer-warnings"></div><div id="citation-list" class="citation-list"></div></div>
+            </section>
+          </div>
+          <aside class="panel source-panel" aria-label="Trang nguồn để đối chiếu">
+            <div class="panel-heading"><div><span class="eyebrow">03 / KIỂM CHỨNG</span><h2>Bằng chứng gốc</h2></div><span class="source-symbol" aria-hidden="true">⌕</span></div>
+            <div id="source-empty" class="source-empty"><div class="paper-icon" aria-hidden="true"><span></span><span></span><span></span></div><h3>Nguồn ở ngay đây.</h3><p>Chọn một nguồn dẫn trong kết quả để xem nội dung trang báo cáo.</p></div>
+            <div id="source-content" hidden><div id="source-label" class="source-label"></div><div class="source-controls"><button id="prev-page" class="icon-button" aria-label="Trang trước">←</button><span id="source-page"></span><button id="next-page" class="icon-button" aria-label="Trang sau">→</button><a id="source-pdf" target="_blank" rel="noopener" class="text-link" hidden>Mở PDF ↗</a></div><pre id="source-text"></pre><p class="source-footnote">Nội dung trích xuất có thể mất định dạng bảng. Hãy mở PDF gốc để kiểm tra trước khi xác nhận chỉ tiêu.</p></div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="view-library" class="view" hidden>
+        <div class="library-grid">
+          <section class="panel"><div class="panel-heading"><div><span class="eyebrow">TÀI LIỆU CỦA BẠN</span><h2>Kho báo cáo</h2></div></div><div id="document-list" class="document-list"></div></section>
+          <section class="panel upload-panel"><div class="panel-heading"><div><span class="eyebrow">THÊM NGUỒN MỚI</span><h2>Nhập báo cáo PDF</h2></div></div><form id="upload-form" class="stack-form"><label>Tệp PDF<input id="upload-file" type="file" accept="application/pdf,.pdf" required></label><p class="field-hint">PDF có văn bản, tối đa 20 MB và 250 trang. Bản hiện tại chưa đọc PDF scan.</p><label>Tên doanh nghiệp<input id="upload-company" required maxlength="120" placeholder="Tên doanh nghiệp trên báo cáo"></label><div class="filter-row"><label>Năm báo cáo<input id="upload-year" type="number" min="1990" max="2100" value="2025" required></label><label>Phạm vi<select id="upload-scope"><option value="consolidated">Hợp nhất</option><option value="standalone">Riêng lẻ</option></select></label></div><button type="submit" id="upload-button" class="button primary">Tải lên và xử lý ↗</button><p class="field-hint">Tài liệu được lưu trên máy này. Chỉ tiêu cần bạn xác nhận trước khi dùng để tính toán.</p></form></section>
+        </div>
+      </section>
+
+      <section id="view-facts" class="view" hidden>
+        <div class="panel"><div class="panel-heading"><div><span class="eyebrow">DỮ LIỆU CÓ CẤU TRÚC</span><h2>Chỉ tiêu đã xác nhận</h2></div><span class="pill">Tính toán có kiểm soát</span></div><p class="section-description">Chỉ tiêu demo được gắn nhãn giả lập. Với PDF của bạn, mở trang nguồn và đối chiếu số liệu, năm, đơn vị trước khi xác nhận.</p><div class="table-scroll"><table class="facts-table"><thead><tr><th>Doanh nghiệp / Chỉ tiêu</th><th>Năm</th><th>Giá trị</th><th>Nguồn</th><th></th></tr></thead><tbody id="facts-table-body"></tbody></table></div></div>
+        <section class="panel fact-entry"><div class="panel-heading"><div><span class="eyebrow">ĐỐI CHIẾU THỦ CÔNG</span><h2>Xác nhận một chỉ tiêu từ PDF</h2></div></div><form id="fact-form" class="stack-form"><div class="filter-row"><label>Tài liệu PDF<select id="fact-document" required></select></label><label>Trang nguồn<input id="fact-page" type="number" value="1" min="1" max="250" required></label><button id="fact-preview" type="button" class="button secondary">Xem trang nguồn ↗</button></div><div class="filter-row"><label>Chỉ tiêu<select id="fact-metric"></select></label><label>Năm của số liệu<input id="fact-year" type="number" min="1990" max="2100" required value="2025"></label><label>Giá trị<input id="fact-value" inputmode="decimal" required placeholder="1250.50 (không phân cách hàng nghìn)"></label><label>Đơn vị<select id="fact-unit"><option value="billion">Tỷ</option><option value="million">Triệu</option><option value="thousand">Nghìn</option><option value="one">Đơn vị</option></select></label><label>Tiền tệ<select id="fact-currency"><option>VND</option><option>USD</option><option>EUR</option></select></label></div><label>Ghi chú đối chiếu<input id="fact-note" minlength="10" maxlength="600" required placeholder="Ví dụ: dòng Doanh thu thuần, cột năm 2024, đơn vị tỷ đồng"></label><label class="check-label"><input id="fact-confirm" type="checkbox" required> Tôi đã đối chiếu với trang nguồn, đúng chỉ tiêu, năm, đơn vị và phạm vi báo cáo.</label><button id="fact-button" type="submit" class="button primary">Lưu chỉ tiêu đã xác nhận ✓</button></form></section>
+      </section>
+      <footer class="page-footer"><span>FinLens <span aria-hidden="true">·</span> Bằng chứng trước, diễn giải sau.</span><span>Bản thử nghiệm dành cho nghiên cứu và học tập.</span></footer>
+    </div>
+  </main>
+  <div id="toast" role="status" hidden></div>
+</body>
+</html>
