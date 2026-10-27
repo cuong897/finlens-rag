@@ -89,7 +89,7 @@ class Engine:
         result["years"] = years
         normalized = normalize(request.question)
         metrics = [metric for metric, aliases in ALIASES.items() if any(a in normalized for a in aliases)]
-        wants_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nhu the nao"])
+        wants_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nhu the nao", "nho dau", "yeu to", "dong luc"])
         wants_change = any(word in normalized for word in ["tang", "giam", "so sanh", "chenh lech", "thay doi"])
         wants_numbers = any(word in normalized for word in ["bao nhieu", "dat", "gia tri", "so lieu", "so sanh", "chenh lech", "%", "ty le"])
         wants_numbers = wants_numbers or bool(metrics and years and not wants_reason)

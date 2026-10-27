@@ -63,3 +63,13 @@
 - Launcher `local` chỉ cho localhost và mô hình local; dịch vụ do launcher mở có cloud tắt, model ở `data/ollama/models` và không tự khởi động cùng Windows.
 - Có chế độ chuẩn bị mô hình riêng và lệnh mở ứng dụng đơn giản; dùng lại mô hình sẵn có khi chạy offline.
 - 4 test mới cho cấu hình local, từ chối cloud/remote, payload chat không thinking và kiểm tra tải hoàn tất đã đạt. Chạy mô hình thật sẽ được ghi ở mốc tiếp theo.
+
+## 27/10/2026 — M6: Kiểm tra mô hình thật và chuyển hướng API
+
+- Đã tải đủ Qwen3 4B và BGE-M3, lập 12 embedding thật trên bộ demo.
+- Kiểm tra tích hợp qua HTTP với mô hình thật ban đầu đạt 2/6 điều kiện: số học và từ chối câu thiếu dữ liệu. Các câu generation bị kiểm tra citation chặn và quay về trích xuất; không công bố là chất lượng đạt.
+- Sửa nhận diện câu hỏi “cải thiện nhờ đâu” để không bị thay bằng một số liệu đơn lẻ.
+- Chuyển adapter trả lời sang JSON schema có text và ID nguồn riêng; validate rồi mới ghép citation. Có test cho nguồn bịa/thiếu, abstention và cấu trúc payload.
+- Kiểm tra sau sửa: 35/35 test tự động đạt, 24/24 câu smoke giả lập đạt. Chưa chạy lại mô hình chat thật sau sửa vì người dùng chuyển hướng sang API miễn phí.
+- Có công cụ `scripts/check_local.py` lưu kết quả thật, độ trễ và provenance model trong `artifacts/`; kết quả đầu chưa đạt được giữ lại để chẩn đoán.
+- Đã dừng tải Qwen3.5 và nghiên cứu Gemini/Groq Free tier theo yêu cầu mới. So sánh và điều kiện cần có trong `docs/FREE_API_OPTIONS.md`. Chưa chọn provider hoặc nhận key, chưa gọi API đám mây.

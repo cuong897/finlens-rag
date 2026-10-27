@@ -30,10 +30,28 @@ class LocalModeTests(unittest.TestCase):
             self.assertFalse(payload["think"])
             self.assertFalse(payload["stream"])
             self.assertEqual(payload["options"]["num_ctx"], 8192)
-            return httpx.Response(200, json={"message": {"content": "Chi phí tăng. [S1]"}})
+            self.assertEqual(payload["format"]["type"], "object")
+            self.assertEqual(payload["format"]["properties"]["statements"]["items"]["properties"]["sources"]["items"]["enum"], ["S1"])
+            content = json.dumps({"abstain": False, "statements": [{"text": "Chi phí tăng.", "sources": ["S1"]}]})
+            return httpx.Response(200, json={"message": {"content": content}})
         with httpx.Client(transport=httpx.MockTransport(handler)) as client:
             provider = Ollama(ModelConfig(chat_model="qwen3:4b"), client)
             self.assertIn("[S1]", provider.generate("Vì sao?", [{"id": "S1", "excerpt": "Chi phí tăng."}]))
+
+    def test_structured_claim_cannot_invent_or_omit_sources(self):
+        for sources in [["S99"], [], [1]]:
+            content = json.dumps({"abstain": False, "statements": [{"text": "Chi phí tăng.", "sources": sources}]})
+            transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"message": {"content": content}}))
+            with httpx.Client(transport=transport) as client:
+                with self.assertRaises(ProviderError):
+                    Ollama(ModelConfig(chat_model="test"), client).generate("Vì sao?", [{"id": "S1", "excerpt": "Chi phí tăng."}])
+
+    def test_structured_abstention_is_explicit(self):
+        content = json.dumps({"abstain": True, "statements": []})
+        transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"message": {"content": content}}))
+        with httpx.Client(transport=transport) as client:
+            answer = Ollama(ModelConfig(chat_model="test"), client).generate("Lương CEO?", [{"id": "S1", "excerpt": "Chi phí tăng."}])
+            self.assertEqual(answer, "KHONG_DU_DU_LIEU")
 
     def test_pull_requires_server_success_event(self):
         actual_client = httpx.Client

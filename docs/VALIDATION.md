@@ -1,5 +1,11 @@
 # Báo cáo kiểm tra — 27/10/2026
 
+## Cập nhật sau thử nghiệm Ollama
+
+Kiểm tra tự động hiện tại: **35/35 đạt**; smoke giả lập: **24/24 đạt**. Bản Ollama 0.40.11 chính thức được kiểm tra checksum, chạy local với cloud tắt. BGE-M3 đã tạo 12 embedding thật cho demo. Kiểm tra chat Qwen3 4B qua HTTP lần đầu đạt 2/6 điều kiện; các phản hồi sai định dạng đã bị chặn và chuyển về trích nguồn.
+
+Adapter đã được sửa sang JSON schema với ID nguồn riêng và kiểm tra lại bằng mock. Chưa kiểm tra chat thật lần nữa vì người dùng đổi sang API miễn phí. Dừng tải Qwen3.5; chưa có key/chưa gọi Gemini hoặc Groq. Các kết quả bên dưới là snapshot bàn giao MVP trước bước thử Ollama.
+
 ## Môi trường đã thực thi
 
 Windows, Python 3.13.5; FastAPI 0.136.1, Uvicorn 0.47.0, httpx 0.28.1, PyMuPDF 1.28.2, Pydantic 2.11.7. Phiên bản trực tiếp được lưu trong `requirements-tested.txt`.

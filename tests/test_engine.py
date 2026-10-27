@@ -105,6 +105,12 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(result["status"], "evidence_found")
         self.assertTrue(any(c["page"] == 2 for c in result["citations"]))
 
+    def test_cashflow_explanation_not_replaced_by_numeric_lookup(self):
+        result = self.engine.answer(self.request("Dòng tiền kinh doanh năm 2025 cải thiện nhờ đâu?", years=[2025]))
+        self.assertEqual(result["mode"], "extractive")
+        self.assertEqual(result["status"], "evidence_found")
+        self.assertTrue(any(c["page"] == 2 for c in result["citations"]))
+
     def test_extractive_response_is_explicit(self):
         result = self.engine.answer(self.request("Vì sao chi phí lãi vay tăng?", years=[2024]))
         self.assertEqual(result["status"], "evidence_found")
