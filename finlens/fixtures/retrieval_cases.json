@@ -8,6 +8,16 @@
     "question": "Doanh thu thuần trên báo cáo kết quả kinh doanh hợp nhất năm 2023",
     "gold_pages": [
       148
+    ],
+    "source_sha256": "ff9315e1da78ccd4cfca9b75cc12946c73a761e125bfa512aeedf6417fda796c",
+    "evidence": [
+      {
+        "page": 148,
+        "quotes": [
+          "Net revenue from sales of goods and rendering of services",
+          "52,617,900,827,385"
+        ]
+      }
     ]
   },
   {
@@ -19,6 +29,16 @@
     "question": "Lợi nhuận sau thuế toàn tập đoàn năm 2023 trong báo cáo kết quả kinh doanh hợp nhất",
     "gold_pages": [
       149
+    ],
+    "source_sha256": "ff9315e1da78ccd4cfca9b75cc12946c73a761e125bfa512aeedf6417fda796c",
+    "evidence": [
+      {
+        "page": 149,
+        "quotes": [
+          "Profit after tax",
+          "7,788,049,739,616"
+        ]
+      }
     ]
   },
   {
@@ -30,6 +50,16 @@
     "question": "Tổng tài sản năm 2023 trên bảng cân đối kế toán hợp nhất",
     "gold_pages": [
       145
+    ],
+    "source_sha256": "ff9315e1da78ccd4cfca9b75cc12946c73a761e125bfa512aeedf6417fda796c",
+    "evidence": [
+      {
+        "page": 145,
+        "quotes": [
+          "TOTAL ASSETS",
+          "60,282,827,532,899"
+        ]
+      }
     ]
   },
   {
@@ -41,6 +71,16 @@
     "question": "Doanh thu thuần trên báo cáo kết quả kinh doanh hợp nhất năm 2024",
     "gold_pages": [
       151
+    ],
+    "source_sha256": "fa791cffcea5e14e287af9df36f4ac8b5dd8a21c4a13be46495b30a56e3ee1c4",
+    "evidence": [
+      {
+        "page": 151,
+        "quotes": [
+          "Net revenue from sales of goods and rendering of services",
+          "62,848,794,351,367"
+        ]
+      }
     ]
   },
   {
@@ -52,6 +92,16 @@
     "question": "Lợi nhuận sau thuế toàn tập đoàn năm 2024 trong báo cáo kết quả kinh doanh hợp nhất",
     "gold_pages": [
       152
+    ],
+    "source_sha256": "fa791cffcea5e14e287af9df36f4ac8b5dd8a21c4a13be46495b30a56e3ee1c4",
+    "evidence": [
+      {
+        "page": 152,
+        "quotes": [
+          "Profit after tax",
+          "9,427,422,530,444"
+        ]
+      }
     ]
   },
   {
@@ -63,6 +113,16 @@
     "question": "Tổng tài sản năm 2024 trên bảng cân đối kế toán hợp nhất",
     "gold_pages": [
       148
+    ],
+    "source_sha256": "fa791cffcea5e14e287af9df36f4ac8b5dd8a21c4a13be46495b30a56e3ee1c4",
+    "evidence": [
+      {
+        "page": 148,
+        "quotes": [
+          "TOTAL ASSETS",
+          "71,999,995,678,620"
+        ]
+      }
     ]
   },
   {
@@ -74,6 +134,16 @@
     "question": "Tổng tài sản năm 2024 trên bảng cân đối kế toán hợp nhất",
     "gold_pages": [
       74
+    ],
+    "source_sha256": "97f94110030f0b5289740324c3625b0480d754c672d364045b5271c42bed3c64",
+    "evidence": [
+      {
+        "page": 74,
+        "quotes": [
+          "TOTAL ASSETS",
+          "7.677.054.951.711"
+        ]
+      }
     ]
   },
   {
@@ -85,6 +155,16 @@
     "question": "Doanh thu thuần trên báo cáo kết quả kinh doanh hợp nhất năm 2024",
     "gold_pages": [
       76
+    ],
+    "source_sha256": "97f94110030f0b5289740324c3625b0480d754c672d364045b5271c42bed3c64",
+    "evidence": [
+      {
+        "page": 76,
+        "quotes": [
+          "Net revenue from sale of goods and rendering of services",
+          "8.202.642.306.320"
+        ]
+      }
     ]
   },
   {
@@ -96,6 +176,16 @@
     "question": "Lợi nhuận sau thuế toàn tập đoàn năm 2024 trong báo cáo kết quả kinh doanh hợp nhất",
     "gold_pages": [
       76
+    ],
+    "source_sha256": "97f94110030f0b5289740324c3625b0480d754c672d364045b5271c42bed3c64",
+    "evidence": [
+      {
+        "page": 76,
+        "quotes": [
+          "Net profit after tax",
+          "427.084.691.847"
+        ]
+      }
     ]
   },
   {
@@ -107,6 +197,16 @@
     "question": "Tổng tài sản năm 2024 trên bảng cân đối kế toán hợp nhất",
     "gold_pages": [
       109
+    ],
+    "source_sha256": "d19e7678b33a575257357eeb7b004b5895bc3a3d587a02aebd9823bc5dee65d8",
+    "evidence": [
+      {
+        "page": 109,
+        "quotes": [
+          "TOTAL ASSETS",
+          "1,990,032,262,954"
+        ]
+      }
     ]
   },
   {
@@ -118,6 +218,16 @@
     "question": "Doanh thu thuần trên báo cáo kết quả kinh doanh hợp nhất năm 2024",
     "gold_pages": [
       110
+    ],
+    "source_sha256": "d19e7678b33a575257357eeb7b004b5895bc3a3d587a02aebd9823bc5dee65d8",
+    "evidence": [
+      {
+        "page": 110,
+        "quotes": [
+          "Net revenue from sale of goods and",
+          "800,145,221,381"
+        ]
+      }
     ]
   },
   {
@@ -129,6 +239,16 @@
     "question": "Lợi nhuận sau thuế toàn tập đoàn năm 2024 trong báo cáo kết quả kinh doanh hợp nhất",
     "gold_pages": [
       110
+    ],
+    "source_sha256": "d19e7678b33a575257357eeb7b004b5895bc3a3d587a02aebd9823bc5dee65d8",
+    "evidence": [
+      {
+        "page": 110,
+        "quotes": [
+          "Net profit after tax",
+          "99,252,768,162"
+        ]
+      }
     ]
   },
   {
@@ -140,6 +260,16 @@
     "question": "Quy mô doanh số bán hàng sau khi đã trừ các khoản giảm trừ trong năm tài chính 2024",
     "gold_pages": [
       151
+    ],
+    "source_sha256": "fa791cffcea5e14e287af9df36f4ac8b5dd8a21c4a13be46495b30a56e3ee1c4",
+    "evidence": [
+      {
+        "page": 151,
+        "quotes": [
+          "Net revenue from sales of goods and rendering of services",
+          "62,848,794,351,367"
+        ]
+      }
     ]
   },
   {
@@ -151,6 +281,16 @@
     "question": "Quy mô doanh số bán hàng sau khi đã trừ các khoản giảm trừ trong năm tài chính 2024",
     "gold_pages": [
       76
+    ],
+    "source_sha256": "97f94110030f0b5289740324c3625b0480d754c672d364045b5271c42bed3c64",
+    "evidence": [
+      {
+        "page": 76,
+        "quotes": [
+          "Net revenue from sale of goods and rendering of services",
+          "8.202.642.306.320"
+        ]
+      }
     ]
   },
   {
@@ -162,6 +302,16 @@
     "question": "Quy mô doanh số bán hàng sau khi đã trừ các khoản giảm trừ trong năm tài chính 2024",
     "gold_pages": [
       110
+    ],
+    "source_sha256": "d19e7678b33a575257357eeb7b004b5895bc3a3d587a02aebd9823bc5dee65d8",
+    "evidence": [
+      {
+        "page": 110,
+        "quotes": [
+          "Net revenue from sale of goods and",
+          "800,145,221,381"
+        ]
+      }
     ]
   }
 ]

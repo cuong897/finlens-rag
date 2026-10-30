@@ -13,7 +13,10 @@ def main():
     parser.add_argument("--output-dir", default="artifacts")
     parser.add_argument("--rebuild", action="store_true", help="Rebuild embeddings for the configured model")
     parser.add_argument("--with-reviewed-facts", action="store_true", help="Include pilot facts already visually checked against source PDFs")
+    parser.add_argument("--cases-file", help="Versioned JSON evaluation set with source checksums and evidence quotes; evaluate-retrieval only")
     args = parser.parse_args()
+    if args.cases_file and args.command != "evaluate-retrieval":
+        parser.error("--cases-file chỉ dùng với evaluate-retrieval")
     if args.env_file:
         from finlens.environment import load_env_file
         try:
@@ -81,7 +84,15 @@ def main():
         result = Engine(store).index_embeddings(rebuild=args.rebuild)
     elif args.command == "evaluate-retrieval":
         from finlens.retrieval_check import evaluate_retrieval
-        result = evaluate_retrieval(store, args.output_dir)
+        options = {}
+        if args.cases_file:
+            from finlens.retrieval_dataset import load_dataset
+            try:
+                dataset = load_dataset(args.cases_file)
+            except ValueError as exc:
+                parser.error(str(exc))
+            options = {"cases": dataset["cases"], "dataset_info": {k: dataset[k] for k in ("name", "split", "label_origin")}}
+        result = evaluate_retrieval(store, args.output_dir, **options)
         print(json.dumps({k: v for k, v in result.items() if k != "results"}, ensure_ascii=True, indent=2))
         return
     print(json.dumps(result, ensure_ascii=True, indent=2))
