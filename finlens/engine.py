@@ -41,13 +41,17 @@ class Engine:
         self.config = config or ModelConfig.from_env()
         self.provider = provider or make_provider(self.config)
 
-    def index_embeddings(self, rebuild=False):
+    def index_embeddings(self, rebuild=False, *, document_id=None):
         model = self.config.embed_model
         if not model:
             raise ProviderError("Hãy cấu hình FINLENS_EMBED_MODEL trước khi lập chỉ mục ngữ nghĩa.")
+        if rebuild and document_id:
+            raise ValueError("Lập lại toàn bộ chỉ mục bằng lệnh index --rebuild.")
         if rebuild:
             self.store.clear_embeddings(model)
         chunks = self.store.chunks()
+        if document_id:
+            chunks = [c for c in chunks if c["document_id"] == document_id]
         cached = self.store.embeddings(model)
         missing = [c for c in chunks if c["id"] not in cached]
         for start in range(0, len(missing), 16):

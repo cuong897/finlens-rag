@@ -14,7 +14,7 @@ from finlens import __version__
 from finlens.engine import Engine
 from finlens.finance import EvidenceError, compare
 from finlens.ingest import MAX_PDF_BYTES, IngestError, ingest_pdf, seed_demo
-from finlens.models import METRICS, UNIT_LABELS, AskRequest, CompareRequest, FactRequest
+from finlens.models import METRICS, UNIT_LABELS, AskRequest, CompareRequest, FactRequest, ImportURLRequest
 from finlens.providers import ModelConfig, ProviderError, gemini_key_configured
 from finlens.store import Store
 from finlens.suggestions import suggest_page
@@ -89,6 +89,28 @@ def create_app(data_dir=None, config=None):
         if not content:
             raise HTTPException(404, "Không tìm thấy trang nguồn.")
         return {**content, "document": store.get_document(document_id), "in_scope": store.page_allowed(document_id, page)}
+
+    @app.post("/api/import-url")
+    def import_url(request: ImportURLRequest):
+        from finlens.report_url import download_pdf
+        try:
+            content, filename, final_url, publisher = download_pdf(request.url)
+            result = ingest_pdf(store, content, filename, request.company, request.year, request.scope)
+            if not result["document"].get("source_url"):
+                store.record_source(result["document"]["id"], final_url, publisher)
+            result["document"] = store.get_document(result["document"]["id"])
+            return result
+        except IngestError as exc:
+            raise HTTPException(422, str(exc)) from exc
+
+    @app.post("/api/documents/{document_id}/index")
+    def index_document(document_id: str):
+        if not store.get_document(document_id):
+            raise HTTPException(404, "Không tìm thấy tài liệu.")
+        try:
+            return engine.index_embeddings(document_id=document_id)
+        except ProviderError as exc:
+            raise HTTPException(503, str(exc)) from exc
 
     @app.get("/api/documents/{document_id}/pdf")
     def pdf(document_id: str):

@@ -363,25 +363,6 @@ $('#seed-button').addEventListener('click', async () => {
   finally { $('#seed-button').disabled = false; }
 });
 
-$('#upload-form').addEventListener('submit', async event => {
-  event.preventDefault();
-  const file = $('#upload-file').files[0];
-  if (!file) return;
-  if (file.size > 20 * 1024 * 1024) { toast('PDF vượt giới hạn 20 MB.', true); return; }
-  $('#upload-button').disabled = true; $('#upload-button').textContent = 'Đang đọc báo cáo…';
-  try {
-    const query = new URLSearchParams({ company: $('#upload-company').value.trim(), year: $('#upload-year').value, scope: $('#upload-scope').value, filename: file.name });
-    const result = await api(`/api/documents?${query}`, { method: 'POST', headers: { 'Content-Type': 'application/pdf' }, body: file });
-    $('#dataset').value = 'real'; $('#scope').value = $('#upload-scope').value;
-    resetAnalysis();
-    await refresh(); $('#company').value = result.document.company; updateFilters(false);
-    $('#fact-document').value = result.document.id; $('#fact-year').value = result.document.report_year;
-    toast(result.created ? 'Đã nhập PDF. Bạn có thể hỏi đáp hoặc xác nhận chỉ tiêu từ trang nguồn.' : 'PDF này đã có trong kho; đã mở tài liệu hiện có.');
-    $('#upload-file').value = '';
-  } catch (error) { toast(error.message, true); }
-  finally { $('#upload-button').disabled = false; $('#upload-button').textContent = 'Tải lên và xử lý ↗'; }
-});
-
 $('#fact-preview').addEventListener('click', () => openSource($('#fact-document').value, Number($('#fact-page').value)));
 $('#fact-form').addEventListener('submit', async event => {
   event.preventDefault();
@@ -421,6 +402,7 @@ async function init() {
   try {
     const [health, catalog] = await Promise.all([api('/api/health'), api('/api/catalog')]);
     state.catalog = catalog;
+    state.embeddingModel = health.embedding_model;
     const providerLabel = health.chat_provider === 'gemini'
       ? (health.chat_ready ? `${health.chat_model} · ${health.fallback_models?.length || 0} dự phòng` : 'Gemini · cần API key')
       : 'Trích xuất nguồn · cục bộ';

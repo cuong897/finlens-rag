@@ -55,6 +55,13 @@ class CompareRequest(StrictModel):
         return value
 
 
+class ImportURLRequest(StrictModel):
+    url: str = Field(min_length=8, max_length=2048)
+    company: str = Field(min_length=1, max_length=120)
+    year: int = Field(ge=1990, le=2100)
+    scope: Scope = "consolidated"
+
+
 class FactRequest(StrictModel):
     document_id: str = Field(min_length=1, max_length=64)
     page: int = Field(ge=1, le=250)

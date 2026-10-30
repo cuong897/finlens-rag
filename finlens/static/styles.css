@@ -726,6 +726,27 @@ tr:last-child td {
   grid-template-columns:minmax(0,1fr) 340px;
   gap:20px;
 }
+.drop-zone { border:2px dashed #c5d3b8; border-radius:10px; padding:18px 14px; background:#f8faf4; }
+.drop-zone.drag-over { border-color:var(--green); background:#eaf4dc; }
+.drop-zone input { max-width:100%; padding:10px 0; border:0; background:transparent; }
+.import-defaults { display:grid; gap:12px; padding-top:14px; }
+.import-url-form { display:grid; gap:14px; }
+.import-url-form textarea { min-height:90px; font-size:11px; }
+.import-url-form .button { justify-self:start; }
+.upload-panel summary { font-size:11px; cursor:pointer; color:var(--green); }
+.import-review { margin-top:20px; }
+.import-item { border:1px solid var(--line); border-radius:10px; padding:18px; margin-bottom:12px; }
+.import-item.done { background:#f5f9ef; }
+.import-item.failed { border-color:#c69e88; background:#fffaf5; }
+.import-item.working { border-color:var(--green); }
+.import-item-title { display:flex; justify-content:space-between; gap:14px; font-size:12px; overflow-wrap:anywhere; }
+.import-item-title .text-link { background:none; border:0; flex-shrink:0; }
+.import-source { font-size:10px; color:var(--muted); overflow-wrap:anywhere; }
+.import-fields { display:grid; grid-template-columns:minmax(0,1fr) 110px 160px; gap:14px; margin-top:16px; }
+.import-fields input,.import-fields select { width:100%; }
+.import-item-status,#import-progress { font-size:11px; line-height:1.7; color:var(--muted); margin-bottom:0; }
+.import-actions { display:flex; flex-wrap:wrap; gap:12px; }
+@media(max-width:600px) { .import-fields { grid-template-columns:1fr 1fr; } .import-fields label:first-child { grid-column:1 / -1; } .import-item { padding:12px; } }
 .document-list {
   padding:0 24px 20px;
 }

@@ -6,8 +6,9 @@
   <meta name="theme-color" content="#112720">
   <title>FinLens · Đọc số liệu, hiểu câu chuyện</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23112720'/%3E%3Cpath d='M11 29V11h18v5H17v3h10v5H17v5' fill='%23c9ed90'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="/styles.css">
-  <script defer src="/app.js"></script>
+  <link rel="stylesheet" href="/styles.css?v=imports-1">
+  <script defer src="/app.js?v=imports-1"></script>
+  <script defer src="/imports.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Đến nội dung chính</a>
@@ -70,8 +71,16 @@
       <section id="view-library" class="view" hidden>
         <div class="library-grid">
           <section class="panel"><div class="panel-heading"><div><span class="eyebrow">TÀI LIỆU CỦA BẠN</span><h2>Kho báo cáo</h2></div></div><div id="document-list" class="document-list"></div></section>
-          <section class="panel upload-panel"><div class="panel-heading"><div><span class="eyebrow">THÊM NGUỒN MỚI</span><h2>Nhập báo cáo PDF</h2></div></div><form id="upload-form" class="stack-form"><label>Tệp PDF<input id="upload-file" type="file" accept="application/pdf,.pdf" required></label><p class="field-hint">PDF có văn bản, tối đa 20 MB và 250 trang. Bản hiện tại chưa đọc PDF scan.</p><label>Tên doanh nghiệp<input id="upload-company" required maxlength="120" placeholder="Tên doanh nghiệp trên báo cáo"></label><div class="filter-row"><label>Năm báo cáo<input id="upload-year" type="number" min="1990" max="2100" value="2025" required></label><label>Phạm vi<select id="upload-scope"><option value="consolidated">Hợp nhất</option><option value="standalone">Riêng lẻ</option></select></label></div><button type="submit" id="upload-button" class="button primary">Tải lên và xử lý ↗</button><p class="field-hint">Tài liệu được lưu trên máy này. Chỉ tiêu cần bạn xác nhận trước khi dùng để tính toán.</p></form></section>
+          <section class="panel upload-panel"><div class="panel-heading"><div><span class="eyebrow">THÊM NGUỒN MỚI</span><h2>Nhập báo cáo</h2></div></div>
+            <div class="stack-form">
+              <p class="field-hint">Thêm tối đa 10 PDF hoặc đường dẫn, rồi kiểm tra thông tin từng báo cáo trước khi nhập.</p>
+              <details><summary>Thông tin chung (tùy chọn)</summary><div class="import-defaults"><label>Tên doanh nghiệp dùng chung<input id="upload-company" maxlength="120" placeholder="Để trống để sửa từng báo cáo"></label><div class="filter-row"><label>Năm dùng chung<input id="upload-year" type="number" min="1990" max="2100" placeholder="2024"></label><label>Phạm vi dùng chung<select id="upload-scope"><option value="consolidated">Hợp nhất</option><option value="standalone">Riêng lẻ</option></select></label></div></div></details>
+              <div id="drop-zone" class="drop-zone"><label>Chọn PDF hoặc kéo thả vào đây<input id="upload-file" type="file" accept="application/pdf,.pdf" multiple></label><span class="field-hint">Mỗi tệp tối đa 20 MB · PDF có văn bản</span></div>
+              <form id="url-form" class="import-url-form"><label>Đường dẫn báo cáo<textarea id="import-urls" rows="3" maxlength="20000" placeholder="https://doanh-nghiep.vn/bao-cao-2024.pdf&#10;Mỗi dòng một đường dẫn" required></textarea></label><button type="submit" class="button secondary">Thêm đường dẫn ↗</button><p class="field-hint">Dùng liên kết HTTPS tới PDF trực tiếp. Báo cáo sẽ được tải về khi bạn bấm nhập.</p></form>
+            </div>
+          </section>
         </div>
+        <section id="import-review" class="panel import-review" hidden><div class="panel-heading"><div><span class="eyebrow">KIỂM TRA TRƯỚC KHI NHẬP</span><h2>Danh sách báo cáo</h2></div><button id="import-clear" type="button" class="button secondary">Bỏ danh sách</button></div><p class="section-description">Thông tin gợi ý từ tên tệp có thể chưa chính xác. Kiểm tra doanh nghiệp, năm và phạm vi của từng báo cáo. Số liệu tài chính vẫn cần được đối chiếu riêng.</p><form id="import-form" class="stack-form"><div id="import-items"></div><p id="import-progress" role="status" aria-live="polite"></p><div class="import-actions"><button id="import-start" type="submit" class="button primary">Nhập báo cáo ↗</button><button id="import-stop" type="button" class="button secondary" hidden>Dừng sau báo cáo này</button></div></form></section>
       </section>
 
       <section id="view-facts" class="view" hidden>
