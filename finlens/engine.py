@@ -7,7 +7,7 @@ from decimal import Decimal
 from finlens.finance import EvidenceError, compare, debt_capacity, fact_citation, select_fact
 from finlens.models import METRICS, UNIT_LABELS, AskRequest
 from finlens.providers import ModelConfig, ProviderError, make_provider
-from finlens.retrieval import bm25, content_terms, cosine, financial_query, rrf
+from finlens.retrieval import bm25, content_terms, contextual_fusion, cosine, financial_query, net_sales_intent
 from finlens.store import Store
 from finlens.text import normalize
 
@@ -70,13 +70,14 @@ class Engine:
                 raise ProviderError("Chiều embedding đã thay đổi; cần lập lại chỉ mục với tên mô hình mới.")
             dense = [{**c, "score": cosine(vector, cached[c["id"]])} for c in chunks]
             dense = sorted((c for c in dense if c["score"] >= 0.25), key=lambda c: -c["score"])[:20]
-            return rrf([sparse, dense], request.top_k), "hybrid_rrf", []
+            return contextual_fusion(request.question, sparse, dense, self.store.page, request.top_k), "hybrid_rrf", []
         except ProviderError as exc:
             return sparse[:request.top_k], "bm25", [str(exc) + " Đã dùng tìm kiếm từ khóa."]
 
     def answer(self, request: AskRequest):
         started = time.perf_counter()
         result = {"status": "insufficient_evidence", "mode": "extractive", "retrieval": "bm25",
+                  "retrieval_reranker": None,
                   "answer": "", "citations": [], "comparisons": [], "warnings": [],
                   "ratios": [], "missing_inputs": [],
                   "generation_attempted": False, "generation_error": None,
@@ -97,6 +98,8 @@ class Engine:
         result["years"] = years
         normalized = normalize(request.question)
         metrics = [metric for metric, aliases in ALIASES.items() if any(a in normalized for a in aliases)]
+        if net_sales_intent(request.question) and "revenue" not in metrics:
+            metrics.insert(0, "revenue")
         wants_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nhu the nao", "nho dau", "yeu to", "dong luc"])
         debt_intent = any(word in normalized for word in ["kha nang tra no", "kha nang thanh toan", "thanh toan hien hanh"])
         causal_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nho dau", "yeu to", "dong luc"])
@@ -123,7 +126,10 @@ class Engine:
                 result["answer"] = "Chưa có số liệu đã xác nhận để tính chỉ số thanh toán."
             result["warnings"].append("Các chỉ số phản ánh thanh khoản và cơ cấu nguồn vốn; dòng tiền kinh doanh chia nợ ngắn hạn dùng số dư cuối kỳ. Chưa tính DSCR vì thiếu nghĩa vụ trả gốc và lãi đến hạn theo lịch vay; chưa đủ để kết luận chắc chắn khả năng trả nợ. Phần này tính cục bộ, không cần API AI.")
             return finish()
-        wants_change = any(word in normalized for word in ["tang", "giam", "so sanh", "chenh lech", "thay doi"])
+        # "Giảm trừ doanh thu" describes a net-sales component, not a fall
+        # between reporting periods.
+        change_query = re.sub(r"\bgiam tru\b", "", normalized)
+        wants_change = any(word in change_query for word in ["tang", "giam", "so sanh", "chenh lech", "thay doi"])
         wants_numbers = any(word in normalized for word in ["bao nhieu", "dat", "gia tri", "so lieu", "so sanh", "chenh lech", "%", "ty le"])
         wants_numbers = wants_numbers or bool(metrics and years and not wants_reason)
         if metrics and wants_change and len(years) != 2 and not wants_reason:
@@ -157,9 +163,9 @@ class Engine:
                 # the direction or computes the percentage.
                 delta = Decimal(item["delta"])
                 sign = 1 if delta > 0 else -1 if delta < 0 else 0
-                has_up = bool(re.search(r"\btang\b", normalized))
-                has_down = bool(re.search(r"\bgiam\b", normalized))
-                negated = bool(re.search(r"\b(khong|chua)\s+(?:con\s+)?(?:tang|giam)\b", normalized))
+                has_up = bool(re.search(r"\btang\b", change_query))
+                has_down = bool(re.search(r"\bgiam\b", change_query))
+                negated = bool(re.search(r"\b(khong|chua)\s+(?:con\s+)?(?:tang|giam)\b", change_query))
                 expected = (1 if has_up else -1) if has_up != has_down and not negated else None
                 result["premise_check"] = {"from_year": pair[0], "to_year": pair[1],
                                            "direction": "increase" if sign > 0 else "decrease" if sign < 0 else "unchanged",
@@ -196,6 +202,8 @@ class Engine:
 
         hits, retrieval_mode, warnings = self.retrieve(request)
         result["retrieval"] = retrieval_mode
+        if any("context_rank" in h for h in hits):
+            result["retrieval_reranker"] = "financial_statement_context"
         result["warnings"].extend(warnings)
         if not hits:
             result["answer"] = "\n\n".join(numeric_answer + ["Không tìm thấy bằng chứng phù hợp cho câu hỏi trong phạm vi đã chọn."])

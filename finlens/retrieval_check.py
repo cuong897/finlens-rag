@@ -12,7 +12,7 @@ import time
 
 from finlens.public_pilot import manifest
 from finlens.providers import ModelConfig, Ollama, ProviderError
-from finlens.retrieval import bm25, cosine, financial_query, rrf
+from finlens.retrieval import bm25, contextual_fusion, cosine, financial_query, rrf
 
 
 def score_ranking(hits, gold):
@@ -61,15 +61,19 @@ def evaluate_retrieval(store, output_dir="artifacts/retrieval", *, cases=None, r
         started = time.perf_counter()
         hybrid = rrf([sparse, dense], 5)
         fusion_ms = (time.perf_counter() - started) * 1000
+        started = time.perf_counter()
+        context_ranked = contextual_fusion(case["question"], sparse, dense, store.page)
+        context_ms = (time.perf_counter() - started) * 1000
         strategies = {}
         for name, hits, latency in [("bm25", sparse, sparse_ms), ("dense", dense, embedding_ms + dense_ms),
-                                    ("hybrid_rrf", hybrid, embedding_ms + dense_ms + sparse_ms + fusion_ms)]:
+                                    ("hybrid_rrf", hybrid, embedding_ms + dense_ms + sparse_ms + fusion_ms),
+                                    ("hybrid_context", context_ranked, embedding_ms + dense_ms + sparse_ms + context_ms)]:
             strategies[name] = {**score_ranking(hits, gold), "latency_ms": round(latency, 2)}
         results.append({"id": case["id"], "company": case["company"], "report_year": case["report_year"],
                         "question": case["question"], "gold_pages": case["gold_pages"], "document_id": document["id"],
                         "query_embedding_ms": round(embedding_ms, 2), "strategies": strategies})
     summary = {}
-    for strategy in ("bm25", "dense", "hybrid_rrf"):
+    for strategy in ("bm25", "dense", "hybrid_rrf", "hybrid_context"):
         metrics = [r["strategies"][strategy] for r in results]
         latencies = sorted(m["latency_ms"] for m in metrics)
         summary[strategy] = {"recall_at_5": round(statistics.mean(m["recall_at_5"] for m in metrics), 4),
@@ -81,6 +85,7 @@ def evaluate_retrieval(store, output_dir="artifacts/retrieval", *, cases=None, r
               "warning": "Small assistant-authored development set on reviewed known reports; not an independent benchmark.",
               "latency_note": "In-process ranking; dense/hybrid include the shared local query embedding time. Cache loading and HTTP/UI overhead excluded.",
               "cloud_generation_calls": 0, "embedding_model": embed_model, "dense_threshold": 0.25,
+              "context_reranker": "statement_title_and_row_label; causal questions retain base ranking",
               "cases": len(results), "companies": sorted({r["company"] for r in results}),
               "summary": summary, "results": results}
     output = Path(output_dir)

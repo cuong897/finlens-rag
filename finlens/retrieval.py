@@ -2,6 +2,7 @@
 
 from collections import Counter
 import math
+import re
 
 from finlens.text import tokens
 from finlens.text import normalize
@@ -20,6 +21,7 @@ FINANCIAL_TERMS = {
     "kha nang tra no": "current assets short-term liabilities cash flows operating activities interest expense",
     "kha nang thanh toan": "current assets short-term liabilities cash flows operating activities",
     "chi phi lai vay": "interest expense borrowing costs",
+    "doanh so thuan": "net revenue",
 }
 
 
@@ -27,7 +29,79 @@ def financial_query(query: str):
     """Deterministic bilingual aliases for lexical retrieval; no LLM call."""
     normalized = normalize(query)
     extra = [english for vietnamese, english in FINANCIAL_TERMS.items() if vietnamese in normalized]
+    if net_sales_intent(query):
+        extra.append("net revenue sales deductions")
     return query + (" " + " ".join(extra) if extra else "")
+
+
+def net_sales_intent(query):
+    normalized = " ".join(tokens(query))
+    if re.search(r"\b(?:truoc|gross)\b", normalized):
+        return False
+    return "doanh so thuan" in normalized or "net sales" in normalized or (
+        "doanh so" in normalized and "giam tru" in normalized and bool(re.search(r"\bsau\b", normalized)))
+
+
+# Deterministic table context, not a learned relevance score or proof of a claim.
+# Page titles supplement chunks that lost their header at a page split.
+STATEMENTS = {
+    "income": ("consolidated income statement", "bao cao ket qua kinh doanh", "bao cao ket qua hoat dong kinh doanh"),
+    "balance": ("consolidated balance sheet", "bang can doi ke toan"),
+    "cashflow": ("consolidated cash flow statement", "bao cao luu chuyen tien te"),
+}
+TABLE_HINTS = (
+    ("income", ("doanh thu", "net revenue", "doanh so thuan"), ("net revenue", "doanh thu thuan")),
+    ("income", ("loi nhuan sau thue", "net income", "profit after tax"), ("profit after tax", "loi nhuan sau thue")),
+    ("income", ("loi nhuan gop", "gross profit"), ("gross profit", "loi nhuan gop")),
+    ("income", ("chi phi lai vay", "interest expense"), ("interest expense", "chi phi lai vay")),
+    ("balance", ("tong tai san", "total assets"), ("total assets", "tong tai san")),
+    ("balance", ("tai san ngan han", "current assets"), ("current assets", "tai san ngan han")),
+    ("balance", ("no ngan han", "current liabilities"), ("current liabilities", "short term liabilities", "no ngan han")),
+    ("balance", ("no phai tra", "liabilities"), ("liabilities", "no phai tra")),
+    ("balance", ("von chu so huu", "equity"), ("equity", "von chu so huu")),
+    ("cashflow", ("dong tien kinh doanh", "operating cash flow"), ("operating activities", "hoat dong kinh doanh")),
+)
+
+
+def financial_table_hints(query):
+    normalized = " ".join(tokens(query))
+    if any(re.search(r"\b" + phrase + r"\b", normalized) for phrase in
+           ("vi sao", "tai sao", "nguyen nhan", "giai thich", "nho dau", "yeu to", "dong luc", "why", "reason", "explain", "drivers")):
+        return []
+    expanded = " ".join(tokens(financial_query(query)))
+    return [(kind, labels) for kind, phrases, labels in TABLE_HINTS if any(phrase in expanded for phrase in phrases)]
+
+
+def financial_context_rank(query, hits, page_texts, limit=5):
+    """Prioritize a matching statement and row label, retaining base rank ties.
+
+    Never uses gold pages, confirmed values or model output. Causal questions
+    retain their original ranking because their evidence is usually in notes.
+    """
+    hints = financial_table_hints(query)
+    if not hints:
+        return hits[:limit]
+    ranked = []
+    for rank, hit in enumerate(hits):
+        header = " ".join(tokens(page_texts.get((hit["document_id"], hit["page"]), "")[:2000]))
+        content = " ".join(tokens(hit["text"]))
+        priority = max((1 + int(any(label in content for label in labels)) for kind, labels in hints
+                        if any(title in header for title in STATEMENTS[kind])), default=0)
+        ranked.append((priority, rank, {**hit, "context_rank": priority}))
+    return [item for _, _, item in sorted(ranked, key=lambda row: (-row[0], row[1]))[:limit]]
+
+
+def contextual_fusion(query, sparse, dense, page_lookup, limit=5):
+    pool = rrf([sparse, dense], 40)
+    if not financial_table_hints(query):
+        return pool[:limit]
+    contexts = {}
+    for hit in pool:
+        key = (hit["document_id"], hit["page"])
+        if key not in contexts:
+            page = page_lookup(*key)
+            contexts[key] = page["text"] if page else ""
+    return financial_context_rank(query, pool, contexts, limit)
 
 
 def content_terms(text: str):
