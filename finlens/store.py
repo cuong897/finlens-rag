@@ -1,7 +1,7 @@
 """SQLite persistence. Every query is scoped before retrieval or calculation."""
 
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import json
 from pathlib import Path
 import sqlite3
@@ -56,6 +56,11 @@ class Store:
                     document_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
                     url TEXT NOT NULL, publisher TEXT NOT NULL, retrieved_at TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS document_context (
+                    document_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
+                    allowed_pages TEXT, period_start TEXT, period_end TEXT,
+                    period_label TEXT NOT NULL DEFAULT ''
+                );
             """)
 
     @contextmanager
@@ -72,7 +77,8 @@ class Store:
         finally:
             db.close()
 
-    def add_document(self, document: dict, pages: list[str]) -> tuple[dict, bool]:
+    def add_document(self, document: dict, pages: list[str], *, context=None) -> tuple[dict, bool]:
+        context_values = self._context_values(len(pages), **context) if context else None
         with self.connection() as db:
             existing = db.execute(
                 "SELECT * FROM documents WHERE company=? AND report_year=? AND scope=? AND sha256=?",
@@ -92,6 +98,8 @@ class Store:
                 for chunk in chunk_page(content):
                     db.execute("INSERT INTO chunks(document_id,page,text) VALUES (?,?,?)",
                                (document["id"], number, chunk))
+            if context_values is not None:
+                db.execute("INSERT INTO document_context VALUES (?,?,?,?,?)", (document["id"], *context_values))
         return self.get_document(document["id"]), True
 
     def find_document(self, company: str, year: int, scope: str, sha256: str):
@@ -106,19 +114,63 @@ class Store:
         result["is_demo"] = bool(result["is_demo"])
         result["has_pdf"] = bool(result.pop("pdf_path", None))
         result["warnings"] = json.loads(result["warnings"])
+        result["allowed_pages"] = json.loads(result["allowed_pages"]) if result.get("allowed_pages") else None
         return result
 
     def get_document(self, document_id: str):
         with self.connection() as db:
             row = db.execute("""SELECT d.*,s.url AS source_url,s.publisher AS source_publisher,
-                s.retrieved_at AS source_retrieved_at FROM documents d
-                LEFT JOIN document_sources s ON s.document_id=d.id WHERE d.id=?""", (document_id,)).fetchone()
+                s.retrieved_at AS source_retrieved_at,x.allowed_pages,x.period_start,x.period_end,x.period_label FROM documents d
+                LEFT JOIN document_sources s ON s.document_id=d.id
+                LEFT JOIN document_context x ON x.document_id=d.id WHERE d.id=?""", (document_id,)).fetchone()
             return self._document(row) if row else None
 
     def record_source(self, document_id: str, url: str, publisher: str):
         with self.connection() as db:
             db.execute("INSERT OR IGNORE INTO document_sources VALUES (?,?,?,?)",
                        (document_id, url, publisher, datetime.now(timezone.utc).isoformat()))
+
+    @staticmethod
+    def _context_values(page_count, *, allowed_pages=None, period_start=None, period_end=None, period_label=""):
+        if allowed_pages is not None:
+            if not isinstance(allowed_pages, list) or not allowed_pages or any(type(p) is not int or not 1 <= p <= page_count for p in allowed_pages):
+                raise ValueError("Danh sách trang trong phạm vi không hợp lệ.")
+            allowed_pages = sorted(set(allowed_pages))
+        if bool(period_start) != bool(period_end):
+            raise ValueError("Cần cả ngày đầu và ngày cuối kỳ báo cáo.")
+        if period_start and date.fromisoformat(period_start) >= date.fromisoformat(period_end):
+            raise ValueError("Kỳ báo cáo không hợp lệ.")
+        return (json.dumps(allowed_pages) if allowed_pages is not None else None, period_start, period_end, period_label)
+
+    def record_context(self, document_id, **context):
+        if not self.get_document(document_id):
+            raise ValueError("Tài liệu không tồn tại.")
+        with self.connection() as db:
+            count = db.execute("SELECT COUNT(*) FROM pages WHERE document_id=?", (document_id,)).fetchone()[0]
+        values = self._context_values(count, **context)
+        with self.connection() as db:
+            db.execute("""INSERT INTO document_context VALUES (?,?,?,?,?)
+                ON CONFLICT(document_id) DO UPDATE SET allowed_pages=excluded.allowed_pages,
+                period_start=excluded.period_start,period_end=excluded.period_end,period_label=excluded.period_label""",
+                       (document_id, *values))
+
+    def page_allowed(self, document_id, page):
+        document = self.get_document(document_id)
+        return bool(document and (document["allowed_pages"] is None or page in document["allowed_pages"]))
+
+    @staticmethod
+    def _eligible(rows):
+        result, policies = [], {}
+        for row in rows:
+            item = dict(row)
+            raw = item.pop("_allowed_pages", None)
+            if raw is not None:
+                if raw not in policies:
+                    policies[raw] = set(json.loads(raw))
+                if item["page"] not in policies[raw]:
+                    continue
+            result.append(item)
+        return result
 
     def pdf_path(self, document_id: str):
         with self.connection() as db:
@@ -134,7 +186,9 @@ class Store:
                     s.retrieved_at AS source_retrieved_at, (SELECT count(*) FROM pages p
                     WHERE p.document_id=d.id) AS page_count,
                     (SELECT count(*) FROM chunks c WHERE c.document_id=d.id) AS chunk_count
+                    ,x.allowed_pages,x.period_start,x.period_end,x.period_label
                     FROM documents d LEFT JOIN document_sources s ON s.document_id=d.id
+                    LEFT JOIN document_context x ON x.document_id=d.id
                     ORDER BY company, report_year DESC""").fetchall()
             return [self._document(row) for row in rows]
 
@@ -164,11 +218,15 @@ class Store:
     def chunks(self, company=None, years=None, scope=None, dataset="all"):
         where, args = self.filters(company, years, scope, dataset)
         with self.connection() as db:
-            rows = db.execute("""SELECT c.*,d.company,d.report_year,d.scope,d.filename,d.is_demo
-                                  FROM chunks c JOIN documents d ON c.document_id=d.id""" + where, args)
-            return [dict(row) for row in rows]
+            rows = db.execute("""SELECT c.*,d.company,d.report_year,d.scope,d.filename,d.is_demo,
+                                  x.allowed_pages AS _allowed_pages,x.period_label
+                                  FROM chunks c JOIN documents d ON c.document_id=d.id
+                                  LEFT JOIN document_context x ON x.document_id=d.id""" + where, args)
+            return self._eligible(rows)
 
     def add_fact(self, fact: dict):
+        if not self.page_allowed(fact["document_id"], fact["page"]):
+            raise ValueError("Trang nguồn nằm ngoài phạm vi báo cáo đã chọn.")
         with self.connection() as db:
             fields = ("document_id", "page", "metric", "year", "value", "unit", "currency", "verified", "note")
             db.execute("""INSERT OR IGNORE INTO facts
@@ -191,9 +249,11 @@ class Store:
         if clauses:
             where += (" AND " if where else " WHERE ") + " AND ".join(clauses)
         with self.connection() as db:
-            rows = db.execute("""SELECT f.*,d.company,d.scope,d.filename,d.is_demo,d.report_year
-                FROM facts f JOIN documents d ON f.document_id=d.id""" + where + " ORDER BY f.year,f.id", args)
-            return [dict(row) for row in rows]
+            rows = db.execute("""SELECT f.*,d.company,d.scope,d.filename,d.is_demo,d.report_year,
+                x.allowed_pages AS _allowed_pages,x.period_label
+                FROM facts f JOIN documents d ON f.document_id=d.id
+                LEFT JOIN document_context x ON x.document_id=d.id""" + where + " ORDER BY f.year,f.id", args)
+            return self._eligible(rows)
 
     def embeddings(self, model: str):
         with self.connection() as db:

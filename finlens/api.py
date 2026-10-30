@@ -88,7 +88,7 @@ def create_app(data_dir=None, config=None):
         content = store.page(document_id, page)
         if not content:
             raise HTTPException(404, "Không tìm thấy trang nguồn.")
-        return {**content, "document": store.get_document(document_id)}
+        return {**content, "document": store.get_document(document_id), "in_scope": store.page_allowed(document_id, page)}
 
     @app.get("/api/documents/{document_id}/pdf")
     def pdf(document_id: str):
@@ -110,6 +110,8 @@ def create_app(data_dir=None, config=None):
         path = store.pdf_path(document_id)
         if document["is_demo"] or not path:
             raise HTTPException(409, "Đề xuất số liệu cần PDF gốc. Hãy chọn tài liệu bạn đã nhập.")
+        if not store.page_allowed(document_id, page):
+            raise HTTPException(409, "Trang này nằm ngoài phần báo cáo đã chọn để phân tích.")
         try:
             result = suggest_page(path, document_id, page)
         except ValueError as exc:
@@ -129,6 +131,8 @@ def create_app(data_dir=None, config=None):
         document = store.get_document(request.document_id)
         if document["is_demo"]:
             raise HTTPException(409, "Dữ liệu giả lập là fixture cố định. Hãy nhập PDF riêng để xác nhận chỉ tiêu.")
+        if not store.page_allowed(request.document_id, request.page):
+            raise HTTPException(409, "Trang này nằm ngoài phần báo cáo đã chọn để phân tích.")
         if not content["text"].strip():
             raise HTTPException(422, "Trang này không có văn bản để đối chiếu.")
         fact = request.model_dump(exclude={"confirmed"})

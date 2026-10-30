@@ -18,7 +18,7 @@ class IngestError(ValueError):
     pass
 
 
-def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: int, scope: str):
+def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: int, scope: str, *, context=None):
     if len(content) > MAX_PDF_BYTES:
         raise IngestError("PDF vượt giới hạn 20 MB.")
     if not content.startswith(b"%PDF-"):
@@ -68,7 +68,7 @@ def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: 
             "filename": filename.replace("\\", "/").split("/")[-1][:180],
             "sha256": digest, "is_demo": False,
             "pdf_path": relative_path, "warnings": warnings,
-        }, pages)
+        }, pages, context=context)
         if not created:
             target.unlink(missing_ok=True)
         return {"document": document, "created": created}

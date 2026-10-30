@@ -67,8 +67,10 @@ def grounded_request(question: str, evidence: list[dict]):
         "Không chèn ký hiệu [S1] vào text; ghi ID vào sources. Không thêm mở đầu, tiêu đề hoặc kết luận. "
         "Phần tính toán so sánh đã được hệ thống xử lý riêng; bạn chỉ diễn giải nguyên nhân trong tài liệu. "
         "Không bịa số liệu, trang, nguồn hoặc giải thích nguyên nhân ngoài tài liệu."
+        " report_year là nhãn năm báo cáo; period_label mô tả kỳ tài chính, có thể khác năm dương lịch."
     )
-    user = json.dumps({"question": question, "evidence": [{"id": c["id"], "text": c["excerpt"]} for c in evidence]}, ensure_ascii=False)
+    user = json.dumps({"question": question, "evidence": [{"id": c["id"], "text": c["excerpt"],
+                       "report_year": c.get("report_year"), "period_label": c.get("period_label")} for c in evidence]}, ensure_ascii=False)
     return schema, system, user
 
 

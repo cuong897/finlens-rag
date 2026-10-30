@@ -6,6 +6,7 @@ facts are versioned; this module never sends document content to a chat API.
 
 import hashlib
 import json
+import unicodedata
 from pathlib import Path
 
 import httpx
@@ -49,9 +50,9 @@ def download_report(report: dict, cache: Path, client):
 
 def verify_fact_anchor(pdf, fact):
     page = pdf[fact["page"] - 1]
-    normalized = " ".join(page.get_text().split()).lower()
-    expected_value = f"{int(fact['value']):,}"
-    if fact["label"].lower() not in normalized or expected_value not in normalized or "vnd" not in normalized:
+    normalized = " ".join(unicodedata.normalize("NFKC", page.get_text()).split()).lower()
+    expected_values = [f"{int(fact['value']):,}", f"{int(fact['value']):,}".replace(",", ".")]
+    if fact["label"].lower() not in normalized or not any(v in normalized for v in expected_values) or "vnd" not in normalized:
         raise IngestError(f"Không tìm thấy chỉ tiêu, đơn vị hoặc số liệu chuẩn trên trang {fact['page']}.")
 
 
@@ -69,13 +70,18 @@ def import_pilot(store: Store, with_reviewed_facts=False, client=None):
                 raise IngestError("Số trang báo cáo không khớp bản đã kiểm tra.")
             for fact in report["facts"]:
                 verify_fact_anchor(pdf, fact)
-        result = ingest_pdf(store, content, report["filename"], report["company"], report["year"], report["scope"])
+        context = {"allowed_pages": report.get("allowed_pages"), "period_start": report.get("period_start"),
+                   "period_end": report.get("period_end"), "period_label": report.get("period_label", "")}
+        result = ingest_pdf(store, content, report["filename"], report["company"], report["year"], report["scope"], context=context)
         document_id = result["document"]["id"]
         store.record_source(document_id, report["url"], report["publisher"])
+        store.record_context(document_id, **context)
         if with_reviewed_facts:
             for fact in report["facts"]:
-                note = (f"Đối chiếu trực quan PDF bởi trợ lý ngày 27/10/2026; dòng {fact['label']}, "
+                reviewed = report.get("reviewed_on", "27/10/2026")
+                note = (f"Đối chiếu trực quan PDF bởi trợ lý ngày {reviewed}; dòng {fact['label']}, "
                         f"cột {fact['year']}, đơn vị VND; trang PDF {fact['page']}, trang in {fact['printed_page']}. "
+                        + (report.get("period_label", "") + ". " if report.get("period_label") else "")
                         + ("net_income là lợi nhuận sau thuế toàn tập đoàn, gồm lợi ích không kiểm soát."
                            if fact["metric"] == "net_income" else ""))
                 store.add_fact({"document_id": document_id, "page": fact["page"], "metric": fact["metric"],

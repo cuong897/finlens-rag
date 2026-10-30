@@ -204,6 +204,7 @@ class Engine:
         evidence = [{"id": f"S{i}", "document_id": h["document_id"], "page": h["page"],
                      "company": h["company"], "report_year": h["report_year"], "filename": h["filename"],
                      "is_demo": bool(h["is_demo"]), "excerpt": h["text"], "score": h["score"],
+                     "period_label": h.get("period_label"),
                      "url": f"/api/documents/{h['document_id']}/pages/{h['page']}"} for i, h in enumerate(hits, 1)]
         if self.config.chat_model:
             result["generation_attempted"] = True

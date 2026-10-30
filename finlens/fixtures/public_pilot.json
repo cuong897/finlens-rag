@@ -74,7 +74,10 @@
         "printed_page": 147,
         "label": "Interest expense"
       }
-    ]
+    ],
+    "period_start": "2023-01-01",
+    "period_end": "2023-12-31",
+    "period_label": "Năm tài chính 2023: 01/01/2023 - 31/12/2023"
   },
   {
     "company": "FPT",
@@ -158,6 +161,182 @@
         "page": 151,
         "printed_page": 151,
         "label": "Interest expense"
+      }
+    ],
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "Năm tài chính 2024: 01/01/2024 - 31/12/2024"
+  },
+  {
+    "company": "CMG",
+    "year": 2024,
+    "scope": "consolidated",
+    "filename": "CMG_2024_annual.pdf",
+    "url": "https://cdn.cmc.com.vn/img/posts/files/20250718%20-%20CMG%20-%20Annual%20report%202024%20-%20signed.pdf",
+    "publication_url": "https://www.cmc.com.vn/shareholder/annual-report",
+    "publisher": "CMC Corporation",
+    "language": "en",
+    "pages": 79,
+    "sha256": "97f94110030f0b5289740324c3625b0480d754c672d364045b5271c42bed3c64",
+    "allowed_pages": [
+      73,
+      74,
+      75,
+      76,
+      77
+    ],
+    "period_start": "2024-04-01",
+    "period_end": "2025-03-31",
+    "period_label": "Niên độ 2024: 01/04/2024 - 31/03/2025; chỉ phần báo cáo hợp nhất trang 73-77",
+    "reviewed_on": "30/10/2026",
+    "facts": [
+      {
+        "metric": "total_assets",
+        "year": 2024,
+        "value": "7677054951711",
+        "page": 74,
+        "printed_page": 74,
+        "label": "TOTAL ASSETS"
+      },
+      {
+        "metric": "total_assets",
+        "year": 2023,
+        "value": "6853772829898",
+        "page": 74,
+        "printed_page": 74,
+        "label": "TOTAL ASSETS"
+      },
+      {
+        "metric": "revenue",
+        "year": 2024,
+        "value": "8202642306320",
+        "page": 76,
+        "printed_page": 76,
+        "label": "Net revenue from sale of goods and rendering of services"
+      },
+      {
+        "metric": "revenue",
+        "year": 2023,
+        "value": "7341773438715",
+        "page": 76,
+        "printed_page": 76,
+        "label": "Net revenue from sale of goods and rendering of services"
+      },
+      {
+        "metric": "net_income",
+        "year": 2024,
+        "value": "427084691847",
+        "page": 76,
+        "printed_page": 76,
+        "label": "Net profit after tax"
+      },
+      {
+        "metric": "net_income",
+        "year": 2023,
+        "value": "401878448972",
+        "page": 76,
+        "printed_page": 76,
+        "label": "Net profit after tax"
+      }
+    ]
+  },
+  {
+    "company": "ELC",
+    "year": 2024,
+    "scope": "consolidated",
+    "filename": "ELC_2024_annual.pdf",
+    "url": "https://www.elcom.com.vn/documents/1744812197_bo_co_thng_nin_2024.pdf/view",
+    "publication_url": "https://elcom.com.vn/co-dong/chi-tiet/bao-cao-thuong-nien-2024-1744812197",
+    "publisher": "Elcom Technology Communications Corporation",
+    "language": "en",
+    "pages": 139,
+    "sha256": "d19e7678b33a575257357eeb7b004b5895bc3a3d587a02aebd9823bc5dee65d8",
+    "allowed_pages": [
+      106,
+      107,
+      108,
+      109,
+      110,
+      111,
+      112,
+      113,
+      114,
+      115,
+      116,
+      117,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      124,
+      125,
+      126,
+      127,
+      128,
+      129,
+      130,
+      131,
+      132,
+      133,
+      134,
+      135,
+      136,
+      137
+    ],
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "Năm tài chính 2024: 01/01/2024 - 31/12/2024; phần báo cáo hợp nhất tiếng Anh trang 106-137",
+    "reviewed_on": "30/10/2026",
+    "facts": [
+      {
+        "metric": "total_assets",
+        "year": 2024,
+        "value": "1990032262954",
+        "page": 109,
+        "printed_page": "73",
+        "label": "TOTAL ASSETS"
+      },
+      {
+        "metric": "total_assets",
+        "year": 2023,
+        "value": "1821114066062",
+        "page": 109,
+        "printed_page": "73",
+        "label": "TOTAL ASSETS"
+      },
+      {
+        "metric": "revenue",
+        "year": 2024,
+        "value": "800145221381",
+        "page": 110,
+        "printed_page": "75",
+        "label": "Net revenue from sale of goods and rendering of services"
+      },
+      {
+        "metric": "revenue",
+        "year": 2023,
+        "value": "980089642652",
+        "page": 110,
+        "printed_page": "75",
+        "label": "Net revenue from sale of goods and rendering of services"
+      },
+      {
+        "metric": "net_income",
+        "year": 2024,
+        "value": "99252768162",
+        "page": 110,
+        "printed_page": "75",
+        "label": "Net profit after tax"
+      },
+      {
+        "metric": "net_income",
+        "year": 2023,
+        "value": "84320836052",
+        "page": 110,
+        "printed_page": "75",
+        "label": "Net profit after tax"
       }
     ]
   }

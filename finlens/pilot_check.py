@@ -29,7 +29,7 @@ def check_pilot(store, output_dir="artifacts/public-pilot"):
         if not document:
             raise ValueError("Chưa nhập đủ báo cáo. Chạy public-pilot và index trước.")
         for fact in source["facts"]:
-            if fact["metric"] not in QUERIES:
+            if fact["metric"] not in QUERIES or fact["year"] != source["year"]:
                 continue
             question = QUERIES[fact["metric"]].format(year=source["year"])
             hits, mode, warnings = engine.retrieve(AskRequest(question=question, company=source["company"],
@@ -41,7 +41,7 @@ def check_pilot(store, output_dir="artifacts/public-pilot"):
                             "pages": [h["page"] for h in hits], "passed": rank is not None and mode == "hybrid_rrf"})
     comparisons = [compare(store, "FPT", metric, 2023, 2024, dataset="real") for metric in QUERIES]
     report = {"kind": "curated_public_document_pilot_check", "generated_at": datetime.now(timezone.utc).isoformat(),
-              "warning": "Six curated queries on two known English reports; not an independent quality benchmark.",
+              "warning": "Curated development queries on known reports; not an independent quality benchmark.",
               "cloud_generation_used": False, "embedding_model": "bge-m3:latest",
               "query_expansion": "deterministic_financial_vi_en",
               "cases": len(results), "passed": sum(r["passed"] for r in results),

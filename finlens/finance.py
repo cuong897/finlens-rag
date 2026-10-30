@@ -77,6 +77,7 @@ def fact_citation(fact: dict, label: str):
     return {"id": label, "document_id": fact["document_id"], "page": fact["page"],
             "company": fact["company"], "report_year": fact["report_year"],
             "filename": fact["filename"], "is_demo": bool(fact["is_demo"]),
+            "period_label": fact.get("period_label"),
             "url": f"/api/documents/{fact['document_id']}/pages/{fact['page']}",
             "excerpt": f"{METRICS[fact['metric']]} ({fact['year']}): {fact['value']} {UNIT_LABELS[fact['unit']]} {fact['currency']}. {fact['note']}"}
 
