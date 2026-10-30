@@ -1,0 +1,167 @@
+[
+  {
+    "id": "fpt-2023-revenue",
+    "company": "FPT",
+    "report_year": 2023,
+    "scope": "consolidated",
+    "filename": "FPT_2023_annual.pdf",
+    "question": "Doanh thu thuần trên báo cáo kết quả kinh doanh hợp nhất năm 2023",
+    "gold_pages": [
+      148
+    ]
+  },
+  {
+    "id": "fpt-2023-net_income",
+    "company": "FPT",
+    "report_year": 2023,
+    "scope": "consolidated",
+    "filename": "FPT_2023_annual.pdf",
+    "question": "Lợi nhuận sau thuế toàn tập đoàn năm 2023 trong báo cáo kết quả kinh doanh hợp nhất",
+    "gold_pages": [
+      149
+    ]
+  },
+  {
+    "id": "fpt-2023-total_assets",
+    "company": "FPT",
+    "report_year": 2023,
+    "scope": "consolidated",
+    "filename": "FPT_2023_annual.pdf",
+    "question": "Tổng tài sản năm 2023 trên bảng cân đối kế toán hợp nhất",
+    "gold_pages": [
+      145
+    ]
+  },
+  {
+    "id": "fpt-2024-revenue",
+    "company": "FPT",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "FPT_2024_annual.pdf",
+    "question": "Doanh thu thuần trên báo cáo kết quả kinh doanh hợp nhất năm 2024",
+    "gold_pages": [
+      151
+    ]
+  },
+  {
+    "id": "fpt-2024-net_income",
+    "company": "FPT",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "FPT_2024_annual.pdf",
+    "question": "Lợi nhuận sau thuế toàn tập đoàn năm 2024 trong báo cáo kết quả kinh doanh hợp nhất",
+    "gold_pages": [
+      152
+    ]
+  },
+  {
+    "id": "fpt-2024-total_assets",
+    "company": "FPT",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "FPT_2024_annual.pdf",
+    "question": "Tổng tài sản năm 2024 trên bảng cân đối kế toán hợp nhất",
+    "gold_pages": [
+      148
+    ]
+  },
+  {
+    "id": "cmg-2024-total_assets",
+    "company": "CMG",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "CMG_2024_annual.pdf",
+    "question": "Tổng tài sản năm 2024 trên bảng cân đối kế toán hợp nhất",
+    "gold_pages": [
+      74
+    ]
+  },
+  {
+    "id": "cmg-2024-revenue",
+    "company": "CMG",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "CMG_2024_annual.pdf",
+    "question": "Doanh thu thuần trên báo cáo kết quả kinh doanh hợp nhất năm 2024",
+    "gold_pages": [
+      76
+    ]
+  },
+  {
+    "id": "cmg-2024-net_income",
+    "company": "CMG",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "CMG_2024_annual.pdf",
+    "question": "Lợi nhuận sau thuế toàn tập đoàn năm 2024 trong báo cáo kết quả kinh doanh hợp nhất",
+    "gold_pages": [
+      76
+    ]
+  },
+  {
+    "id": "elc-2024-total_assets",
+    "company": "ELC",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "ELC_2024_annual.pdf",
+    "question": "Tổng tài sản năm 2024 trên bảng cân đối kế toán hợp nhất",
+    "gold_pages": [
+      109
+    ]
+  },
+  {
+    "id": "elc-2024-revenue",
+    "company": "ELC",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "ELC_2024_annual.pdf",
+    "question": "Doanh thu thuần trên báo cáo kết quả kinh doanh hợp nhất năm 2024",
+    "gold_pages": [
+      110
+    ]
+  },
+  {
+    "id": "elc-2024-net_income",
+    "company": "ELC",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "ELC_2024_annual.pdf",
+    "question": "Lợi nhuận sau thuế toàn tập đoàn năm 2024 trong báo cáo kết quả kinh doanh hợp nhất",
+    "gold_pages": [
+      110
+    ]
+  },
+  {
+    "id": "fpt-2024-sales-paraphrase",
+    "company": "FPT",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "FPT_2024_annual.pdf",
+    "question": "Quy mô doanh số bán hàng sau khi đã trừ các khoản giảm trừ trong năm tài chính 2024",
+    "gold_pages": [
+      151
+    ]
+  },
+  {
+    "id": "cmg-2024-sales-paraphrase",
+    "company": "CMG",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "CMG_2024_annual.pdf",
+    "question": "Quy mô doanh số bán hàng sau khi đã trừ các khoản giảm trừ trong năm tài chính 2024",
+    "gold_pages": [
+      76
+    ]
+  },
+  {
+    "id": "elc-2024-sales-paraphrase",
+    "company": "ELC",
+    "report_year": 2024,
+    "scope": "consolidated",
+    "filename": "ELC_2024_annual.pdf",
+    "question": "Quy mô doanh số bán hàng sau khi đã trừ các khoản giảm trừ trong năm tài chính 2024",
+    "gold_pages": [
+      110
+    ]
+  }
+]
