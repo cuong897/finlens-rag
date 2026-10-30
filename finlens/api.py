@@ -44,7 +44,7 @@ def create_app(data_dir=None, config=None):
 
     @app.get("/api/health")
     def health():
-        ready = bool(engine.config.chat_model) and (engine.config.chat_provider != "gemini" or gemini_key_configured())
+        ready = bool(engine.config.chat_model) and engine.config.chat_provider == "gemini" and gemini_key_configured()
         return {"status": "ok", "version": __version__, "chat_model": engine.config.chat_model or None,
                 "embedding_model": engine.config.embed_model or None,
                 "chat_provider": engine.config.chat_provider, "chat_ready": ready,

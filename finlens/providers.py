@@ -1,4 +1,4 @@
-"""Explicitly selected generation providers with local Ollama embeddings."""
+"""Gemini generation with local, embedding-only Ollama access."""
 
 from dataclasses import dataclass, replace
 import json
@@ -24,17 +24,17 @@ class ModelConfig:
     base_url: str = "http://127.0.0.1:11434"
     chat_model: str = ""
     embed_model: str = ""
-    chat_provider: str = "ollama"
+    chat_provider: str = "gemini"
     fallback_models: tuple[str, ...] = ("gemini-3.6-flash", "gemini-3.5-flash-lite")
 
     @classmethod
     def from_env(cls):
-        provider = os.environ.get("FINLENS_PROVIDER", "ollama").strip().lower()
-        if provider not in {"ollama", "gemini"}:
-            raise ValueError("FINLENS_PROVIDER phải là ollama hoặc gemini.")
+        provider = os.environ.get("FINLENS_PROVIDER", "gemini").strip().lower()
+        if provider not in {"extractive", "gemini"}:
+            raise ValueError("FINLENS_PROVIDER chỉ nhận gemini hoặc extractive; chế độ chat local đã được gỡ.")
         default_model = "gemini-3.8-flash" if provider == "gemini" else ""
         return cls(os.environ.get("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/"),
-                   os.environ.get("FINLENS_CHAT_MODEL", default_model).strip(),
+                   os.environ.get("FINLENS_CHAT_MODEL", default_model).strip() if provider == "gemini" else "",
                    os.environ.get("FINLENS_EMBED_MODEL", "").strip(), provider,
                    tuple(dict.fromkeys(x.strip() for x in os.environ.get(
                        "FINLENS_FALLBACK_MODELS", "gemini-3.6-flash,gemini-3.5-flash-lite").split(",") if x.strip())))
@@ -110,6 +110,7 @@ def render_grounded_output(text: str, evidence: list[dict]):
 
 
 class Ollama:
+    """Embedding transport only; local chat generation is not supported."""
     def __init__(self, config: ModelConfig, client=None):
         self.config = config
         self.client = client
@@ -143,23 +144,6 @@ class Ollama:
             if len(vector) != dimension or not any(vector):
                 raise ProviderError("Embedding có chiều không nhất quán hoặc toàn số 0.")
         return vectors
-
-    def generate(self, question: str, evidence: list[dict]):
-        schema, system, user = grounded_request(question, evidence)
-        result = self._post("/api/chat", {
-            "model": self.config.chat_model, "stream": False, "think": False,
-            "format": schema,
-            "options": {"temperature": 0, "num_predict": 700, "num_ctx": 8192},
-            "messages": [{"role": "system", "content": system},
-                         {"role": "user", "content": user}],
-        })
-        if not isinstance(result, dict) or not isinstance(result.get("message"), dict):
-            raise ProviderError("Phản hồi mô hình không có nội dung hợp lệ.")
-        text = result["message"].get("content")
-        if not isinstance(text, str) or not text.strip():
-            raise ProviderError("Mô hình trả lời rỗng.")
-        return render_grounded_output(text, evidence)
-
 
 def gemini_key_configured():
     value = os.environ.get("GEMINI_API_KEY", "").strip()
@@ -315,4 +299,8 @@ class GeminiFallback(Gemini):
 
 
 def make_provider(config: ModelConfig):
-    return GeminiFallback(config) if config.chat_provider == "gemini" else Ollama(config)
+    if config.chat_provider not in {"gemini", "extractive"}:
+        raise ValueError("Chế độ chat local đã được gỡ; hãy dùng Gemini hoặc trích xuất nguồn.")
+    if config.chat_provider == "extractive" and config.chat_model:
+        raise ValueError("Chế độ trích xuất nguồn không dùng model sinh câu trả lời.")
+    return GeminiFallback(config) if config.chat_model else Ollama(config)

@@ -423,7 +423,7 @@ async function init() {
     state.catalog = catalog;
     const providerLabel = health.chat_provider === 'gemini'
       ? (health.chat_ready ? `${health.chat_model} · ${health.fallback_models?.length || 0} dự phòng` : 'Gemini · cần API key')
-      : (health.answer_mode === 'generated' ? 'AI đã cấu hình · có nguồn dẫn' : 'Trích xuất nguồn · cục bộ');
+      : 'Trích xuất nguồn · cục bộ';
     $('#model-status').replaceChildren(node('span', 'status-dot'), document.createTextNode(providerLabel));
     $('#provider-notice').hidden = health.chat_provider !== 'gemini';
     $('#fact-metric').replaceChildren(...Object.entries(catalog.metrics).map(([key, label]) => option(key, label)));

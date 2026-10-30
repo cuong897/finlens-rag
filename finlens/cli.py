@@ -5,7 +5,7 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="FinLens local financial document assistant")
-    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "local", "prepare-local", "gemini", "public-pilot", "check-pilot", "evaluate-retrieval"], nargs="?", default="serve")
+    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "prepare-embeddings", "gemini", "public-pilot", "check-pilot", "evaluate-retrieval"], nargs="?", default="serve")
     parser.add_argument("--data-dir", default=None)
     parser.add_argument("--env-file", default=None, help="Explicit local configuration file; never prints values")
     parser.add_argument("--host", default="127.0.0.1")
@@ -30,12 +30,12 @@ def main():
         config = ModelConfig.from_env()
         config = replace(config, chat_provider="gemini", chat_model=config.chat_model or "gemini-3.8-flash",
                          embed_model=config.embed_model or "bge-m3:latest")
-        from finlens.local import ensure_server
+        from finlens.local import prepare_embeddings
         from finlens.engine import Engine
         from finlens.store import Store
         from finlens.providers import ProviderError
         try:
-            ensure_server(config, args.data_dir)
+            config = prepare_embeddings(args.data_dir, config)
             print(json.dumps(Engine(Store(args.data_dir), config).index_embeddings(), ensure_ascii=True))
         except ProviderError as exc:
             # Gemini also works with keyword retrieval if local embeddings are unavailable.
@@ -44,17 +44,10 @@ def main():
         from finlens.api import create_app
         uvicorn.run(create_app(args.data_dir, config), host=args.host, port=args.port)
         return
-    if args.command in {"local", "prepare-local"}:
-        from finlens.local import prepare_local
-        config = prepare_local(args.data_dir)
-        if args.command == "prepare-local":
-            return
-        from finlens.engine import Engine
-        from finlens.store import Store
-        print(json.dumps(Engine(Store(args.data_dir), config).index_embeddings(), ensure_ascii=True))
-        import uvicorn
-        from finlens.api import create_app
-        uvicorn.run(create_app(args.data_dir, config), host=args.host, port=args.port)
+    if args.command == "prepare-embeddings":
+        from finlens.local import prepare_embeddings
+        config = prepare_embeddings(args.data_dir)
+        print(json.dumps({"embedding_model": config.embed_model, "ready": True}))
         return
     if args.command == "serve":
         import uvicorn

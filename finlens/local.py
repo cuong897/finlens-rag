@@ -1,4 +1,4 @@
-"""Explicit, local-only Ollama startup and model preparation for FinLens."""
+"""Local Ollama runtime and embedding preparation; no chat models."""
 
 import json
 import os
@@ -13,22 +13,19 @@ import httpx
 from finlens.providers import ModelConfig, ProviderError
 
 OLLAMA_VERSION = "0.40.11"
-CHAT_MODEL = "qwen3:4b"
 EMBED_MODEL = "bge-m3:latest"
 
 
-def local_config():
-    config = ModelConfig.from_env()
-    config = ModelConfig(config.base_url, config.chat_model or CHAT_MODEL, config.embed_model or EMBED_MODEL)
+def validate_embedding_server(config):
     parsed = urlparse(config.base_url)
     if parsed.scheme != "http" or parsed.hostname not in {"127.0.0.1", "localhost", "::1"} or parsed.username or parsed.password:
-        raise ProviderError("Chế độ local chỉ kết nối Ollama trên localhost qua HTTP.")
-    if any(":cloud" in name.lower() for name in (config.chat_model, config.embed_model)):
-        raise ProviderError("Chế độ local không sử dụng mô hình cloud.")
-    return config
+        raise ProviderError("Embedding chỉ kết nối Ollama trên localhost qua HTTP.")
+    if ":cloud" in config.embed_model.lower():
+        raise ProviderError("Embedding chỉ sử dụng mô hình cục bộ.")
 
 
 def ensure_server(config: ModelConfig, data_dir: str | Path):
+    validate_embedding_server(config)
     base = Path(data_dir).resolve() / "ollama"
     base.mkdir(parents=True, exist_ok=True)
     runtime = base / f"runtime-{OLLAMA_VERSION}" / "ollama.exe"
@@ -101,18 +98,20 @@ def pull_model(config: ModelConfig, name: str):
         raise ProviderError(f"Ollama chưa xác nhận tải {name} thành công.")
 
 
-def prepare_local(data_dir):
-    config = local_config()
+def prepare_embeddings(data_dir, config=None):
+    from dataclasses import replace
+    config = config or ModelConfig.from_env()
+    config = replace(config, embed_model=config.embed_model or EMBED_MODEL)
     server = ensure_server(config, data_dir)
     print(f"Local server ready: {server}", flush=True)
     with httpx.Client(timeout=10, trust_env=False) as client:
         response = client.get(config.base_url + "/api/tags")
         response.raise_for_status()
         installed = {item["name"] for item in response.json().get("models", [])}
-    for name in (config.embed_model, config.chat_model):
-        canonical = name if ":" in name else name + ":latest"
-        if canonical in installed:
-            print(f"Model already available locally: {name}", flush=True)
-        else:
-            pull_model(config, name)
+    name = config.embed_model
+    canonical = name if ":" in name else name + ":latest"
+    if canonical in installed:
+        print(f"Embedding model already available locally: {name}", flush=True)
+    else:
+        pull_model(config, name)
     return config
