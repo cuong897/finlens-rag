@@ -23,7 +23,8 @@ def check(data_dir):
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != report["sha256"]:
             raise ValueError("Missing or changed pilot PDF. Run public-pilot and check the pinned source first.")
         for page in sorted({fact["page"] for fact in report["facts"]}):
-            draft = suggest_page(path, "pilot-check", page)
+            draft = suggest_page(path, "pilot-check", page, context={"report_year": report["year"],
+                                 "period_start": report.get("period_start"), "period_end": report.get("period_end")})
             expected = [fact for fact in report["facts"] if fact["page"] == page]
             pages.append({"report_year": report["year"], "page": page,
                           "draft_count": len(draft["candidates"]), "warnings": draft["warnings"],

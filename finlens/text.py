@@ -5,7 +5,7 @@ import unicodedata
 
 
 def normalize(text: str) -> str:
-    text = unicodedata.normalize("NFD", text.lower().replace("đ", "d"))
+    text = unicodedata.normalize("NFKD", text.lower().replace("đ", "d"))
     return "".join(c for c in text if unicodedata.category(c) != "Mn")
 
 

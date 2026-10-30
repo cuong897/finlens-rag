@@ -113,7 +113,7 @@ def create_app(data_dir=None, config=None):
         if not store.page_allowed(document_id, page):
             raise HTTPException(409, "Trang này nằm ngoài phần báo cáo đã chọn để phân tích.")
         try:
-            result = suggest_page(path, document_id, page)
+            result = suggest_page(path, document_id, page, context=document)
         except ValueError as exc:
             raise HTTPException(422, str(exc)) from exc
         existing = {(f["metric"], f["year"], f["value"], f["unit"], f["currency"])

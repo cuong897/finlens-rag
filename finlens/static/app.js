@@ -163,7 +163,8 @@ function renderSuggestions() {
       const pdf = node('a', 'text-link', 'Mở PDF gốc để kiểm tra ↗');
       pdf.href = `/api/documents/${encodeURIComponent(candidate.document_id)}/pdf#page=${candidate.page}`;
       pdf.target = '_blank'; pdf.rel = 'noopener';
-      $('#draft-proof').replaceChildren(node('strong', '', 'Đang đối chiếu bản nháp'), node('p', '', `Giá trị gốc: ${candidate.raw_value} · Cột năm ${candidate.year} · Trang ${candidate.page}`), node('p', 'draft-row', candidate.row_excerpt), pdf);
+      const yearNote = candidate.year_basis === 'document_fiscal_period' ? ' · Năm được ghép theo kỳ tài chính của tài liệu' : candidate.year_basis === 'period_date' ? ' · Năm được đối chiếu từ ngày đầu/cuối kỳ' : '';
+      $('#draft-proof').replaceChildren(node('strong', '', 'Đang đối chiếu bản nháp'), node('p', '', `Giá trị gốc: ${candidate.raw_value} · Cột năm ${candidate.year} · Trang ${candidate.page}${yearNote}`), node('p', 'draft-row', candidate.row_excerpt), pdf);
       $('#draft-proof').hidden = false;
       $('.fact-entry').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
