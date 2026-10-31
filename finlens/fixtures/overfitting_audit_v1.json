@@ -1,0 +1,305 @@
+{
+  "version": 1,
+  "measured_on": "2026-10-31",
+  "evaluation_commit": "1a5b393df8b675ae62b83407baecd72e81cc6cb3",
+  "verdict": {
+    "benchmark_reuse_confirmed": true,
+    "query_wording_brittleness_confirmed": true,
+    "unseen_company_overfitting_established": false,
+    "fresh_blind_test_performed": false,
+    "no_model_weights_trained_in_audit": true
+  },
+  "interpretation": "The 99% development score cannot establish generalization after adaptive tuning. Paired wording stress reveals severe vocabulary/abbreviation sensitivity. Historical external-64 improves, so current evidence does not show all improvements are confined to four development companies. Missing vocabulary coverage and benchmark overfitting cannot be causally separated by this audit.",
+  "frozen_ranking_files": {
+    "finlens/financial_retrieval.py": "bcace742bef00f453bf82a5f00519e64eb487152c49cc816a86d21f6d7cb90c7",
+    "finlens/retrieval.py": "53e68d984f5451a02c96996a2fcd9bdd4dcfbbf3e0bec7c6babf92b89ef14a17",
+    "finlens/text.py": "2009f90fcb90a997345a679eb1811196e081d5d9bdd39395fb544fe01581b5df",
+    "finlens/pdf_text.py": "9a1c262789bcb81b657f3253444a6329a19694fd349947df521865f7a5299ffd"
+  },
+  "ranking_imports_reviewed": {
+    "finlens/retrieval.py": [
+      "collections",
+      "finlens.text",
+      "finlens.text",
+      "finlens.financial_retrieval",
+      "math",
+      "re"
+    ],
+    "finlens/financial_retrieval.py": [
+      "functools",
+      "finlens.text",
+      "re"
+    ]
+  },
+  "query_stress": {
+    "kind": "paired development robustness test, not independent test",
+    "unique_scalar_targets": 40,
+    "variants_per_target": 2,
+    "cases": 80,
+    "dataset_sha256": "9e80305a8ed24d3d4a0d0a72ce4fb566f4b72f666afa0b8e419150d2ab5ed18e",
+    "file_sha256": "0036034fe1ffed74afaafc4d56408d1fb94f17a7b9c8b7dbaf38422ababca743",
+    "same_parent_labels_verified": true,
+    "parent_40": {
+      "cases": 40,
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9875,
+      "questions_with_source": 40,
+      "evidence_cases": 40,
+      "evidence_recall_at_5": 1.0,
+      "evidence_mrr_at_5": 0.9875,
+      "evidence_complete_questions": 40
+    },
+    "short_40": {
+      "cases": 40,
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9875,
+      "questions_with_source": 40,
+      "evidence_cases": 40,
+      "evidence_recall_at_5": 1.0,
+      "evidence_mrr_at_5": 0.9875,
+      "evidence_complete_questions": 40
+    },
+    "alternate_40": {
+      "cases": 40,
+      "recall_at_5": 0.55,
+      "mrr_at_5": 0.4592,
+      "questions_with_source": 22,
+      "evidence_cases": 40,
+      "evidence_recall_at_5": 0.425,
+      "evidence_mrr_at_5": 0.3833,
+      "evidence_complete_questions": 17
+    },
+    "intent_recognition": {
+      "short": {
+        "cases": 40,
+        "recognized": 40,
+        "complete": 40
+      },
+      "alternate": {
+        "cases": 40,
+        "recognized": 12,
+        "complete": 17
+      }
+    },
+    "per_metric": [
+      {
+        "variant": "short",
+        "metric": "current_assets",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "current_assets",
+        "complete": 1,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "noncurrent_assets",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "noncurrent_assets",
+        "complete": 1,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "cash",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "cash",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "inventory",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "inventory",
+        "complete": 1,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "total_assets",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "total_assets",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "liabilities",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "liabilities",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "equity",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "equity",
+        "complete": 1,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "revenue",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "revenue",
+        "complete": 0,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "pat",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "pat",
+        "complete": 1,
+        "cases": 4
+      },
+      {
+        "variant": "short",
+        "metric": "cfo",
+        "complete": 4,
+        "cases": 4
+      },
+      {
+        "variant": "alternate",
+        "metric": "cfo",
+        "complete": 0,
+        "cases": 4
+      }
+    ],
+    "failure_ids": [
+      "dpm-v3-current_assets-audit-alternate",
+      "dpm-v3-inventory-audit-alternate",
+      "dpm-v3-revenue-audit-alternate",
+      "dpm-v3-pat-audit-alternate",
+      "dpm-v3-cfo-audit-alternate",
+      "bmp-v3-current_assets-audit-alternate",
+      "bmp-v3-noncurrent_assets-audit-alternate",
+      "bmp-v3-inventory-audit-alternate",
+      "bmp-v3-equity-audit-alternate",
+      "bmp-v3-revenue-audit-alternate",
+      "bmp-v3-cfo-audit-alternate",
+      "ree-v3-current_assets-audit-alternate",
+      "ree-v3-noncurrent_assets-audit-alternate",
+      "ree-v3-inventory-audit-alternate",
+      "ree-v3-equity-audit-alternate",
+      "ree-v3-revenue-audit-alternate",
+      "ree-v3-pat-audit-alternate",
+      "ree-v3-cfo-audit-alternate",
+      "gmd-v3-noncurrent_assets-audit-alternate",
+      "gmd-v3-equity-audit-alternate",
+      "gmd-v3-revenue-audit-alternate",
+      "gmd-v3-pat-audit-alternate",
+      "gmd-v3-cfo-audit-alternate"
+    ],
+    "question_authorship": "assistant-authored, abbreviations deliberately stressed, no independent semantic adjudication; not sampled production traffic"
+  },
+  "historical_external_64": {
+    "kind": "previously seen historical external regression; not a new blind test",
+    "before": {
+      "recall_at_5": 0.9844,
+      "mrr_at_5": 0.9141,
+      "questions_with_source": 63,
+      "latency_p50_ms": 490.19,
+      "latency_p95_ms": 584.32,
+      "evidence_cases": 64,
+      "evidence_recall_at_5": 0.8906,
+      "evidence_complete_questions": 56,
+      "evidence_mrr_at_5": 0.7969,
+      "page_hit_without_complete_evidence": 7
+    },
+    "after": {
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9362,
+      "questions_with_source": 64,
+      "latency_p50_ms": 492.49,
+      "latency_p95_ms": 678.95,
+      "evidence_cases": 64,
+      "evidence_recall_at_5": 0.9375,
+      "evidence_complete_questions": 59,
+      "evidence_mrr_at_5": 0.8346,
+      "page_hit_without_complete_evidence": 5
+    },
+    "corpus_sha256": "f4d24cc4e97fbe94f2aa9c3d5b6406c61deccae8e6415acd1cf3e1eb158b00df",
+    "identical_64_query_vectors": true,
+    "identical_questions_and_labels": true,
+    "original_dataset_sha256": "8b24d40ab93975517d4ef4bcaa79c2be3abdca8f986789972484fec967761d0c",
+    "run_dataset_sha256": "c0e7874703ee3263cc188287331538ec766d6e4297d98a829e8c1d0e964897ae",
+    "hash_note": "Only added audit_note metadata changes dataset SHA; original metadata and all cases verified identical.",
+    "improved_ids": [
+      "dhg-v2-liabilities",
+      "dhg-v2-equity",
+      "dhg-v2-labour_cost"
+    ],
+    "regressed_ids": [],
+    "original_parser_caveat": "Assistant authored 2026-10-31 from original PDF renders, after ranking frozen at e877aa6 and before any retrieval score was computed on VHC/DHG. OCR parsing extended after seeing missing text in vector tables. No independent human adjudication."
+  },
+  "development_200": {
+    "summary": {
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9775,
+      "questions_with_source": 200,
+      "latency_p50_ms": 584.0,
+      "latency_p95_ms": 771.71,
+      "evidence_cases": 200,
+      "evidence_recall_at_5": 0.9958,
+      "evidence_complete_questions": 198,
+      "evidence_mrr_at_5": 0.9183,
+      "page_hit_without_complete_evidence": 2
+    },
+    "canonical_pages": 34,
+    "already_used_for_tuning": true,
+    "companies": [
+      "BMP",
+      "DPM",
+      "GMD",
+      "REE"
+    ]
+  },
+  "verification": {
+    "ranking_unchanged": true,
+    "csv_rows_checked": 576,
+    "facts_unchanged": true,
+    "facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+    "cloud_generation_calls": 0
+  },
+  "generation_accuracy_evaluated": false,
+  "report": "artifacts/overfitting-audit/REPORT.md",
+  "next_validity_check": "Freeze pipeline first; use new company/year PDFs and questions authored without inspecting rankings, independent adjudication, split by company/document and query family. Do not tune on the final test."
+}
