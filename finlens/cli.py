@@ -5,7 +5,7 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="FinLens local financial document assistant")
-    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "prepare-embeddings", "gemini", "public-pilot", "benchmark-import", "check-pilot", "evaluate-retrieval"], nargs="?", default="serve")
+    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "reprocess", "prepare-embeddings", "gemini", "public-pilot", "benchmark-import", "check-pilot", "evaluate-retrieval"], nargs="?", default="serve")
     parser.add_argument("--data-dir", default=None)
     parser.add_argument("--env-file", default=None, help="Explicit local configuration file; never prints values")
     parser.add_argument("--host", default="127.0.0.1")
@@ -70,6 +70,9 @@ def main():
     elif args.command == "benchmark-import":
         from finlens.benchmark import import_benchmark
         result = import_benchmark(store)
+    elif args.command == "reprocess":
+        from finlens.ingest import reprocess_pdfs
+        result = reprocess_pdfs(store)
     elif args.command == "check-pilot":
         from finlens.pilot_check import check_pilot
         result = check_pilot(store, args.output_dir)

@@ -1,0 +1,14 @@
+[
+  {
+    "company": "HPG",
+    "sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+    "exposed_on": "2026-10-31",
+    "reason": "retrieval tuning after 108-case baseline"
+  },
+  {
+    "company": "PNJ",
+    "sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+    "exposed_on": "2026-10-31",
+    "reason": "retrieval tuning after 108-case baseline"
+  }
+]

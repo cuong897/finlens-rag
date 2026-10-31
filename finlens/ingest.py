@@ -8,6 +8,7 @@ import uuid
 import pymupdf
 
 from finlens.store import Store
+from finlens.pdf_text import read_page, VERSION
 
 MAX_PDF_BYTES = 20 * 1024 * 1024
 MAX_PAGES = 250
@@ -36,16 +37,8 @@ def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: 
                 raise IngestError("PDF phải có từ 1 đến 250 trang.")
             total_chars = 0
             for i, page in enumerate(pdf):
-                text = page.get_text(sort=True).strip()
-                try:
-                    tables = page.find_tables().tables
-                    for table in tables:
-                        rows = table.extract()
-                        table_text = "\n".join(" | ".join(str(c or "").replace("\n", " ") for c in row) for row in rows)
-                        if table_text:
-                            text += "\n\n[Bảng trích xuất — cần kiểm tra với PDF]\n" + table_text
-                except Exception:
-                    warnings.append(f"Không trích xuất được cấu trúc bảng trang {i + 1}.")
+                text, page_warnings = read_page(page)
+                warnings.extend(f"Trang {i + 1}: {warning}" for warning in page_warnings)
                 if len(text) < 20:
                     warnings.append(f"Trang {i + 1} có ít văn bản; có thể cần OCR.")
                 total_chars += len(text)
@@ -68,7 +61,7 @@ def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: 
             "filename": filename.replace("\\", "/").split("/")[-1][:180],
             "sha256": digest, "is_demo": False,
             "pdf_path": relative_path, "warnings": warnings,
-        }, pages, context=context)
+        }, pages, context=context, processing_version=VERSION)
         if not created:
             target.unlink(missing_ok=True)
         return {"document": document, "created": created}
@@ -97,3 +90,26 @@ def seed_demo(store: Store):
                             "currency": "VND", "verified": True,
                             "note": "Chỉ tiêu giả lập có kiểm tra tự động với fixture."})
     return {"created": created_count, "total_demo_documents": len(reports), "is_demo": True}
+
+
+def reprocess_pdfs(store):
+    """Refresh derived text/embeddings atomically per PDF; original and facts stay linked."""
+    results = []
+    for document in store.documents():
+        path = store.pdf_path(document["id"])
+        if not path or store.processing_version(document["id"]) == VERSION:
+            continue
+        if hashlib.sha256(path.read_bytes()).hexdigest() != document["sha256"]:
+            raise IngestError("Checksum tệp gốc thay đổi; không cập nhật chỉ mục.")
+        pages, warnings = [], []
+        with pymupdf.open(path) as pdf:
+            for i, page in enumerate(pdf):
+                text, issues = read_page(page)
+                pages.append(text)
+                warnings.extend(f"Trang {i + 1}: {issue}" for issue in issues)
+        if sum(map(len, pages)) > MAX_TEXT_CHARS:
+            raise IngestError("Nội dung PDF vượt giới hạn xử lý.")
+        store.replace_derived_text(document["id"], pages, warnings, VERSION)
+        results.append({"document_id": document["id"], "company": document["company"], "pages": len(pages)})
+        print(f"Reprocessed {document['company']} {document['report_year']}: {len(pages)} pages", flush=True)
+    return {"version": VERSION, "documents": results}

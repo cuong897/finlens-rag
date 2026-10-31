@@ -65,6 +65,10 @@ class Store:
                     document_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
                     file_sha256 TEXT NOT NULL, options TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS document_processing (
+                    document_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
+                    version TEXT NOT NULL
+                );
                 CREATE TABLE IF NOT EXISTS table_rows (
                     document_id TEXT NOT NULL, page INTEGER NOT NULL,
                     sheet TEXT NOT NULL, row_number INTEGER NOT NULL, cell_range TEXT NOT NULL,
@@ -87,7 +91,7 @@ class Store:
         finally:
             db.close()
 
-    def add_document(self, document: dict, pages: list[str], *, context=None, table_source=None, table_rows=None) -> tuple[dict, bool]:
+    def add_document(self, document: dict, pages: list[str], *, context=None, table_source=None, table_rows=None, processing_version=None) -> tuple[dict, bool]:
         context_values = self._context_values(len(pages), **context) if context else None
         with self.connection() as db:
             existing = db.execute(
@@ -110,6 +114,8 @@ class Store:
                                (document["id"], number, chunk))
             if context_values is not None:
                 db.execute("INSERT INTO document_context VALUES (?,?,?,?,?)", (document["id"], *context_values))
+            if processing_version:
+                db.execute("INSERT INTO document_processing VALUES (?,?)", (document["id"], processing_version))
             if table_source:
                 db.execute("INSERT INTO table_sources VALUES (?,?,?)", (document["id"], table_source["file_sha256"], json.dumps(table_source["options"], ensure_ascii=False)))
                 for number, row in enumerate(table_rows, 1):
@@ -121,6 +127,25 @@ class Store:
             row = db.execute("SELECT id FROM documents WHERE company=? AND report_year=? AND scope=? AND sha256=?",
                              (company, year, scope, sha256)).fetchone()
         return self.get_document(row[0]) if row else None
+
+    def processing_version(self, document_id):
+        with self.connection() as db:
+            row = db.execute("SELECT version FROM document_processing WHERE document_id=?", (document_id,)).fetchone()
+        return row[0] if row else None
+
+    def replace_derived_text(self, document_id, pages, warnings, version):
+        with self.connection() as db:
+            count = db.execute("SELECT COUNT(*) FROM pages WHERE document_id=?", (document_id,)).fetchone()[0]
+            if not count or len(pages) != count or not any(text.strip() for text in pages):
+                raise ValueError("Cập nhật chỉ mục phải giữ nguyên số trang và tài liệu nguồn.")
+            db.execute("DELETE FROM embeddings WHERE chunk_id IN (SELECT id FROM chunks WHERE document_id=?)", (document_id,))
+            db.execute("DELETE FROM chunks WHERE document_id=?", (document_id,))
+            for page, content in enumerate(pages, 1):
+                db.execute("UPDATE pages SET text=? WHERE document_id=? AND page=?", (content, document_id, page))
+                for chunk in chunk_page(content):
+                    db.execute("INSERT INTO chunks(document_id,page,text) VALUES (?,?,?)", (document_id, page, chunk))
+            db.execute("UPDATE documents SET warnings=? WHERE id=?", (json.dumps(warnings, ensure_ascii=False), document_id))
+            db.execute("INSERT OR REPLACE INTO document_processing VALUES (?,?)", (document_id, version))
 
     @staticmethod
     def _document(row):

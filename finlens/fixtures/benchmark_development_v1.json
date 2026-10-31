@@ -1,0 +1,4708 @@
+{
+  "version": 1,
+  "name": "finlens-financial-development-v2",
+  "split": "development",
+  "label_origin": "Assistant authored 2026-10-31; all numeric target columns visually checked on rendered official annual-report pages; automatic literal verification; no independent human adjudication. Retrieval frozen at ed4a45f before scoring. Exposed to error-driven retrieval tuning from 2026-10-31; now development only.",
+  "protocol": {
+    "version": 1,
+    "name": "finlens-financial-holdout-v1",
+    "frozen_retrieval_commit": "ed4a45f",
+    "frozen_on": "2026-10-31",
+    "split_unit": "company",
+    "development_companies": [
+      "FPT",
+      "CMG",
+      "ELC"
+    ],
+    "test_companies": [
+      "HPG",
+      "PNJ"
+    ],
+    "language": "Vietnamese queries / English reports",
+    "corpus_policy": "Full annual reports; company, report year and consolidated scope supplied as query metadata; no gold-page filtering.",
+    "question_design": "108 cases: 36 statement lookups + 10 note lookups + 4 cross-statement requests + 4 year comparisons per company. No paraphrase padding.",
+    "annotation": "Assistant-authored and visually checked against rendered source tables; no second human adjudicator. Reference pages are canonical locations for the specified statement/note, not exhaustive semantic relevance judgments.",
+    "ranking": "unchanged since ed4a45f: BM25, BGE-M3 dense threshold 0.25, RRF k=60, context fusion; top 5 chunks; common query vector per case",
+    "metrics": "Macro mean of per-case distinct reference-page recall in top 5 chunks and truncated reciprocal rank of first reference-page hit; also literal label+value evidence coverage and complete-evidence MRR.",
+    "exclusions": [
+      "No model-generated answer accuracy evaluation",
+      "No unanswerable-query/refusal evaluation",
+      "No algorithm tuning on this test set",
+      "No claim of independent human labels or statistical generalization from two companies"
+    ],
+    "reproduction": [
+      "finlens benchmark-import",
+      "finlens index with FINLENS_EMBED_MODEL=bge-m3:latest",
+      "finlens evaluate-retrieval --cases-file finlens/fixtures/benchmark_v1.json"
+    ],
+    "status": "development after baseline errors were inspected",
+    "exposed_on": "2026-10-31"
+  },
+  "reports": [
+    {
+      "filename": "HPG_2024_annual.pdf",
+      "url": "https://file.hoaphat.com.vn/hoaphat-com-vn/2025/04/hpg-annual-report-2024.pdf",
+      "pages": 156,
+      "sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "company": "HPG",
+      "year": 2024,
+      "scope": "consolidated",
+      "publisher": "Hoa Phat Group",
+      "language": "en",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "period_label": "Năm tài chính 2024: 01/01/2024 - 31/12/2024; báo cáo hợp nhất trong báo cáo thường niên",
+      "facts": []
+    },
+    {
+      "filename": "PNJ_2024_annual.pdf",
+      "url": "https://cdn.pnj.io/images/quan-he-co-dong/2025/20250416-Annual-Report-PNJ-2024-en.pdf",
+      "pages": 117,
+      "sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "company": "PNJ",
+      "year": 2024,
+      "scope": "consolidated",
+      "publisher": "Phu Nhuan Jewelry Joint Stock Company",
+      "language": "en",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "period_label": "Năm tài chính 2024: 01/01/2024 - 31/12/2024; báo cáo hợp nhất trong báo cáo thường niên",
+      "facts": []
+    }
+  ],
+  "cases": [
+    {
+      "id": "hpg-2024-current_assets",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Tài sản ngắn hạn cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "current_assets"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "CURRENT ASSETS",
+            "86,674,276,272,995"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_assets",
+          "year": 2024,
+          "value": "86674276272995",
+          "raw_value": "86,674,276,272,995",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-cash_eq",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Tiền và tương đương tiền tại 31/12/2024 trên bảng cân đối hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cash_eq"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Cash and cash equivalents",
+            "6,887,646,139,852"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cash_eq",
+          "year": 2024,
+          "value": "6887646139852",
+          "raw_value": "6,887,646,139,852",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-cash",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Khoản tiền không gồm tương đương tiền cuối năm 2024 trên bảng cân đối hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cash"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Cash",
+            "2,919,531,945,908"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cash",
+          "year": 2024,
+          "value": "2919531945908",
+          "raw_value": "2,919,531,945,908",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-short_invest",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Đầu tư tài chính ngắn hạn cuối năm 2024 trên bảng cân đối hợp nhất có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "short_invest"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Short-term financial investments",
+            "18,974,716,730,905"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "short_invest",
+          "year": 2024,
+          "value": "18974716730905",
+          "raw_value": "18,974,716,730,905",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-receivables",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Tổng các khoản phải thu ngắn hạn tại cuối năm 2024 trên bảng cân đối hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "receivables"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Accounts receivable – short-term",
+            "7,647,800,286,988"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "receivables",
+          "year": 2024,
+          "value": "7647800286988",
+          "raw_value": "7,647,800,286,988",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-trade_receivables",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Phải thu khách hàng tại 31/12/2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "trade_receivables"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Accounts receivable from customers",
+            "4,352,135,419,872"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "trade_receivables",
+          "year": 2024,
+          "value": "4352135419872",
+          "raw_value": "4,352,135,419,872",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-prepayments",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Trả trước cho người bán ngắn hạn cuối năm 2024 trên bảng cân đối hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "prepayments"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Prepayments to suppliers",
+            "2,118,824,427,004"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "prepayments",
+          "year": 2024,
+          "value": "2118824427004",
+          "raw_value": "2,118,824,427,004",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-inventory",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Hàng tồn kho thuần sau dự phòng cuối năm 2024 trên bảng cân đối hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "inventory"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Inventories",
+            "46,091,222,189,472"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "inventory",
+          "year": 2024,
+          "value": "46091222189472",
+          "raw_value": "46,091,222,189,472",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-noncurrent_assets",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Tổng tài sản dài hạn tại 31/12/2024 trên bảng cân đối hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "noncurrent_assets"
+      ],
+      "gold_pages": [
+        100
+      ],
+      "evidence": [
+        {
+          "page": 100,
+          "quotes": [
+            "LONG-TERM ASSETS",
+            "137,815,431,280,986"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "noncurrent_assets",
+          "year": 2024,
+          "value": "137815431280986",
+          "raw_value": "137,815,431,280,986",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-total_assets",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Quy mô tổng tài sản cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "total_assets"
+      ],
+      "gold_pages": [
+        101
+      ],
+      "evidence": [
+        {
+          "page": 101,
+          "quotes": [
+            "TOTAL ASSETS",
+            "224,489,707,553,981"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "total_assets",
+          "year": 2024,
+          "value": "224489707553981",
+          "raw_value": "224,489,707,553,981",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-liabilities",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Nợ phải trả tại thời điểm 31/12/2024 trên bảng cân đối hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "liabilities"
+      ],
+      "gold_pages": [
+        101
+      ],
+      "evidence": [
+        {
+          "page": 101,
+          "quotes": [
+            "LIABILITIES",
+            "109,842,249,570,282"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "liabilities",
+          "year": 2024,
+          "value": "109842249570282",
+          "raw_value": "109,842,249,570,282",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-current_liabilities",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Nợ ngắn hạn cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "current_liabilities"
+      ],
+      "gold_pages": [
+        101
+      ],
+      "evidence": [
+        {
+          "page": 101,
+          "quotes": [
+            "Current liabilities",
+            "75,225,243,262,689"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_liabilities",
+          "year": 2024,
+          "value": "75225243262689",
+          "raw_value": "75,225,243,262,689",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-long_liabilities",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Nợ dài hạn cuối năm 2024 trên bảng cân đối hợp nhất có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "long_liabilities"
+      ],
+      "gold_pages": [
+        101
+      ],
+      "evidence": [
+        {
+          "page": 101,
+          "quotes": [
+            "Long-term liabilities",
+            "34,617,006,307,593"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "long_liabilities",
+          "year": 2024,
+          "value": "34617006307593",
+          "raw_value": "34,617,006,307,593",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-short_borrowings",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Vay ngắn hạn tại cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "short_borrowings"
+      ],
+      "gold_pages": [
+        101
+      ],
+      "evidence": [
+        {
+          "page": 101,
+          "quotes": [
+            "Short-term borrowings",
+            "55,882,686,213,459"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "short_borrowings",
+          "year": 2024,
+          "value": "55882686213459",
+          "raw_value": "55,882,686,213,459",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-equity",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Vốn chủ sở hữu cuối năm 2024 trên bảng cân đối hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "equity"
+      ],
+      "gold_pages": [
+        102
+      ],
+      "evidence": [
+        {
+          "page": 102,
+          "quotes": [
+            "EQUITY",
+            "114,647,457,983,699"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "equity",
+          "year": 2024,
+          "value": "114647457983699",
+          "raw_value": "114,647,457,983,699",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-retained",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Lợi nhuận giữ lại cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "retained"
+      ],
+      "gold_pages": [
+        102
+      ],
+      "evidence": [
+        {
+          "page": 102,
+          "quotes": [
+            "Retained profits",
+            "49,599,124,109,203"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "retained",
+          "year": 2024,
+          "value": "49599124109203",
+          "raw_value": "49,599,124,109,203",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-gross_revenue",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Doanh thu bán hàng và cung cấp dịch vụ trước giảm trừ năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "gross_revenue"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "REVENUE FROM SALES OF GOODS AND PROVISION",
+            "140,561,387,448,572"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_revenue",
+          "year": 2024,
+          "value": "140561387448572",
+          "raw_value": "140,561,387,448,572",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-deductions",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Các khoản giảm trừ doanh thu năm 2024 trên báo cáo kết quả kinh doanh hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "deductions"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "REVENUE DEDUCTIONS",
+            "1,706,275,317,185"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "deductions",
+          "year": 2024,
+          "value": "1706275317185",
+          "raw_value": "1,706,275,317,185",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-revenue",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Doanh thu thuần năm 2024 trên báo cáo kết quả hoạt động kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "revenue"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "NET REVENUE",
+            "138,855,112,131,387"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "revenue",
+          "year": 2024,
+          "value": "138855112131387",
+          "raw_value": "138,855,112,131,387",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-cost_sales",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Giá vốn hàng bán năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cost_sales"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "COST OF SALES",
+            "120,357,563,003,703"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cost_sales",
+          "year": 2024,
+          "value": "120357563003703",
+          "raw_value": "120,357,563,003,703",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-gross_profit",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Lợi nhuận gộp năm 2024 trên báo cáo kết quả kinh doanh hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "gross_profit"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "GROSS PROFIT",
+            "18,497,549,127,684"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_profit",
+          "year": 2024,
+          "value": "18497549127684",
+          "raw_value": "18,497,549,127,684",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-financial_income",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Doanh thu tài chính năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "financial_income"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "Financial income",
+            "2,618,917,240,287"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "financial_income",
+          "year": 2024,
+          "value": "2618917240287",
+          "raw_value": "2,618,917,240,287",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-financial_expenses",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Chi phí tài chính năm 2024 trên báo cáo kết quả kinh doanh hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "financial_expenses"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "Financial expenses",
+            "3,966,636,074,605"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "financial_expenses",
+          "year": 2024,
+          "value": "3966636074605",
+          "raw_value": "3,966,636,074,605",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-interest_expense",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Chi phí lãi vay năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "interest_expense"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "Interest expense",
+            "2,287,360,810,880"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_expense",
+          "year": 2024,
+          "value": "2287360810880",
+          "raw_value": "2,287,360,810,880",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-selling",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Chi phí bán hàng năm 2024 trên báo cáo kết quả kinh doanh hợp nhất có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "selling"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "Selling expenses",
+            "2,337,308,685,264"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "selling",
+          "year": 2024,
+          "value": "2337308685264",
+          "raw_value": "2,337,308,685,264",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-admin",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Chi phí quản lý doanh nghiệp năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "admin"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "General and administration expenses",
+            "1,545,516,022,772"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "admin",
+          "year": 2024,
+          "value": "1545516022772",
+          "raw_value": "1,545,516,022,772",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-pretax",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Lợi nhuận kế toán trước thuế năm 2024 trên báo cáo kết quả kinh doanh hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "pretax"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "ACCOUNTING PROFIT BEFORE TAX",
+            "13,693,502,261,178"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "pretax",
+          "year": 2024,
+          "value": "13693502261178",
+          "raw_value": "13,693,502,261,178",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-net_income",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Lợi nhuận sau thuế toàn tập đoàn năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "net_income"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "NET PROFIT AFTER TAX",
+            "12,020,023,621,271"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "net_income",
+          "year": 2024,
+          "value": "12020023621271",
+          "raw_value": "12,020,023,621,271",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-depreciation",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Khoản điều chỉnh khấu hao trên báo cáo lưu chuyển tiền tệ hợp nhất năm 2024 là bao nhiêu, không gồm phân bổ lợi thế thương mại?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "depreciation"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Depreciation and amortisation",
+            "6,915,671,331,197"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "depreciation",
+          "year": 2024,
+          "value": "6915671331197",
+          "raw_value": "6,915,671,331,197",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-interest_paid",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Tiền lãi vay đã trả năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu, giữ dấu dòng tiền?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "interest_paid"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Interest paid",
+            "(2,332,422,296,347)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_paid",
+          "year": 2024,
+          "value": "-2332422296347",
+          "raw_value": "(2,332,422,296,347)",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-tax_paid",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Tiền thuế thu nhập doanh nghiệp đã nộp năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất bằng bao nhiêu, giữ dấu âm?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "tax_paid"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Income tax paid",
+            "(936,764,513,356)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "tax_paid",
+          "year": 2024,
+          "value": "-936764513356",
+          "raw_value": "(936,764,513,356)",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-cfo",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Lưu chuyển tiền thuần từ hoạt động kinh doanh năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cfo"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Net cash flows from operating activities",
+            "6,608,320,655,215"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "value": "6608320655215",
+          "raw_value": "6,608,320,655,215",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-capex",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Dòng tiền chi mua sắm xây dựng tài sản cố định và tài sản dài hạn khác năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "capex"
+      ],
+      "gold_pages": [
+        106
+      ],
+      "evidence": [
+        {
+          "page": 106,
+          "quotes": [
+            "Payments for additions to fixed assets",
+            "(35,495,026,797,327)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "capex",
+          "year": 2024,
+          "value": "-35495026797327",
+          "raw_value": "(35,495,026,797,327)",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-cfi",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Dòng tiền thuần từ hoạt động đầu tư năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cfi"
+      ],
+      "gold_pages": [
+        106
+      ],
+      "evidence": [
+        {
+          "page": 106,
+          "quotes": [
+            "Net cash flows from investing activities",
+            "(29,788,138,252,448)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfi",
+          "year": 2024,
+          "value": "-29788138252448",
+          "raw_value": "(29,788,138,252,448)",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-borrowings_received",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Tiền thu từ đi vay trong năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "borrowings_received"
+      ],
+      "gold_pages": [
+        107
+      ],
+      "evidence": [
+        {
+          "page": 107,
+          "quotes": [
+            "Proceeds from borrowings",
+            "174,465,587,837,075"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "borrowings_received",
+          "year": 2024,
+          "value": "174465587837075",
+          "raw_value": "174,465,587,837,075",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-cff",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Dòng tiền thuần từ hoạt động tài chính năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cff"
+      ],
+      "gold_pages": [
+        107
+      ],
+      "evidence": [
+        {
+          "page": 107,
+          "quotes": [
+            "Net cash flows from financing activities",
+            "17,814,697,586,944"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cff",
+          "year": 2024,
+          "value": "17814697586944",
+          "raw_value": "17,814,697,586,944",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-goods_transit",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Theo thuyết minh hàng tồn kho, giá gốc hàng mua đang đi đường cuối năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "goods_transit"
+      ],
+      "gold_pages": [
+        131
+      ],
+      "evidence": [
+        {
+          "page": 131,
+          "quotes": [
+            "Goods in transit",
+            "5,559,003,181,956"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "goods_transit",
+          "year": 2024,
+          "value": "5559003181956",
+          "raw_value": "5,559,003,181,956",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-raw_materials",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Trong thuyết minh tồn kho, giá gốc nguyên vật liệu tại 31/12/2024 bằng bao nhiêu trước dự phòng?",
+      "category": "note_lookup",
+      "target_ids": [
+        "raw_materials"
+      ],
+      "gold_pages": [
+        131
+      ],
+      "evidence": [
+        {
+          "page": 131,
+          "quotes": [
+            "Raw materials",
+            "20,324,528,389,776"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "raw_materials",
+          "year": 2024,
+          "value": "20324528389776",
+          "raw_value": "20,324,528,389,776",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-finished_goods",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Thuyết minh hàng tồn kho cho biết giá gốc thành phẩm cuối năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "finished_goods"
+      ],
+      "gold_pages": [
+        131
+      ],
+      "evidence": [
+        {
+          "page": 131,
+          "quotes": [
+            "Finished goods",
+            "12,155,686,194,056"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "finished_goods",
+          "year": 2024,
+          "value": "12155686194056",
+          "raw_value": "12,155,686,194,056",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-merchandise",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Theo thuyết minh hàng tồn kho, giá gốc hàng hóa cuối năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "merchandise"
+      ],
+      "gold_pages": [
+        131
+      ],
+      "evidence": [
+        {
+          "page": 131,
+          "quotes": [
+            "Merchandise inventories",
+            "673,704,904,662"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "merchandise",
+          "year": 2024,
+          "value": "673704904662",
+          "raw_value": "673,704,904,662",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-goods_sales",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Trong thuyết minh doanh thu năm 2024, doanh thu bán hàng hóa trước các khoản giảm trừ là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "goods_sales"
+      ],
+      "gold_pages": [
+        149
+      ],
+      "evidence": [
+        {
+          "page": 149,
+          "quotes": [
+            "Sales of goods",
+            "137,852,890,802,353"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "goods_sales",
+          "year": 2024,
+          "value": "137852890802353",
+          "raw_value": "137,852,890,802,353",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-services_sales",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Theo thuyết minh doanh thu, doanh thu cung cấp dịch vụ năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "services_sales"
+      ],
+      "gold_pages": [
+        149
+      ],
+      "evidence": [
+        {
+          "page": 149,
+          "quotes": [
+            "Provision of services",
+            "725,545,690,056"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "services_sales",
+          "year": 2024,
+          "value": "725545690056",
+          "raw_value": "725,545,690,056",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-deposit_interest",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Thuyết minh doanh thu tài chính ghi nhận lãi tiền gửi năm 2024 bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "deposit_interest"
+      ],
+      "gold_pages": [
+        150
+      ],
+      "evidence": [
+        {
+          "page": 150,
+          "quotes": [
+            "Interest income from deposits",
+            "1,258,679,587,670"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "deposit_interest",
+          "year": 2024,
+          "value": "1258679587670",
+          "raw_value": "1,258,679,587,670",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-fx_loss",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Theo thuyết minh chi phí tài chính, lỗ chênh lệch tỷ giá đã thực hiện năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "fx_loss"
+      ],
+      "gold_pages": [
+        150
+      ],
+      "evidence": [
+        {
+          "page": 150,
+          "quotes": [
+            "Realised foreign exchange losses",
+            "1,473,187,885,929"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "fx_loss",
+          "year": 2024,
+          "value": "1473187885929",
+          "raw_value": "1,473,187,885,929",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-transport",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Trong thuyết minh chi phí bán hàng, chi phí vận chuyển năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "transport"
+      ],
+      "gold_pages": [
+        151
+      ],
+      "evidence": [
+        {
+          "page": 151,
+          "quotes": [
+            "Transportation expenses",
+            "563,197,124,009"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "transport",
+          "year": 2024,
+          "value": "563197124009",
+          "raw_value": "563,197,124,009",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "hpg-2024-audit_fee",
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "question": "HPG: Thuyết minh chi phí quản lý cho biết phí kiểm toán báo cáo tài chính năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "audit_fee"
+      ],
+      "gold_pages": [
+        151
+      ],
+      "evidence": [
+        {
+          "page": 151,
+          "quotes": [
+            "Financial statements audit fee",
+            "4,174,000,000"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "audit_fee",
+          "year": 2024,
+          "value": "4174000000",
+          "raw_value": "4,174,000,000",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "hpg-2024-multi-liquidity",
+      "question": "HPG: Tìm tài sản ngắn hạn và nợ ngắn hạn cuối năm 2024 trên bảng cân đối hợp nhất để đối chiếu khả năng thanh toán hiện hành.",
+      "category": "multi_value",
+      "target_ids": [
+        "current_assets",
+        "current_liabilities"
+      ],
+      "gold_pages": [
+        99,
+        101
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "CURRENT ASSETS",
+            "86,674,276,272,995"
+          ]
+        },
+        {
+          "page": 101,
+          "quotes": [
+            "Current liabilities",
+            "75,225,243,262,689"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_assets",
+          "year": 2024,
+          "value": "86674276272995",
+          "raw_value": "86,674,276,272,995",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "current_liabilities",
+          "year": 2024,
+          "value": "75225243262689",
+          "raw_value": "75,225,243,262,689",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "hpg-2024-multi-leverage",
+      "question": "HPG: Cần số nợ phải trả và tổng tài sản tại 31/12/2024 trên bảng cân đối hợp nhất để tính tỷ lệ nợ trên tài sản.",
+      "category": "multi_value",
+      "target_ids": [
+        "liabilities",
+        "total_assets"
+      ],
+      "gold_pages": [
+        101
+      ],
+      "evidence": [
+        {
+          "page": 101,
+          "quotes": [
+            "LIABILITIES",
+            "109,842,249,570,282"
+          ]
+        },
+        {
+          "page": 101,
+          "quotes": [
+            "TOTAL ASSETS",
+            "224,489,707,553,981"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "liabilities",
+          "year": 2024,
+          "value": "109842249570282",
+          "raw_value": "109,842,249,570,282",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "total_assets",
+          "year": 2024,
+          "value": "224489707553981",
+          "raw_value": "224,489,707,553,981",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "hpg-2024-multi-gross_margin",
+      "question": "HPG: Tìm cả lợi nhuận gộp và doanh thu thuần năm 2024 trên báo cáo kết quả kinh doanh hợp nhất để tính biên lợi nhuận gộp.",
+      "category": "multi_value",
+      "target_ids": [
+        "gross_profit",
+        "revenue"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "GROSS PROFIT",
+            "18,497,549,127,684"
+          ]
+        },
+        {
+          "page": 103,
+          "quotes": [
+            "NET REVENUE",
+            "138,855,112,131,387"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_profit",
+          "year": 2024,
+          "value": "18497549127684",
+          "raw_value": "18,497,549,127,684",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "revenue",
+          "year": 2024,
+          "value": "138855112131387",
+          "raw_value": "138,855,112,131,387",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "hpg-2024-multi-cash_vs_profit",
+      "question": "HPG: Đối chiếu dòng tiền kinh doanh thuần trên báo cáo lưu chuyển tiền tệ với lợi nhuận sau thuế toàn tập đoàn trên báo cáo kết quả kinh doanh hợp nhất năm 2024: cần những số nào?",
+      "category": "multi_value",
+      "target_ids": [
+        "cfo",
+        "net_income"
+      ],
+      "gold_pages": [
+        103,
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Net cash flows from operating activities",
+            "6,608,320,655,215"
+          ]
+        },
+        {
+          "page": 103,
+          "quotes": [
+            "NET PROFIT AFTER TAX",
+            "12,020,023,621,271"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "value": "6608320655215",
+          "raw_value": "6,608,320,655,215",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "net_income",
+          "year": 2024,
+          "value": "12020023621271",
+          "raw_value": "12,020,023,621,271",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "hpg-2024-compare-revenue",
+      "question": "HPG: So sánh doanh thu thuần năm 2024 với cột năm 2023 trên báo cáo kết quả kinh doanh hợp nhất trong báo cáo năm 2024; cần lấy hai giá trị nào?",
+      "category": "year_comparison",
+      "target_ids": [
+        "revenue"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "NET REVENUE",
+            "138,855,112,131,387",
+            "118,953,027,893,654"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "revenue",
+          "year": 2024,
+          "value": "138855112131387",
+          "raw_value": "138,855,112,131,387",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "revenue",
+          "year": 2023,
+          "value": "118953027893654",
+          "raw_value": "118,953,027,893,654",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "hpg-2024-compare-net_income",
+      "question": "HPG: So sánh lợi nhuận sau thuế toàn tập đoàn năm 2024 với cột năm 2023 trên báo cáo kết quả kinh doanh hợp nhất trong báo cáo năm 2024; cần lấy hai giá trị nào?",
+      "category": "year_comparison",
+      "target_ids": [
+        "net_income"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "NET PROFIT AFTER TAX",
+            "12,020,023,621,271",
+            "6,800,388,315,081"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "net_income",
+          "year": 2024,
+          "value": "12020023621271",
+          "raw_value": "12,020,023,621,271",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "net_income",
+          "year": 2023,
+          "value": "6800388315081",
+          "raw_value": "6,800,388,315,081",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "hpg-2024-compare-cfo",
+      "question": "HPG: So sánh dòng tiền thuần từ hoạt động kinh doanh năm 2024 với cột năm 2023 trên báo cáo lưu chuyển tiền tệ hợp nhất trong báo cáo năm 2024; cần lấy hai giá trị nào?",
+      "category": "year_comparison",
+      "target_ids": [
+        "cfo"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Net cash flows from operating activities",
+            "6,608,320,655,215",
+            "8,643,030,777,026"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "value": "6608320655215",
+          "raw_value": "6,608,320,655,215",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "cfo",
+          "year": 2023,
+          "value": "8643030777026",
+          "raw_value": "8,643,030,777,026",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "HPG",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "HPG_2024_annual.pdf",
+      "source_sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "hpg-2024-compare-interest_expense",
+      "question": "HPG: So sánh chi phí lãi vay năm 2024 với cột năm 2023 trên báo cáo kết quả kinh doanh hợp nhất trong báo cáo năm 2024; cần lấy hai giá trị nào?",
+      "category": "year_comparison",
+      "target_ids": [
+        "interest_expense"
+      ],
+      "gold_pages": [
+        103
+      ],
+      "evidence": [
+        {
+          "page": 103,
+          "quotes": [
+            "Interest expense",
+            "2,287,360,810,880",
+            "3,585,077,683,881"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_expense",
+          "year": 2024,
+          "value": "2287360810880",
+          "raw_value": "2,287,360,810,880",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "interest_expense",
+          "year": 2023,
+          "value": "3585077683881",
+          "raw_value": "3,585,077,683,881",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "id": "pnj-2024-current_assets",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tài sản ngắn hạn tại 31/12/2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "current_assets"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "CURRENT ASSETS",
+            "15,692,597,267,632"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_assets",
+          "year": 2024,
+          "value": "15692597267632",
+          "raw_value": "15,692,597,267,632",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-cash_eq",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tiền và tương đương tiền cuối năm 2024 trên bảng cân đối hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cash_eq"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "Cash and cash equivalents",
+            "1,122,712,392,130"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cash_eq",
+          "year": 2024,
+          "value": "1122712392130",
+          "raw_value": "1,122,712,392,130",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-cash",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Khoản tiền không gồm tương đương tiền tại cuối năm 2024 trên bảng cân đối hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cash"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "Cash",
+            "1,022,712,392,130"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cash",
+          "year": 2024,
+          "value": "1022712392130",
+          "raw_value": "1,022,712,392,130",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-short_invest",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Đầu tư ngắn hạn tại 31/12/2024 trên bảng cân đối kế toán hợp nhất có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "short_invest"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "Short-term investment",
+            "1,020,170,000,000"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "short_invest",
+          "year": 2024,
+          "value": "1020170000000",
+          "raw_value": "1,020,170,000,000",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-receivables",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tổng phải thu ngắn hạn cuối năm 2024 trên bảng cân đối hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "receivables"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "Short-term receivables",
+            "401,134,922,152"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "receivables",
+          "year": 2024,
+          "value": "401134922152",
+          "raw_value": "401,134,922,152",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-trade_receivables",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Phải thu thương mại ngắn hạn tại cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "trade_receivables"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "Short-term trade accounts receivable",
+            "70,851,635,761"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "trade_receivables",
+          "year": 2024,
+          "value": "70851635761",
+          "raw_value": "70,851,635,761",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-prepayments",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Khoản trả trước cho người bán ngắn hạn cuối năm 2024 trên bảng cân đối hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "prepayments"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "Short-term prepayments to suppliers",
+            "253,102,611,434"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "prepayments",
+          "year": 2024,
+          "value": "253102611434",
+          "raw_value": "253,102,611,434",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-inventory",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Hàng tồn kho thuần sau dự phòng tại 31/12/2024 trên bảng cân đối hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "inventory"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "Inventories",
+            "13,015,170,477,311"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "inventory",
+          "year": 2024,
+          "value": "13015170477311",
+          "raw_value": "13,015,170,477,311",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-noncurrent_assets",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tổng tài sản dài hạn cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "noncurrent_assets"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "NON-CURRENT ASSETS",
+            "1,515,133,510,053"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "noncurrent_assets",
+          "year": 2024,
+          "value": "1515133510053",
+          "raw_value": "1,515,133,510,053",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-total_assets",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tổng tài sản tại thời điểm 31/12/2024 trên bảng cân đối hợp nhất có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "total_assets"
+      ],
+      "gold_pages": [
+        97
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "TOTAL ASSETS",
+            "17,207,730,777,685"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "total_assets",
+          "year": 2024,
+          "value": "17207730777685",
+          "raw_value": "17,207,730,777,685",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-liabilities",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Nợ phải trả cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "liabilities"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "LIABILITIES",
+            "5,952,424,147,163"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "liabilities",
+          "year": 2024,
+          "value": "5952424147163",
+          "raw_value": "5,952,424,147,163",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-current_liabilities",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Nợ ngắn hạn tại 31/12/2024 trên bảng cân đối hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "current_liabilities"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Current liabilities",
+            "5,941,881,733,413"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_liabilities",
+          "year": 2024,
+          "value": "5941881733413",
+          "raw_value": "5,941,881,733,413",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-long_liabilities",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Nợ dài hạn cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "long_liabilities"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Non-current liabilities",
+            "10,542,413,750"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "long_liabilities",
+          "year": 2024,
+          "value": "10542413750",
+          "raw_value": "10,542,413,750",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-short_borrowings",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Vay ngắn hạn cuối năm 2024 trên bảng cân đối kế toán hợp nhất có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "short_borrowings"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Short-term borrowings",
+            "3,341,542,016,760"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "short_borrowings",
+          "year": 2024,
+          "value": "3341542016760",
+          "raw_value": "3,341,542,016,760",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-equity",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Vốn chủ sở hữu tại 31/12/2024 trên bảng cân đối hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "equity"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "OWNERS’ EQUITY",
+            "11,255,306,630,522"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "equity",
+          "year": 2024,
+          "value": "11255306630522",
+          "raw_value": "11,255,306,630,522",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-retained",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Lợi nhuận chưa phân phối cuối năm 2024 trên bảng cân đối kế toán hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "retained"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Undistributed earnings",
+            "3,301,351,491,146"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "retained",
+          "year": 2024,
+          "value": "3301351491146",
+          "raw_value": "3,301,351,491,146",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-gross_revenue",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Doanh thu bán hàng và cung cấp dịch vụ trước giảm trừ năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "gross_revenue"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Revenue from sales of goods",
+            "38,232,401,184,050"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_revenue",
+          "year": 2024,
+          "value": "38232401184050",
+          "raw_value": "38,232,401,184,050",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-deductions",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Các khoản giảm trừ doanh thu năm 2024 trên báo cáo kết quả kinh doanh hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "deductions"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Less deduction",
+            "409,564,012,665"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "deductions",
+          "year": 2024,
+          "value": "409564012665",
+          "raw_value": "409,564,012,665",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-revenue",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Doanh thu thuần năm 2024 trên báo cáo kết quả hoạt động kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "revenue"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Net revenue from sales of goods",
+            "37,822,837,171,385"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "revenue",
+          "year": 2024,
+          "value": "37822837171385",
+          "raw_value": "37,822,837,171,385",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-cost_sales",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Giá vốn hàng bán và dịch vụ năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cost_sales"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Cost of goods sold and services rendered",
+            "31,149,334,531,193"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cost_sales",
+          "year": 2024,
+          "value": "31149334531193",
+          "raw_value": "31,149,334,531,193",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-gross_profit",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Lợi nhuận gộp năm 2024 trên báo cáo kết quả kinh doanh hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "gross_profit"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Gross profit from sales of goods",
+            "6,673,502,640,192"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_profit",
+          "year": 2024,
+          "value": "6673502640192",
+          "raw_value": "6,673,502,640,192",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-financial_income",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Doanh thu hoạt động tài chính năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "financial_income"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Financial income",
+            "75,567,438,524"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "financial_income",
+          "year": 2024,
+          "value": "75567438524",
+          "raw_value": "75,567,438,524",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-financial_expenses",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Chi phí tài chính năm 2024 trên báo cáo kết quả kinh doanh hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "financial_expenses"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Financial expenses",
+            "93,616,780,951"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "financial_expenses",
+          "year": 2024,
+          "value": "93616780951",
+          "raw_value": "93,616,780,951",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-interest_expense",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Chi phí lãi vay năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "interest_expense"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Interest expense",
+            "46,775,305,829"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_expense",
+          "year": 2024,
+          "value": "46775305829",
+          "raw_value": "46,775,305,829",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-selling",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Chi phí bán hàng năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "selling"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Selling expenses",
+            "3,207,574,691,174"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "selling",
+          "year": 2024,
+          "value": "3207574691174",
+          "raw_value": "3,207,574,691,174",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-admin",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Chi phí quản lý doanh nghiệp năm 2024 trên báo cáo kết quả kinh doanh hợp nhất có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "admin"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "General and administration expenses",
+            "795,749,355,922"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "admin",
+          "year": 2024,
+          "value": "795749355922",
+          "raw_value": "795,749,355,922",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-pretax",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Lợi nhuận kế toán trước thuế năm 2024 trên báo cáo kết quả kinh doanh hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "pretax"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Net accounting profit before tax",
+            "2,651,012,449,308"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "pretax",
+          "year": 2024,
+          "value": "2651012449308",
+          "raw_value": "2,651,012,449,308",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-net_income",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Lợi nhuận sau thuế năm 2024 trên báo cáo kết quả kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "net_income"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Net profit after tax",
+            "2,112,916,282,946"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "net_income",
+          "year": 2024,
+          "value": "2112916282946",
+          "raw_value": "2,112,916,282,946",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-depreciation",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Khoản điều chỉnh khấu hao năm 2024 trong lưu chuyển tiền từ hoạt động kinh doanh hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "depreciation"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Depreciation and amortisation",
+            "80,821,846,271"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "depreciation",
+          "year": 2024,
+          "value": "80821846271",
+          "raw_value": "80,821,846,271",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-interest_paid",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tiền lãi vay đã trả trong năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu, giữ dấu dòng tiền?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "interest_paid"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Interest paid",
+            "(46,067,825,009)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_paid",
+          "year": 2024,
+          "value": "-46067825009",
+          "raw_value": "(46,067,825,009)",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-tax_paid",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tiền thuế thu nhập doanh nghiệp đã nộp năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất bằng bao nhiêu, giữ dấu âm?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "tax_paid"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "CIT paid",
+            "(555,484,436,785)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "tax_paid",
+          "year": 2024,
+          "value": "-555484436785",
+          "raw_value": "(555,484,436,785)",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-cfo",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Dòng tiền thuần từ hoạt động kinh doanh năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cfo"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Net cash inflows from operating activities",
+            "83,185,174,755"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "value": "83185174755",
+          "raw_value": "83,185,174,755",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-capex",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tiền chi mua sắm tài sản cố định năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "capex"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Purchases of fixed assets",
+            "(90,406,299,690)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "capex",
+          "year": 2024,
+          "value": "-90406299690",
+          "raw_value": "(90,406,299,690)",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-cfi",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Dòng tiền thuần từ hoạt động đầu tư năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cfi"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Net cash outflows from investing activities",
+            "(211,036,976,684)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfi",
+          "year": 2024,
+          "value": "-211036976684",
+          "raw_value": "(211,036,976,684)",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-borrowings_received",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Tiền thu từ đi vay trong năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "borrowings_received"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Proceeds from borrowings",
+            "6,788,859,495,016"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "borrowings_received",
+          "year": 2024,
+          "value": "6788859495016",
+          "raw_value": "6,788,859,495,016",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-cff",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Dòng tiền thuần từ hoạt động tài chính năm 2024 trên báo cáo lưu chuyển tiền tệ hợp nhất là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cff"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Net cash inflows/(outflows) from financing activities",
+            "352,815,852,307"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cff",
+          "year": 2024,
+          "value": "352815852307",
+          "raw_value": "352,815,852,307",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-raw_materials",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Thuyết minh hàng tồn kho cho biết giá gốc nguyên vật liệu cuối năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "raw_materials"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Raw materials",
+            "634,610,808,014"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "raw_materials",
+          "year": 2024,
+          "value": "634610808014",
+          "raw_value": "634,610,808,014",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-finished_goods",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Theo thuyết minh hàng tồn kho, giá gốc thành phẩm tại 31/12/2024 bằng bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "finished_goods"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Finished goods",
+            "8,466,765,298,103"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "finished_goods",
+          "year": 2024,
+          "value": "8466765298103",
+          "raw_value": "8,466,765,298,103",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-merchandise",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Giá gốc hàng hóa cuối năm 2024 trong thuyết minh hàng tồn kho là bao nhiêu trước dự phòng?",
+      "category": "note_lookup",
+      "target_ids": [
+        "merchandise"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Merchandise",
+            "3,677,652,498,252"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "merchandise",
+          "year": 2024,
+          "value": "3677652498252",
+          "raw_value": "3,677,652,498,252",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-lease_prepaid",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Trong thuyết minh chi phí trả trước ngắn hạn, khoản thuê hoạt động cuối năm 2024 bằng bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "lease_prepaid"
+      ],
+      "gold_pages": [
+        105
+      ],
+      "evidence": [
+        {
+          "page": 105,
+          "quotes": [
+            "Operating leases",
+            "52,300,040,878"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "lease_prepaid",
+          "year": 2024,
+          "value": "52300040878",
+          "raw_value": "52,300,040,878",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-jewelry_revenue",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Theo thuyết minh doanh thu, doanh thu thuần từ bán trang sức năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "jewelry_revenue"
+      ],
+      "gold_pages": [
+        112
+      ],
+      "evidence": [
+        {
+          "page": 112,
+          "quotes": [
+            "Net revenue from sales of jewelry",
+            "37,682,907,517,042"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "jewelry_revenue",
+          "year": 2024,
+          "value": "37682907517042",
+          "raw_value": "37,682,907,517,042",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-jewelry_cost",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Thuyết minh giá vốn cho biết giá vốn trang sức đã bán năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "jewelry_cost"
+      ],
+      "gold_pages": [
+        112
+      ],
+      "evidence": [
+        {
+          "page": 112,
+          "quotes": [
+            "Cost of jewelry sold",
+            "31,026,785,553,344"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "jewelry_cost",
+          "year": 2024,
+          "value": "31026785553344",
+          "raw_value": "31,026,785,553,344",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-selling_rent",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Trong thuyết minh chi phí bán hàng năm 2024, chi phí thuê là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "selling_rent"
+      ],
+      "gold_pages": [
+        113
+      ],
+      "evidence": [
+        {
+          "page": 113,
+          "quotes": [
+            "Rental fee",
+            "417,814,334,455"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "selling_rent",
+          "year": 2024,
+          "value": "417814334455",
+          "raw_value": "417,814,334,455",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-marketing",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Thuyết minh chi phí bán hàng ghi nhận quảng cáo và tiếp thị năm 2024 bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "marketing"
+      ],
+      "gold_pages": [
+        113
+      ],
+      "evidence": [
+        {
+          "page": 113,
+          "quotes": [
+            "Advertising and marketing",
+            "293,273,497,553"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "marketing",
+          "year": 2024,
+          "value": "293273497553",
+          "raw_value": "293,273,497,553",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-materials_cost",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Theo thuyết minh chi phí hoạt động theo yếu tố, chi phí nguyên vật liệu năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "materials_cost"
+      ],
+      "gold_pages": [
+        114
+      ],
+      "evidence": [
+        {
+          "page": 114,
+          "quotes": [
+            "Raw materials",
+            "22,351,661,272,806"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "materials_cost",
+          "year": 2024,
+          "value": "22351661272806",
+          "raw_value": "22,351,661,272,806",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "pnj-2024-staff_cost",
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "question": "PNJ: Trong thuyết minh chi phí hoạt động theo yếu tố, chi phí nhân viên năm 2024 bằng bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "staff_cost"
+      ],
+      "gold_pages": [
+        114
+      ],
+      "evidence": [
+        {
+          "page": 114,
+          "quotes": [
+            "Staff costs",
+            "2,759,831,712,527"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "staff_cost",
+          "year": 2024,
+          "value": "2759831712527",
+          "raw_value": "2,759,831,712,527",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      }
+    },
+    {
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "pnj-2024-multi-liquidity",
+      "question": "PNJ: Tìm tài sản ngắn hạn và nợ ngắn hạn cuối năm 2024 trên bảng cân đối hợp nhất để đối chiếu khả năng thanh toán hiện hành.",
+      "category": "multi_value",
+      "target_ids": [
+        "current_assets",
+        "current_liabilities"
+      ],
+      "gold_pages": [
+        97,
+        98
+      ],
+      "evidence": [
+        {
+          "page": 97,
+          "quotes": [
+            "CURRENT ASSETS",
+            "15,692,597,267,632"
+          ]
+        },
+        {
+          "page": 98,
+          "quotes": [
+            "Current liabilities",
+            "5,941,881,733,413"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_assets",
+          "year": 2024,
+          "value": "15692597267632",
+          "raw_value": "15,692,597,267,632",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "current_liabilities",
+          "year": 2024,
+          "value": "5941881733413",
+          "raw_value": "5,941,881,733,413",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "pnj-2024-multi-leverage",
+      "question": "PNJ: Cần số nợ phải trả và tổng tài sản tại 31/12/2024 trên bảng cân đối hợp nhất để tính tỷ lệ nợ trên tài sản.",
+      "category": "multi_value",
+      "target_ids": [
+        "liabilities",
+        "total_assets"
+      ],
+      "gold_pages": [
+        97,
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "LIABILITIES",
+            "5,952,424,147,163"
+          ]
+        },
+        {
+          "page": 97,
+          "quotes": [
+            "TOTAL ASSETS",
+            "17,207,730,777,685"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "liabilities",
+          "year": 2024,
+          "value": "5952424147163",
+          "raw_value": "5,952,424,147,163",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "total_assets",
+          "year": 2024,
+          "value": "17207730777685",
+          "raw_value": "17,207,730,777,685",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "pnj-2024-multi-gross_margin",
+      "question": "PNJ: Tìm cả lợi nhuận gộp và doanh thu thuần năm 2024 trên báo cáo kết quả kinh doanh hợp nhất để tính biên lợi nhuận gộp.",
+      "category": "multi_value",
+      "target_ids": [
+        "gross_profit",
+        "revenue"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Gross profit from sales of goods",
+            "6,673,502,640,192"
+          ]
+        },
+        {
+          "page": 98,
+          "quotes": [
+            "Net revenue from sales of goods",
+            "37,822,837,171,385"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_profit",
+          "year": 2024,
+          "value": "6673502640192",
+          "raw_value": "6,673,502,640,192",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "revenue",
+          "year": 2024,
+          "value": "37822837171385",
+          "raw_value": "37,822,837,171,385",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "pnj-2024-multi-cash_vs_profit",
+      "question": "PNJ: Đối chiếu dòng tiền kinh doanh thuần trên báo cáo lưu chuyển tiền tệ với lợi nhuận sau thuế toàn tập đoàn trên báo cáo kết quả kinh doanh hợp nhất năm 2024: cần những số nào?",
+      "category": "multi_value",
+      "target_ids": [
+        "cfo",
+        "net_income"
+      ],
+      "gold_pages": [
+        98,
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Net cash inflows from operating activities",
+            "83,185,174,755"
+          ]
+        },
+        {
+          "page": 98,
+          "quotes": [
+            "Net profit after tax",
+            "2,112,916,282,946"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "value": "83185174755",
+          "raw_value": "83,185,174,755",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "net_income",
+          "year": 2024,
+          "value": "2112916282946",
+          "raw_value": "2,112,916,282,946",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "pnj-2024-compare-revenue",
+      "question": "PNJ: So sánh doanh thu thuần năm 2024 với cột năm 2023 trên báo cáo kết quả kinh doanh hợp nhất trong báo cáo năm 2024; cần lấy hai giá trị nào?",
+      "category": "year_comparison",
+      "target_ids": [
+        "revenue"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Net revenue from sales of goods",
+            "37,822,837,171,385",
+            "33,136,929,196,429"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "revenue",
+          "year": 2024,
+          "value": "37822837171385",
+          "raw_value": "37,822,837,171,385",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "revenue",
+          "year": 2023,
+          "value": "33136929196429",
+          "raw_value": "33,136,929,196,429",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "pnj-2024-compare-net_income",
+      "question": "PNJ: So sánh lợi nhuận sau thuế toàn tập đoàn năm 2024 với cột năm 2023 trên báo cáo kết quả kinh doanh hợp nhất trong báo cáo năm 2024; cần lấy hai giá trị nào?",
+      "category": "year_comparison",
+      "target_ids": [
+        "net_income"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Net profit after tax",
+            "2,112,916,282,946",
+            "1,971,099,177,135"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "net_income",
+          "year": 2024,
+          "value": "2112916282946",
+          "raw_value": "2,112,916,282,946",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "net_income",
+          "year": 2023,
+          "value": "1971099177135",
+          "raw_value": "1,971,099,177,135",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "pnj-2024-compare-cfo",
+      "question": "PNJ: So sánh dòng tiền thuần từ hoạt động kinh doanh năm 2024 với cột năm 2023 trên báo cáo lưu chuyển tiền tệ hợp nhất trong báo cáo năm 2024; cần lấy hai giá trị nào?",
+      "category": "year_comparison",
+      "target_ids": [
+        "cfo"
+      ],
+      "gold_pages": [
+        99
+      ],
+      "evidence": [
+        {
+          "page": 99,
+          "quotes": [
+            "Net cash inflows from operating activities",
+            "83,185,174,755",
+            "1,507,741,471,093"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "value": "83185174755",
+          "raw_value": "83,185,174,755",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "cfo",
+          "year": 2023,
+          "value": "1507741471093",
+          "raw_value": "1,507,741,471,093",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    },
+    {
+      "company": "PNJ",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "PNJ_2024_annual.pdf",
+      "source_sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "rendered-table visual review + literal source check",
+        "independent_review": false
+      },
+      "id": "pnj-2024-compare-interest_expense",
+      "question": "PNJ: So sánh chi phí lãi vay năm 2024 với cột năm 2023 trên báo cáo kết quả kinh doanh hợp nhất trong báo cáo năm 2024; cần lấy hai giá trị nào?",
+      "category": "year_comparison",
+      "target_ids": [
+        "interest_expense"
+      ],
+      "gold_pages": [
+        98
+      ],
+      "evidence": [
+        {
+          "page": 98,
+          "quotes": [
+            "Interest expense",
+            "46,775,305,829",
+            "118,568,804,103"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_expense",
+          "year": 2024,
+          "value": "46775305829",
+          "raw_value": "46,775,305,829",
+          "currency": "VND",
+          "unit": "one"
+        },
+        {
+          "target": "interest_expense",
+          "year": 2023,
+          "value": "118568804103",
+          "raw_value": "118,568,804,103",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ]
+    }
+  ]
+}

@@ -56,8 +56,9 @@ class BenchmarkImportTests(unittest.TestCase):
         self.assertTrue(all(not r.get("allowed_pages") for r in reports))
 
     def test_versioned_questions_have_distinct_text_and_declared_label_provenance(self):
-        path = Path(__file__).resolve().parents[1] / "finlens/fixtures/benchmark_v1.json"
+        path = Path(__file__).resolve().parents[1] / "finlens/fixtures/benchmark_development_v1.json"
         dataset = load_dataset(path)
+        self.assertEqual(dataset["split"], "development")
         cases = dataset["cases"]
         self.assertEqual(len(cases), 108)
         self.assertEqual(len({c["question"] for c in cases}), 108)

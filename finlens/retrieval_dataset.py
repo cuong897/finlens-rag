@@ -86,8 +86,12 @@ def check_split(cases, split):
     if split == "test":
         validate_cases(cases, strict=True)
         development_sources = {r["sha256"] for r in manifest()}
+        exposed = json.loads((Path(__file__).parent / "fixtures/exposed_sources.json").read_text(encoding="utf-8"))
+        development_sources.update(r["sha256"] for r in exposed)
         if any(c["source_sha256"] in development_sources for c in cases):
             raise ValueError("Tập test trùng PDF đã dùng phát triển; hãy tách theo tài liệu.")
+        if {c["company"] for c in cases} & {r["company"] for r in [*manifest(), *exposed]}:
+            raise ValueError("Tập test trùng doanh nghiệp đã dùng phát triển.")
 
 
 def score_evidence(hits, document_id, evidence):
