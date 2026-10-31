@@ -1,0 +1,1334 @@
+{
+  "version": 1,
+  "annotation": "Assistant transcription of original PDF tables; visual checks 2026-10-31; no independent human adjudication. Both source columns retained; signs and thousands separators preserved.",
+  "targets": {
+    "DPM": [
+      {
+        "id": "current_assets",
+        "page": 73,
+        "label": "CURRENT ASSETS",
+        "question_label_vi": "tài sản ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "13,219,573,591,341",
+          "2023": "9,565,106,752,268"
+        }
+      },
+      {
+        "id": "cash",
+        "page": 73,
+        "label": "Cash and cash equivalents",
+        "question_label_vi": "tiền và tương đương tiền",
+        "kind": "balance",
+        "values": {
+          "2024": "1,004,912,303,570",
+          "2023": "1,241,561,362,115"
+        }
+      },
+      {
+        "id": "inventory",
+        "page": 73,
+        "label": "Inventories",
+        "question_label_vi": "hàng tồn kho sau dự phòng",
+        "kind": "balance",
+        "values": {
+          "2024": "1,730,684,831,761",
+          "2023": "1,910,840,607,214"
+        }
+      },
+      {
+        "id": "total_assets",
+        "page": 74,
+        "label": "TOTAL ASSETS",
+        "question_label_vi": "tổng tài sản",
+        "kind": "balance",
+        "values": {
+          "2024": "16,552,286,447,507",
+          "2023": "13,309,260,029,583"
+        }
+      },
+      {
+        "id": "noncurrent_assets",
+        "page": 74,
+        "label": "NON-CURRENT ASSETS",
+        "question_label_vi": "tài sản dài hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "3,332,712,856,166",
+          "2023": "3,744,153,277,315"
+        }
+      },
+      {
+        "id": "liabilities",
+        "page": 74,
+        "label": "C. LIABILITIES",
+        "question_label_vi": "tổng nợ phải trả",
+        "kind": "balance",
+        "values": {
+          "2024": "5,372,450,027,238",
+          "2023": "1,764,060,255,739"
+        }
+      },
+      {
+        "id": "current_liabilities",
+        "page": 74,
+        "label": "Current liabilities",
+        "question_label_vi": "nợ ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "5,198,718,914,842",
+          "2023": "1,484,492,945,240"
+        }
+      },
+      {
+        "id": "equity",
+        "page": 75,
+        "label": "D. EQUITY",
+        "question_label_vi": "tổng vốn chủ sở hữu",
+        "kind": "balance",
+        "values": {
+          "2024": "11,179,836,420,269",
+          "2023": "11,545,199,773,844"
+        }
+      },
+      {
+        "id": "revenue",
+        "page": 75,
+        "label": "Net revenue",
+        "question_label_vi": "doanh thu thuần",
+        "kind": "income",
+        "values": {
+          "2024": "13,496,142,223,703",
+          "2023": "13,569,185,518,411"
+        }
+      },
+      {
+        "id": "cogs",
+        "page": 75,
+        "label": "Cost of sales",
+        "question_label_vi": "giá vốn hàng bán và dịch vụ",
+        "kind": "income",
+        "values": {
+          "2024": "11,598,010,673,565",
+          "2023": "11,917,438,631,877"
+        }
+      },
+      {
+        "id": "gross_profit",
+        "page": 75,
+        "label": "Gross profit",
+        "question_label_vi": "lợi nhuận gộp",
+        "kind": "income",
+        "values": {
+          "2024": "1,898,131,550,138",
+          "2023": "1,651,746,886,534"
+        }
+      },
+      {
+        "id": "financial_income",
+        "page": 75,
+        "label": "Financial income",
+        "question_label_vi": "doanh thu hoạt động tài chính",
+        "kind": "income",
+        "values": {
+          "2024": "369,143,114,332",
+          "2023": "457,576,170,227"
+        }
+      },
+      {
+        "id": "financial_expenses",
+        "page": 75,
+        "label": "Financial expenses",
+        "question_label_vi": "chi phí tài chính",
+        "kind": "income",
+        "values": {
+          "2024": "65,028,684,735",
+          "2023": "71,157,838,669"
+        }
+      },
+      {
+        "id": "interest",
+        "page": 75,
+        "label": "Interest expense",
+        "question_label_vi": "chi phí lãi vay",
+        "kind": "income",
+        "values": {
+          "2024": "47,838,183,679",
+          "2023": "50,638,299,383"
+        }
+      },
+      {
+        "id": "selling",
+        "page": 75,
+        "label": "Selling expenses",
+        "question_label_vi": "chi phí bán hàng",
+        "kind": "income",
+        "values": {
+          "2024": "837,208,423,254",
+          "2023": "848,444,338,144"
+        }
+      },
+      {
+        "id": "admin",
+        "page": 75,
+        "label": "General and administration expenses",
+        "question_label_vi": "chi phí quản lý doanh nghiệp",
+        "kind": "income",
+        "values": {
+          "2024": "702,811,258,885",
+          "2023": "502,354,622,004"
+        }
+      },
+      {
+        "id": "pbt",
+        "page": 75,
+        "label": "Accounting profit before tax",
+        "question_label_vi": "lợi nhuận trước thuế",
+        "kind": "income",
+        "values": {
+          "2024": "669,331,577,098",
+          "2023": "690,966,528,693"
+        }
+      },
+      {
+        "id": "pat",
+        "page": 75,
+        "label": "Net profit after corporate income",
+        "question_label_vi": "lợi nhuận sau thuế toàn tập đoàn",
+        "kind": "income",
+        "values": {
+          "2024": "554,266,541,498",
+          "2023": "529,816,920,522"
+        }
+      },
+      {
+        "id": "cfo",
+        "page": 76,
+        "label": "Net cash generated by operating activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động kinh doanh",
+        "kind": "cashflow",
+        "values": {
+          "2024": "947,829,530,921",
+          "2023": "944,846,622,234"
+        }
+      },
+      {
+        "id": "cfi",
+        "page": 76,
+        "label": "Net cash (used in)/generated by investing",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động đầu tư",
+        "kind": "cashflow",
+        "values": {
+          "2024": "(3,808,210,515,663)",
+          "2023": "1,676,077,836,133"
+        }
+      },
+      {
+        "id": "cff",
+        "page": 76,
+        "label": "Net cash generated by/(used in) financing",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động tài chính",
+        "kind": "cashflow",
+        "values": {
+          "2024": "2,620,547,588,254",
+          "2023": "(3,462,565,992,594)"
+        }
+      },
+      {
+        "id": "receivables",
+        "page": 73,
+        "label": "Short-term receivables",
+        "question_label_vi": "tổng các khoản phải thu ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "653,185,512,324",
+          "2023": "642,215,358,351"
+        }
+      },
+      {
+        "id": "cash_hand",
+        "page": 81,
+        "label": "Cash on hand",
+        "question_label_vi": "tiền mặt tại quỹ",
+        "kind": "note_balance",
+        "values": {
+          "2024": "3,977,349,115",
+          "2023": "2,657,500,348"
+        }
+      },
+      {
+        "id": "cash_bank",
+        "page": 81,
+        "label": "Bank demand deposits",
+        "question_label_vi": "tiền gửi ngân hàng không kỳ hạn",
+        "kind": "note_balance",
+        "values": {
+          "2024": "737,899,053,535",
+          "2023": "572,123,935,435"
+        }
+      },
+      {
+        "id": "raw_materials",
+        "page": 83,
+        "label": "Raw materials",
+        "question_label_vi": "giá gốc nguyên vật liệu tồn kho trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "450,474,860,815",
+          "2023": "309,731,169,770"
+        }
+      },
+      {
+        "id": "wip",
+        "page": 83,
+        "label": "Work in progress",
+        "question_label_vi": "giá gốc sản phẩm dở dang trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "19,264,251,889",
+          "2023": "75,591,581,221"
+        }
+      },
+      {
+        "id": "finished_goods",
+        "page": 83,
+        "label": "Finished goods",
+        "question_label_vi": "giá gốc thành phẩm tồn kho trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "942,280,185,563",
+          "2023": "1,212,216,519,901"
+        }
+      },
+      {
+        "id": "merchandise",
+        "page": 83,
+        "label": "Merchandise",
+        "question_label_vi": "giá gốc hàng hóa tồn kho trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "176,311,582,461",
+          "2023": "266,686,933,735"
+        }
+      },
+      {
+        "id": "materials_cost",
+        "page": 93,
+        "label": "Raw materials and consumables",
+        "question_label_vi": "chi phí nguyên vật liệu theo yếu tố",
+        "kind": "note_flow",
+        "values": {
+          "2024": "7,858,251,120,893",
+          "2023": "6,871,144,247,415"
+        }
+      },
+      {
+        "id": "labour_cost",
+        "page": 93,
+        "label": "Labour",
+        "question_label_vi": "chi phí nhân công theo yếu tố",
+        "kind": "note_flow",
+        "values": {
+          "2024": "706,262,620,951",
+          "2023": "598,801,329,925"
+        }
+      }
+    ],
+    "BMP": [
+      {
+        "id": "current_assets",
+        "page": 88,
+        "label": "CURRENT ASSETS",
+        "question_label_vi": "tài sản ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "2,596,113,208,905",
+          "2023": "2,593,900,147,858"
+        }
+      },
+      {
+        "id": "cash",
+        "page": 88,
+        "label": "Cash and cash equivalents",
+        "question_label_vi": "tiền và tương đương tiền",
+        "kind": "balance",
+        "values": {
+          "2024": "504,172,685,550",
+          "2023": "821,414,457,106"
+        }
+      },
+      {
+        "id": "inventory",
+        "page": 88,
+        "label": "IV. Inventories",
+        "question_label_vi": "hàng tồn kho sau dự phòng",
+        "kind": "balance",
+        "values": {
+          "2024": "463,583,886,225",
+          "2023": "364,225,974,474"
+        }
+      },
+      {
+        "id": "total_assets",
+        "page": 88,
+        "label": "TOTAL ASSETS",
+        "question_label_vi": "tổng tài sản",
+        "kind": "balance",
+        "values": {
+          "2024": "3,200,494,976,288",
+          "2023": "3,255,000,928,111"
+        }
+      },
+      {
+        "id": "noncurrent_assets",
+        "page": 88,
+        "label": "LONG-TERM ASSETS",
+        "question_label_vi": "tài sản dài hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "604,381,767,383",
+          "2023": "661,100,780,253"
+        }
+      },
+      {
+        "id": "liabilities",
+        "page": 89,
+        "label": "A. LIABILITIES",
+        "question_label_vi": "tổng nợ phải trả",
+        "kind": "balance",
+        "values": {
+          "2024": "498,796,285,653",
+          "2023": "565,271,946,212"
+        }
+      },
+      {
+        "id": "current_liabilities",
+        "page": 89,
+        "label": "Current liabilities",
+        "question_label_vi": "nợ ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "480,999,507,110",
+          "2023": "546,150,418,753"
+        }
+      },
+      {
+        "id": "equity",
+        "page": 89,
+        "label": "B. EQUITY",
+        "question_label_vi": "tổng vốn chủ sở hữu",
+        "kind": "balance",
+        "values": {
+          "2024": "2,701,698,690,635",
+          "2023": "2,689,728,981,899"
+        }
+      },
+      {
+        "id": "revenue",
+        "page": 90,
+        "label": "Net revenue",
+        "question_label_vi": "doanh thu thuần",
+        "kind": "income",
+        "values": {
+          "2024": "4,615,678,655,546",
+          "2023": "5,156,984,370,216"
+        }
+      },
+      {
+        "id": "cogs",
+        "page": 90,
+        "label": "Cost of goods sold and services provided",
+        "question_label_vi": "giá vốn hàng bán và dịch vụ",
+        "kind": "income",
+        "values": {
+          "2024": "2,627,051,787,554",
+          "2023": "3,040,564,400,058"
+        }
+      },
+      {
+        "id": "gross_profit",
+        "page": 90,
+        "label": "Gross profit",
+        "question_label_vi": "lợi nhuận gộp",
+        "kind": "income",
+        "values": {
+          "2024": "1,988,626,867,992",
+          "2023": "2,116,419,970,158"
+        }
+      },
+      {
+        "id": "financial_income",
+        "page": 90,
+        "label": "Financial income",
+        "question_label_vi": "doanh thu hoạt động tài chính",
+        "kind": "income",
+        "values": {
+          "2024": "78,731,633,534",
+          "2023": "118,503,493,327"
+        }
+      },
+      {
+        "id": "financial_expenses",
+        "page": 90,
+        "label": "Financial expenses",
+        "question_label_vi": "chi phí tài chính",
+        "kind": "income",
+        "values": {
+          "2024": "162,364,102,533",
+          "2023": "145,561,663,111"
+        }
+      },
+      {
+        "id": "interest",
+        "page": 90,
+        "label": "Interest expense",
+        "question_label_vi": "chi phí lãi vay",
+        "kind": "income",
+        "values": {
+          "2024": "20,863,234",
+          "2023": "38,676,662"
+        }
+      },
+      {
+        "id": "selling",
+        "page": 90,
+        "label": "Selling expenses",
+        "question_label_vi": "chi phí bán hàng",
+        "kind": "income",
+        "values": {
+          "2024": "555,916,198,609",
+          "2023": "676,251,353,235"
+        }
+      },
+      {
+        "id": "admin",
+        "page": 90,
+        "label": "General and administration expenses",
+        "question_label_vi": "chi phí quản lý doanh nghiệp",
+        "kind": "income",
+        "values": {
+          "2024": "119,640,553,673",
+          "2023": "106,918,740,381"
+        }
+      },
+      {
+        "id": "pbt",
+        "page": 90,
+        "label": "Accounting profit before tax",
+        "question_label_vi": "lợi nhuận trước thuế",
+        "kind": "income",
+        "values": {
+          "2024": "1,240,532,853,687",
+          "2023": "1,307,182,881,426"
+        }
+      },
+      {
+        "id": "pat",
+        "page": 90,
+        "label": "Net profit after tax",
+        "question_label_vi": "lợi nhuận sau thuế toàn tập đoàn",
+        "kind": "income",
+        "values": {
+          "2024": "990,761,729,138",
+          "2023": "1,041,006,333,282"
+        }
+      },
+      {
+        "id": "cfo",
+        "page": 90,
+        "label": "Net cash flows from operating activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động kinh doanh",
+        "kind": "cashflow",
+        "values": {
+          "2024": "900,554,973,918",
+          "2023": "1,602,839,085,529"
+        }
+      },
+      {
+        "id": "cfi",
+        "page": 90,
+        "label": "Net cash flows from investing activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động đầu tư",
+        "kind": "cashflow",
+        "values": {
+          "2024": "(248,318,241,716)",
+          "2023": "(174,061,043,110)"
+        }
+      },
+      {
+        "id": "cff",
+        "page": 91,
+        "label": "Net cash flows from financing activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động tài chính",
+        "kind": "cashflow",
+        "values": {
+          "2024": "(969,503,505,920)",
+          "2023": "(965,949,068,400)"
+        }
+      },
+      {
+        "id": "receivables",
+        "page": 88,
+        "label": "Accounts receivable – short-term",
+        "question_label_vi": "tổng các khoản phải thu ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "177,752,774,225",
+          "2023": "174,027,942,449"
+        }
+      },
+      {
+        "id": "interest_receivable",
+        "page": 98,
+        "label": "Interest receivables",
+        "question_label_vi": "lãi phải thu thuộc phải thu ngắn hạn khác",
+        "kind": "note_balance",
+        "values": {
+          "2024": "23,491,857,542",
+          "2023": "25,854,424,685"
+        }
+      },
+      {
+        "id": "deposits_receivable",
+        "page": 98,
+        "label": "Deposits",
+        "question_label_vi": "tiền đặt cọc thuộc phải thu ngắn hạn khác",
+        "kind": "note_balance",
+        "values": {
+          "2024": "2,934,082,300",
+          "2023": "1,954,527,800"
+        }
+      },
+      {
+        "id": "raw_materials",
+        "page": 99,
+        "label": "Raw materials",
+        "question_label_vi": "giá gốc nguyên vật liệu tồn kho trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "167,363,677,292",
+          "2023": "119,953,925,072"
+        }
+      },
+      {
+        "id": "wip",
+        "page": 99,
+        "label": "Work in progress",
+        "question_label_vi": "giá gốc sản phẩm dở dang trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "35,865,472,769",
+          "2023": "41,277,433,935"
+        }
+      },
+      {
+        "id": "finished_goods",
+        "page": 99,
+        "label": "Finished goods",
+        "question_label_vi": "giá gốc thành phẩm tồn kho trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "215,466,570,856",
+          "2023": "145,755,185,949"
+        }
+      },
+      {
+        "id": "merchandise",
+        "page": 99,
+        "label": "Merchandise inventories",
+        "question_label_vi": "giá gốc hàng hóa tồn kho trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "17,554,937,958",
+          "2023": "19,090,919,724"
+        }
+      },
+      {
+        "id": "materials_cost",
+        "page": 108,
+        "label": "Raw material costs included in production costs",
+        "question_label_vi": "chi phí nguyên vật liệu sản xuất và giá vốn hàng hóa mua vào theo yếu tố",
+        "kind": "note_flow",
+        "values": {
+          "2024": "2,185,706,932,980",
+          "2023": "2,507,636,168,506"
+        }
+      },
+      {
+        "id": "labour_cost",
+        "page": 108,
+        "label": "Labour costs and staff costs",
+        "question_label_vi": "chi phí nhân công theo yếu tố",
+        "kind": "note_flow",
+        "values": {
+          "2024": "437,975,087,738",
+          "2023": "480,077,607,957"
+        }
+      }
+    ],
+    "REE": [
+      {
+        "id": "current_assets",
+        "page": 106,
+        "label": "CURRENT ASSETS",
+        "question_label_vi": "tài sản ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "11,285,775,224,595",
+          "2023": "9,524,178,397,527"
+        }
+      },
+      {
+        "id": "cash",
+        "page": 106,
+        "label": "Cash and cash equivalents",
+        "question_label_vi": "tiền và tương đương tiền",
+        "kind": "balance",
+        "values": {
+          "2024": "5,635,908,856,765",
+          "2023": "3,022,796,235,406"
+        }
+      },
+      {
+        "id": "inventory",
+        "page": 106,
+        "label": "IV. Inventories",
+        "question_label_vi": "hàng tồn kho sau dự phòng",
+        "kind": "balance",
+        "values": {
+          "2024": "1,276,815,964,044",
+          "2023": "1,353,834,235,393"
+        }
+      },
+      {
+        "id": "total_assets",
+        "page": 107,
+        "label": "TOTAL ASSETS",
+        "question_label_vi": "tổng tài sản",
+        "kind": "balance",
+        "values": {
+          "2024": "36,362,339,883,577",
+          "2023": "34,912,272,846,093"
+        }
+      },
+      {
+        "id": "noncurrent_assets",
+        "page": 107,
+        "label": "NON-CURRENT ASSETS",
+        "question_label_vi": "tài sản dài hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "25,076,564,658,982",
+          "2023": "25,388,094,448,566"
+        }
+      },
+      {
+        "id": "liabilities",
+        "page": 108,
+        "label": "C. LIABILITIES",
+        "question_label_vi": "tổng nợ phải trả",
+        "kind": "balance",
+        "values": {
+          "2024": "13,907,555,789,461",
+          "2023": "14,142,171,608,105"
+        }
+      },
+      {
+        "id": "current_liabilities",
+        "page": 108,
+        "label": "Current liabilities",
+        "question_label_vi": "nợ ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "4,070,052,841,712",
+          "2023": "3,944,551,522,493"
+        }
+      },
+      {
+        "id": "equity",
+        "page": 109,
+        "label": "D. OWNERS’ EQUITY",
+        "question_label_vi": "tổng vốn chủ sở hữu",
+        "kind": "balance",
+        "values": {
+          "2024": "22,454,784,094,116",
+          "2023": "20,770,101,237,988"
+        }
+      },
+      {
+        "id": "revenue",
+        "page": 110,
+        "label": "Net revenues from sale of goods",
+        "question_label_vi": "doanh thu thuần",
+        "kind": "income",
+        "values": {
+          "2024": "8,383,666,601,214",
+          "2023": "8,569,918,341,777"
+        }
+      },
+      {
+        "id": "cogs",
+        "page": 110,
+        "label": "Costs of goods sold and services rendered",
+        "question_label_vi": "giá vốn hàng bán và dịch vụ",
+        "kind": "income",
+        "values": {
+          "2024": "(5,259,571,562,464)",
+          "2023": "(4,859,979,570,703)"
+        }
+      },
+      {
+        "id": "gross_profit",
+        "page": 110,
+        "label": "Gross profit from sale of goods",
+        "question_label_vi": "lợi nhuận gộp",
+        "kind": "income",
+        "values": {
+          "2024": "3,124,095,038,750",
+          "2023": "3,709,938,771,074"
+        }
+      },
+      {
+        "id": "financial_income",
+        "page": 110,
+        "label": "Finance income",
+        "question_label_vi": "doanh thu hoạt động tài chính",
+        "kind": "income",
+        "values": {
+          "2024": "317,755,694,465",
+          "2023": "227,055,551,430"
+        }
+      },
+      {
+        "id": "financial_expenses",
+        "page": 110,
+        "label": "Finance expenses",
+        "question_label_vi": "chi phí tài chính",
+        "kind": "income",
+        "values": {
+          "2024": "(790,736,452,795)",
+          "2023": "(1,016,426,708,380)"
+        }
+      },
+      {
+        "id": "interest",
+        "page": 110,
+        "label": "Interest expense",
+        "question_label_vi": "chi phí lãi vay",
+        "kind": "income",
+        "values": {
+          "2024": "(737,977,126,660)",
+          "2023": "(938,879,965,835)"
+        }
+      },
+      {
+        "id": "selling",
+        "page": 110,
+        "label": "Selling expenses",
+        "question_label_vi": "chi phí bán hàng",
+        "kind": "income",
+        "values": {
+          "2024": "(118,200,239,690)",
+          "2023": "(92,540,436,139)"
+        }
+      },
+      {
+        "id": "admin",
+        "page": 110,
+        "label": "General and administrative expenses",
+        "question_label_vi": "chi phí quản lý doanh nghiệp",
+        "kind": "income",
+        "values": {
+          "2024": "(577,607,076,180)",
+          "2023": "(663,075,670,866)"
+        }
+      },
+      {
+        "id": "pbt",
+        "page": 110,
+        "label": "Accounting profit before tax",
+        "question_label_vi": "lợi nhuận trước thuế",
+        "kind": "income",
+        "values": {
+          "2024": "2,687,606,595,302",
+          "2023": "3,056,093,471,161"
+        }
+      },
+      {
+        "id": "pat",
+        "page": 111,
+        "label": "Net profit after corporate income tax",
+        "question_label_vi": "lợi nhuận sau thuế toàn tập đoàn",
+        "kind": "income",
+        "values": {
+          "2024": "2,396,000,255,249",
+          "2023": "2,786,658,064,221"
+        }
+      },
+      {
+        "id": "cfo",
+        "page": 112,
+        "label": "Net cash flows from operating activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động kinh doanh",
+        "kind": "cashflow",
+        "values": {
+          "2024": "3,783,526,238,878",
+          "2023": "2,816,770,167,812"
+        }
+      },
+      {
+        "id": "cfi",
+        "page": 112,
+        "label": "investing activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động đầu tư",
+        "kind": "cashflow",
+        "values": {
+          "2024": "204,723,275,450",
+          "2023": "642,333,602,338"
+        }
+      },
+      {
+        "id": "cff",
+        "page": 113,
+        "label": "Net cash flows used in financing activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động tài chính",
+        "kind": "cashflow",
+        "values": {
+          "2024": "(1,375,157,169,735)",
+          "2023": "(1,587,573,361,183)"
+        }
+      },
+      {
+        "id": "receivables",
+        "page": 106,
+        "label": "Current accounts receivable",
+        "question_label_vi": "tổng các khoản phải thu ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "3,129,681,988,376",
+          "2023": "3,780,066,002,722"
+        }
+      },
+      {
+        "id": "cash_hand",
+        "page": 127,
+        "label": "Cash on hand",
+        "question_label_vi": "tiền mặt tại quỹ",
+        "kind": "note_balance",
+        "values": {
+          "2024": "637,097,873",
+          "2023": "1,047,833,640"
+        }
+      },
+      {
+        "id": "cash_bank",
+        "page": 127,
+        "label": "Cash at banks",
+        "question_label_vi": "tiền gửi ngân hàng không kỳ hạn",
+        "kind": "note_balance",
+        "values": {
+          "2024": "273,775,653,324",
+          "2023": "287,335,107,442"
+        }
+      },
+      {
+        "id": "raw_materials",
+        "page": 130,
+        "label": "Raw materials",
+        "question_label_vi": "giá gốc nguyên vật liệu tồn kho trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "295,617,132,589",
+          "2023": "375,200,373,739"
+        }
+      },
+      {
+        "id": "wip",
+        "page": 130,
+        "label": "Work in process",
+        "question_label_vi": "giá gốc sản phẩm dở dang trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "934,987,776,011",
+          "2023": "870,641,448,622"
+        }
+      },
+      {
+        "id": "finished_merchandise",
+        "page": 130,
+        "label": "Finished and merchandise goods",
+        "question_label_vi": "giá gốc thành phẩm và hàng hóa tồn kho trước dự phòng",
+        "kind": "note_balance",
+        "values": {
+          "2024": "129,375,214,368",
+          "2023": "148,941,344,744"
+        }
+      },
+      {
+        "id": "goods_transit",
+        "page": 130,
+        "label": "Goods in transit",
+        "question_label_vi": "giá gốc hàng mua đang đi đường",
+        "kind": "note_balance",
+        "values": {
+          "2024": "12,763,761,278",
+          "2023": "9,218,469,554"
+        }
+      },
+      {
+        "id": "prepaid_land",
+        "page": 130,
+        "label": "Prepaid land rental",
+        "question_label_vi": "tiền thuê đất trả trước dài hạn",
+        "kind": "note_balance",
+        "values": {
+          "2024": "206,410,826,210",
+          "2023": "197,972,655,752"
+        }
+      },
+      {
+        "id": "renovation",
+        "page": 130,
+        "label": "Renovation costs",
+        "question_label_vi": "chi phí sửa chữa cải tạo trả trước dài hạn",
+        "kind": "note_balance",
+        "values": {
+          "2024": "24,656,368,283",
+          "2023": "24,951,976,932"
+        }
+      }
+    ],
+    "GMD": [
+      {
+        "id": "current_assets",
+        "page": 6,
+        "label": "CURRENT ASSETS",
+        "question_label_vi": "tài sản ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "6.673.567.765.409",
+          "2023": "3.380.201.263.412"
+        }
+      },
+      {
+        "id": "cash",
+        "page": 6,
+        "label": "Cash and cash equivalents",
+        "question_label_vi": "tiền và tương đương tiền",
+        "kind": "balance",
+        "values": {
+          "2024": "3.964.316.764.607",
+          "2023": "1.471.676.297.950"
+        }
+      },
+      {
+        "id": "inventory",
+        "page": 6,
+        "label": "IV. Inventories",
+        "question_label_vi": "hàng tồn kho sau dự phòng",
+        "kind": "balance",
+        "values": {
+          "2024": "83.419.825.055",
+          "2023": "68.169.766.561"
+        }
+      },
+      {
+        "id": "total_assets",
+        "page": 7,
+        "label": "TOTAL ASSETS",
+        "question_label_vi": "tổng tài sản",
+        "kind": "balance",
+        "values": {
+          "2024": "17.997.853.312.717",
+          "2023": "13.546.025.168.428"
+        }
+      },
+      {
+        "id": "noncurrent_assets",
+        "page": 7,
+        "label": "NON-CURRENT ASSETS",
+        "question_label_vi": "tài sản dài hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "11.324.285.547.308",
+          "2023": "10.165.823.905.016"
+        }
+      },
+      {
+        "id": "liabilities",
+        "page": 8,
+        "label": "C - LIABILITIES",
+        "question_label_vi": "tổng nợ phải trả",
+        "kind": "balance",
+        "values": {
+          "2024": "4.225.927.310.161",
+          "2023": "3.813.651.116.409"
+        }
+      },
+      {
+        "id": "current_liabilities",
+        "page": 8,
+        "label": "Current liabilities",
+        "question_label_vi": "nợ ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "2.100.758.451.703",
+          "2023": "1.915.337.161.256"
+        }
+      },
+      {
+        "id": "equity",
+        "page": 9,
+        "label": "OWNER'S EQUITY",
+        "question_label_vi": "tổng vốn chủ sở hữu",
+        "kind": "balance",
+        "values": {
+          "2024": "13.771.926.002.556",
+          "2023": "9.732.374.052.019"
+        }
+      },
+      {
+        "id": "revenue",
+        "page": 10,
+        "label": "Net revenue",
+        "question_label_vi": "doanh thu thuần",
+        "kind": "income",
+        "values": {
+          "2024": "4.832.024.798.961",
+          "2023": "3.845.826.296.568"
+        }
+      },
+      {
+        "id": "cogs",
+        "page": 10,
+        "label": "Cost of sales",
+        "question_label_vi": "giá vốn hàng bán và dịch vụ",
+        "kind": "income",
+        "values": {
+          "2024": "2.696.544.401.941",
+          "2023": "2.067.811.109.265"
+        }
+      },
+      {
+        "id": "gross_profit",
+        "page": 10,
+        "label": "Gross profit",
+        "question_label_vi": "lợi nhuận gộp",
+        "kind": "income",
+        "values": {
+          "2024": "2.135.480.397.020",
+          "2023": "1.778.015.187.303"
+        }
+      },
+      {
+        "id": "financial_income",
+        "page": 10,
+        "label": "Financial income",
+        "question_label_vi": "doanh thu hoạt động tài chính",
+        "kind": "income",
+        "values": {
+          "2024": "426.126.464.636",
+          "2023": "1.940.961.393.455"
+        }
+      },
+      {
+        "id": "financial_expenses",
+        "page": 10,
+        "label": "Financial expenses",
+        "question_label_vi": "chi phí tài chính",
+        "kind": "income",
+        "values": {
+          "2024": "150.292.456.722",
+          "2023": "154.695.013.336"
+        }
+      },
+      {
+        "id": "interest",
+        "page": 10,
+        "label": "Loan interest expenses",
+        "question_label_vi": "chi phí lãi vay",
+        "kind": "income",
+        "values": {
+          "2024": "139.487.501.839",
+          "2023": "134.993.138.662"
+        }
+      },
+      {
+        "id": "selling",
+        "page": 10,
+        "label": "Selling expenses",
+        "question_label_vi": "chi phí bán hàng",
+        "kind": "income",
+        "values": {
+          "2024": "247.200.313.981",
+          "2023": "109.543.154.417"
+        }
+      },
+      {
+        "id": "admin",
+        "page": 10,
+        "label": "General and administration expenses",
+        "question_label_vi": "chi phí quản lý doanh nghiệp",
+        "kind": "income",
+        "values": {
+          "2024": "574.838.485.710",
+          "2023": "551.943.343.263"
+        }
+      },
+      {
+        "id": "pbt",
+        "page": 10,
+        "label": "Total accounting profit before tax",
+        "question_label_vi": "lợi nhuận trước thuế",
+        "kind": "income",
+        "values": {
+          "2024": "2.098.590.309.616",
+          "2023": "3.147.487.212.943"
+        }
+      },
+      {
+        "id": "pat",
+        "page": 10,
+        "label": "Profit after tax",
+        "question_label_vi": "lợi nhuận sau thuế toàn tập đoàn",
+        "kind": "income",
+        "values": {
+          "2024": "1.923.583.483.411",
+          "2023": "2.533.934.246.423"
+        }
+      },
+      {
+        "id": "cfo",
+        "page": 11,
+        "label": "Net cash flows from operating activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động kinh doanh",
+        "kind": "cashflow",
+        "values": {
+          "2024": "1.526.822.551.805",
+          "2023": "(2.870.318.244)"
+        }
+      },
+      {
+        "id": "cfi",
+        "page": 11,
+        "label": "Net cash flows from investing activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động đầu tư",
+        "kind": "cashflow",
+        "values": {
+          "2024": "(1.375.722.020.449)",
+          "2023": "915.396.272.136"
+        }
+      },
+      {
+        "id": "cff",
+        "page": 12,
+        "label": "Net cash flows from financing activities",
+        "question_label_vi": "lưu chuyển tiền thuần từ hoạt động tài chính",
+        "kind": "cashflow",
+        "values": {
+          "2024": "2.338.588.413.999",
+          "2023": "(807.928.229.885)"
+        }
+      },
+      {
+        "id": "receivables",
+        "page": 6,
+        "label": "Short-term receivables",
+        "question_label_vi": "tổng các khoản phải thu ngắn hạn",
+        "kind": "balance",
+        "values": {
+          "2024": "1.235.608.050.191",
+          "2023": "1.193.181.492.780"
+        }
+      },
+      {
+        "id": "cash_hand",
+        "page": 28,
+        "label": "Cash on hand",
+        "question_label_vi": "tiền mặt tại quỹ",
+        "kind": "note_balance",
+        "values": {
+          "2024": "16.876.300.664",
+          "2023": "22.054.492.056"
+        }
+      },
+      {
+        "id": "cash_bank",
+        "page": 28,
+        "label": "Cash in banks",
+        "question_label_vi": "tiền gửi ngân hàng không kỳ hạn",
+        "kind": "note_balance",
+        "values": {
+          "2024": "3.180.723.117.969",
+          "2023": "739.365.321.791"
+        }
+      },
+      {
+        "id": "cash_transit",
+        "page": 28,
+        "label": "Cash in transit",
+        "question_label_vi": "tiền đang chuyển",
+        "kind": "note_balance",
+        "values": {
+          "2024": "625.056.446",
+          "2023": "588.443.006"
+        }
+      },
+      {
+        "id": "related_receivables",
+        "page": 30,
+        "label": "Receivables from related parties",
+        "question_label_vi": "phải thu thương mại ngắn hạn từ các bên liên quan",
+        "kind": "note_balance",
+        "values": {
+          "2024": "67.119.694.273",
+          "2023": "172.836.410.674"
+        }
+      },
+      {
+        "id": "other_customer_receivables",
+        "page": 30,
+        "label": "Receivables from other customers",
+        "question_label_vi": "phải thu thương mại ngắn hạn từ các khách hàng khác",
+        "kind": "note_balance",
+        "values": {
+          "2024": "531.412.169.418",
+          "2023": "411.823.253.752"
+        }
+      },
+      {
+        "id": "materials_cost",
+        "page": 44,
+        "label": "Materials and supplies",
+        "question_label_vi": "chi phí nguyên vật liệu theo yếu tố",
+        "kind": "note_flow",
+        "values": {
+          "2024": "332.229.964.623",
+          "2023": "291.525.445.177"
+        }
+      },
+      {
+        "id": "labour_cost",
+        "page": 44,
+        "label": "Labor costs",
+        "question_label_vi": "chi phí nhân công theo yếu tố",
+        "kind": "note_flow",
+        "values": {
+          "2024": "657.707.831.467",
+          "2023": "509.504.335.839"
+        }
+      },
+      {
+        "id": "external_services",
+        "page": 44,
+        "label": "Expenses for external services",
+        "question_label_vi": "chi phí dịch vụ mua ngoài theo yếu tố",
+        "kind": "note_flow",
+        "values": {
+          "2024": "1.788.643.590.852",
+          "2023": "1.314.257.137.815"
+        }
+      }
+    ]
+  }
+}

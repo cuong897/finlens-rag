@@ -2,6 +2,7 @@
 
 import json
 import hashlib
+import re
 from pathlib import Path
 
 import httpx
@@ -18,6 +19,22 @@ def benchmark_reports():
 
 def holdout_reports():
     return json.loads((Path(__file__).parent / "fixtures/benchmark_holdout_reports_v2.json").read_text(encoding="utf-8"))
+
+
+def reference_integer(raw):
+    """Validate an integer printed with consistent comma/dot thousands groups.
+
+    This is only for annotation audit, never for retrieval or financial facts.
+    Decimal values, malformed groups and mixed separators are not guessed.
+    """
+    negative = raw.startswith("(") and raw.endswith(")")
+    digits = raw[1:-1] if negative else raw
+    if digits.startswith("-") and not negative:
+        negative, digits = True, digits[1:]
+    if not re.fullmatch(r"(?:[0-9]+|[0-9]{1,3}(?P<sep>[,.])[0-9]{3}(?:(?P=sep)[0-9]{3})*)", digits):
+        raise ValueError("Giá trị tham chiếu cần số nguyên với dấu phân nhóm nhất quán.")
+    value = str(int(digits.replace(",", "").replace(".", "")))
+    return "-" + value if negative and value != "0" else value
 
 
 def audit_benchmark(store, dataset):
@@ -52,7 +69,7 @@ def audit_benchmark(store, dataset):
             pages.add((case["company"], anchor["page"]))
         for answer in case["reference_answers"]:
             raw = answer["raw_value"]
-            expected = ("-" + raw[1:-1] if raw.startswith("(") and raw.endswith(")") else raw).replace(",", "")
+            expected = reference_integer(raw)
             if expected != answer["value"] or not any(raw in a["quotes"] for a in case["evidence"]):
                 raise ValueError(f"Giá trị tham chiếu không khớp trích đoạn: {case['id']}.")
         targets.update((case["company"], key) for key in case["target_ids"])

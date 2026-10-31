@@ -1,0 +1,58 @@
+[
+  {
+    "company": "DPM",
+    "year": 2024,
+    "scope": "consolidated",
+    "filename": "DPM_2024.pdf",
+    "url": "https://dpm.vn/BCTN-DPM-2024/pdf/AR-DPM-2024.pdf",
+    "publisher": "PetroVietnam Fertilizer and Chemicals Corporation",
+    "pages": 97,
+    "sha256": "259098bf3c38c73f0b4da441fdc0149d2e7b0eee5beaa27e2b919c9b6d467ea4",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024",
+    "facts": []
+  },
+  {
+    "company": "BMP",
+    "year": 2024,
+    "scope": "consolidated",
+    "filename": "BMP_2024.pdf",
+    "url": "https://binhminhplastic.com.vn/Data/Sites/1/media/co-dong/bctn/20250415-bmp-ar-2024-en-%28final%29.pdf",
+    "publisher": "Binh Minh Plastics Joint Stock Company",
+    "pages": 111,
+    "sha256": "a964568e06d7e17b8fc5e6b3ca51adde915864b628dfcb7fc2dbd17d8fdcab30",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024",
+    "facts": []
+  },
+  {
+    "company": "REE",
+    "year": 2024,
+    "scope": "consolidated",
+    "filename": "REE_2024.pdf",
+    "url": "https://www.reecorp.com/wp-content/uploads/2025/03/20250318-ree-bao-cao-thuong-nien-2024-ban-tieng-anh.pdf",
+    "publisher": "REE Corporation",
+    "pages": 164,
+    "sha256": "3d00c25e1a057222d6a685d66724286cef9a471ccf50e879d2ecc91bdbb263f1",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024",
+    "facts": []
+  },
+  {
+    "company": "GMD",
+    "year": 2024,
+    "scope": "consolidated",
+    "filename": "GMD_2024.pdf",
+    "url": "https://www.gemadept.com.vn/wp-content/uploads/2025/03/20250331-GMD-Consolidated-Financial-Statements-2024-Audited.pdf",
+    "publisher": "Gemadept Corporation",
+    "pages": 55,
+    "sha256": "31356e72766ae2b338accf516556fc09a925d309f05c50e1247248fdbc18faf7",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024",
+    "facts": []
+  }
+]

@@ -14,9 +14,12 @@ def main():
     parser.add_argument("--rebuild", action="store_true", help="Rebuild embeddings for the configured model")
     parser.add_argument("--with-reviewed-facts", action="store_true", help="Include pilot facts already visually checked against source PDFs")
     parser.add_argument("--cases-file", help="Versioned JSON evaluation set with source checksums and evidence quotes; evaluate-retrieval only")
+    parser.add_argument("--reports-file", help="JSON list of public source reports with checksums; benchmark-import only")
     args = parser.parse_args()
     if args.cases_file and args.command != "evaluate-retrieval":
         parser.error("--cases-file chỉ dùng với evaluate-retrieval")
+    if args.reports_file and args.command != "benchmark-import":
+        parser.error("--reports-file chỉ dùng với benchmark-import")
     if args.env_file:
         from finlens.environment import load_env_file
         try:
@@ -73,7 +76,17 @@ def main():
         result = import_pilot(store, args.with_reviewed_facts)
     elif args.command == "benchmark-import":
         from finlens.benchmark import import_benchmark
-        result = import_benchmark(store)
+        options = {}
+        if args.reports_file:
+            from pathlib import Path
+            try:
+                reports = json.loads(Path(args.reports_file).read_text(encoding="utf-8-sig"))
+                if not isinstance(reports, list) or not reports or any(not isinstance(r, dict) for r in reports):
+                    raise ValueError()
+            except (OSError, UnicodeError, ValueError):
+                parser.error("Không đọc được danh sách nguồn báo cáo JSON.")
+            options["reports"] = reports
+        result = import_benchmark(store, **options)
     elif args.command == "benchmark-holdout-import":
         from finlens.benchmark import import_benchmark, holdout_reports
         result = import_benchmark(store, reports=holdout_reports())
