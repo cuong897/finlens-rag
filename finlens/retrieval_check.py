@@ -72,7 +72,7 @@ def evaluate_retrieval(store, output_dir="artifacts/retrieval", *, cases=None, r
     results = []
     for case, document, gold, chunks in prepared:
         started = time.perf_counter()
-        sparse = bm25(financial_query(case["question"]), chunks, 20)
+        sparse = bm25(financial_query(case["question"]), chunks, 60)
         sparse_ms = (time.perf_counter() - started) * 1000
         started = time.perf_counter()
         vector = embedder.embed([case["question"]])[0]
@@ -81,7 +81,7 @@ def evaluate_retrieval(store, output_dir="artifacts/retrieval", *, cases=None, r
             raise ProviderError("Chiều embedding không khớp; cần lập lại chỉ mục.")
         started = time.perf_counter()
         dense = [{**c, "score": cosine(vector, cached[c["id"]])} for c in chunks]
-        dense = sorted((c for c in dense if c["score"] >= 0.25), key=lambda c: (-c["score"], c["id"]))[:20]
+        dense = sorted((c for c in dense if c["score"] >= 0.25), key=lambda c: (-c["score"], c["id"]))[:60]
         dense_ms = (time.perf_counter() - started) * 1000
         started = time.perf_counter()
         hybrid = rrf([sparse, dense], 5)
@@ -126,13 +126,13 @@ def evaluate_retrieval(store, output_dir="artifacts/retrieval", *, cases=None, r
               "corpus_sha256": fingerprint(sorted(corpus.values(), key=lambda c: (c["company"], c["report_year"], c["scope"], c["source_sha256"], c["page"], c["text"]))),
               "eligible_chunks": len(corpus),
               "implementation_sha256": fingerprint({name: (Path(__file__).parent / name).read_text(encoding="utf-8")
-                                                    for name in ("retrieval.py", "retrieval_check.py", "retrieval_dataset.py", "retrieval_reporting.py", "text.py", "store.py", "models.py", "providers.py")}),
-              "ranking_config": {"top_k": 5, "shortlist_per_strategy": 20, "rrf_k": 60, "context_pool_limit": 40},
+                                                    for name in ("retrieval.py", "financial_retrieval.py", "pdf_text.py", "retrieval_check.py", "retrieval_dataset.py", "retrieval_reporting.py", "text.py", "store.py", "models.py", "providers.py")}),
+              "ranking_config": {"top_k": 5, "shortlist_per_strategy": 60, "rrf_k": 60, "context_pool_limit": 120},
               "metric_protocol": "Company/year/scope are supplied. Rank budget is 5 chunks, including repeated pages. Recall counts distinct canonical gold pages; MRR@5 uses the first canonical-page hit, zero after rank 5. No gold labels enter ranking. References are not exhaustive semantic relevance judgments.",
               "retrieval_source_sha256": fingerprint({name: (Path(__file__).parent / name).read_text(encoding="utf-8")
-                                                      for name in ("retrieval.py", "text.py")}),
+                                                      for name in ("retrieval.py", "financial_retrieval.py", "text.py", "pdf_text.py")}),
               "evidence_note": "All quotes of an anchor must occur in one top-5 chunk on its source page. Complete-evidence reciprocal rank uses the last required anchor. Literal coverage does not establish answer entailment.",
-              "context_reranker": "statement_title_and_row_label; causal questions retain base ranking",
+              "context_reranker": "bilingual financial rows, local statement headers and concept coverage; causal questions retain base ranking",
               "cases": len(results), "companies": sorted({r["company"] for r in results}),
               "summary": summary, "results": results}
     report["by_company"] = grouped_scores(results, "company")

@@ -62,21 +62,21 @@ class Engine:
 
     def retrieve(self, request: AskRequest):
         chunks = self.store.chunks(request.company, request.years, request.scope, request.dataset)
-        sparse = bm25(financial_query(request.question), chunks, max(request.top_k, 20))
+        sparse = bm25(financial_query(request.question), chunks, max(request.top_k, 60))
         if not self.config.embed_model:
-            return sparse[:request.top_k], "bm25", []
+            return contextual_fusion(request.question, sparse, [], self.store.page, request.top_k), "bm25", []
         cached = self.store.embeddings(self.config.embed_model)
         if not chunks or any(c["id"] not in cached for c in chunks):
-            return sparse[:request.top_k], "bm25", ["Chỉ mục embedding chưa đủ. Hãy lập chỉ mục lại để dùng hybrid."]
+            return contextual_fusion(request.question, sparse, [], self.store.page, request.top_k), "bm25", ["Chỉ mục embedding chưa đủ. Hãy lập chỉ mục lại để dùng hybrid."]
         try:
             vector = self.provider.embed([request.question])[0]
             if any(len(cached[c["id"]]) != len(vector) for c in chunks):
                 raise ProviderError("Chiều embedding đã thay đổi; cần lập lại chỉ mục với tên mô hình mới.")
             dense = [{**c, "score": cosine(vector, cached[c["id"]])} for c in chunks]
-            dense = sorted((c for c in dense if c["score"] >= 0.25), key=lambda c: -c["score"])[:20]
+            dense = sorted((c for c in dense if c["score"] >= 0.25), key=lambda c: (-c["score"], c["id"]))[:60]
             return contextual_fusion(request.question, sparse, dense, self.store.page, request.top_k), "hybrid_rrf", []
         except ProviderError as exc:
-            return sparse[:request.top_k], "bm25", [str(exc) + " Đã dùng tìm kiếm từ khóa."]
+            return contextual_fusion(request.question, sparse, [], self.store.page, request.top_k), "bm25", [str(exc) + " Đã dùng tìm kiếm từ khóa."]
 
     def answer(self, request: AskRequest):
         started = time.perf_counter()
