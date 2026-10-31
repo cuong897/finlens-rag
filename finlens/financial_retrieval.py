@@ -177,7 +177,7 @@ def label_strength(text, concept):
             before = line.split(label, 1)[0].strip()
             exact = not before or all(re.fullmatch(r"[ivx]+|[a-z]", t) for t in before.split())
             best = max(best, 1.0 + .4 * exact + .02 * min(8, len(label.split()))
-                       + .08 * min(2, len(_AMOUNT.findall(raw))))
+                       + .08 * min(2, len(_AMOUNT.findall(raw))) + .12 * contains(clean(raw), label))
     if not best and any(contains(clean(text), label) for label in concept["labels"]):
         best = .25
     return best

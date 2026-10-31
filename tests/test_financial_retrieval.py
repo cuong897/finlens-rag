@@ -54,6 +54,14 @@ class FinancialRowsTests(unittest.TestCase):
         ranked = rank_rows("Tài sản ngắn hạn và nợ ngắn hạn trên bảng cân đối", hits, {})
         self.assertTrue({2, 3} <= {h["id"] for h in ranked})
 
+    def test_intact_table_row_is_preferred_to_label_interleaved_with_amounts(self):
+        header = "CONSOLIDATED CASH FLOW STATEMENT\n"
+        hits = [{"id": 1, "document_id": "a", "page": 1,
+                 "text": header + "Net cash inflows/(outflows) from financing 123,456 activities 234,567"},
+                {"id": 2, "document_id": "a", "page": 1,
+                 "text": header + "Net cash inflows/(outflows) from financing activities | 123,456 | 234,567"}]
+        self.assertEqual(rank_rows("Dòng tiền thuần từ hoạt động tài chính", hits, {})[0]["id"], 2)
+
     def test_sibling_rows_are_not_confused(self):
         for question, wrong in [("Tổng nợ phải trả", "Current liabilities 123456"),
                                  ("Tài sản ngắn hạn", "Non-current assets 123456"),
