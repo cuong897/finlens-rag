@@ -87,7 +87,7 @@ def main():
                 dataset = load_dataset(args.cases_file)
             except ValueError as exc:
                 parser.error(str(exc))
-            options = {"cases": dataset["cases"], "dataset_info": {k: dataset[k] for k in ("name", "split", "label_origin")}}
+            options = {"cases": dataset["cases"], "dataset_info": {k: v for k, v in dataset.items() if k != "cases"}}
         result = evaluate_retrieval(store, args.output_dir, **options)
         print(json.dumps({k: v for k, v in result.items() if k != "results"}, ensure_ascii=True, indent=2))
         return

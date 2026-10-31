@@ -34,6 +34,8 @@ def validate_cases(cases, *, strict=False):
         if case["id"] in ids:
             raise ValueError("Bộ câu hỏi có mã câu bị trùng.")
         ids.add(case["id"])
+        if "category" in case and (not isinstance(case["category"], str) or not case["category"].strip()):
+            raise ValueError("Loại câu hỏi cần là chuỗi không rỗng.")
         if type(case.get("report_year")) is not int or not 1990 <= case["report_year"] <= 2100:
             raise ValueError("Năm báo cáo không hợp lệ.")
         if case.get("scope") not in get_args(Scope):

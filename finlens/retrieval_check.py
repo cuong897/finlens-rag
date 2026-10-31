@@ -14,6 +14,7 @@ from finlens.public_pilot import manifest
 from finlens.providers import ModelConfig, Ollama, ProviderError
 from finlens.retrieval import bm25, contextual_fusion, cosine, financial_query, rrf
 from finlens.retrieval_dataset import check_split, fingerprint, quote_text, score_evidence, validate_cases
+from finlens.retrieval_reporting import export_result_csv, grouped_scores
 
 
 def score_ranking(hits, gold):
@@ -97,6 +98,7 @@ def evaluate_retrieval(store, output_dir="artifacts/retrieval", *, cases=None, r
                                 "latency_ms": round(latency, 2),
                                 "chunks": [{"document_id": h["document_id"], "page": h["page"], "text": h["text"]} for h in hits[:5]]}
         results.append({"id": case["id"], "company": case["company"], "report_year": case["report_year"],
+                        "category": case.get("category", "unspecified"), "target_ids": case.get("target_ids", []),
                         "question": case["question"], "gold_pages": case["gold_pages"], "document_id": document["id"],
                         "source_sha256": document["sha256"], "evidence": case.get("evidence", []),
                         "query_embedding_sha256": fingerprint(vector),
@@ -124,28 +126,31 @@ def evaluate_retrieval(store, output_dir="artifacts/retrieval", *, cases=None, r
               "corpus_sha256": fingerprint(sorted(corpus.values(), key=lambda c: (c["company"], c["report_year"], c["scope"], c["source_sha256"], c["page"], c["text"]))),
               "eligible_chunks": len(corpus),
               "implementation_sha256": fingerprint({name: (Path(__file__).parent / name).read_text(encoding="utf-8")
-                                                    for name in ("retrieval.py", "retrieval_check.py", "retrieval_dataset.py", "text.py", "store.py", "models.py", "providers.py")}),
+                                                    for name in ("retrieval.py", "retrieval_check.py", "retrieval_dataset.py", "retrieval_reporting.py", "text.py", "store.py", "models.py", "providers.py")}),
               "ranking_config": {"top_k": 5, "shortlist_per_strategy": 20, "rrf_k": 60, "context_pool_limit": 40},
+              "metric_protocol": "Company/year/scope are supplied. Rank budget is 5 chunks, including repeated pages. Recall counts distinct canonical gold pages; MRR@5 uses the first canonical-page hit, zero after rank 5. No gold labels enter ranking. References are not exhaustive semantic relevance judgments.",
+              "retrieval_source_sha256": fingerprint({name: (Path(__file__).parent / name).read_text(encoding="utf-8")
+                                                      for name in ("retrieval.py", "text.py")}),
               "evidence_note": "All quotes of an anchor must occur in one top-5 chunk on its source page. Complete-evidence reciprocal rank uses the last required anchor. Literal coverage does not establish answer entailment.",
               "context_reranker": "statement_title_and_row_label; causal questions retain base ranking",
               "cases": len(results), "companies": sorted({r["company"] for r in results}),
               "summary": summary, "results": results}
-    report["by_company"] = {}
-    for company in report["companies"]:
-        rows = [r for r in results if r["company"] == company]
-        report["by_company"][company] = {}
-        for strategy in summary:
-            labeled = [r["strategies"][strategy] for r in rows if r["strategies"][strategy]["evidence_complete_at_5"] is not None]
-            report["by_company"][company][strategy] = {
-                "cases": len(rows), "questions_with_source": sum(r["strategies"][strategy]["gold_rank"] is not None for r in rows),
-                "evidence_cases": len(labeled), "evidence_complete_questions": sum(m["evidence_complete_at_5"] for m in labeled)}
+    report["by_company"] = grouped_scores(results, "company")
+    report["by_category"] = grouped_scores(results, "category")
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
     (output / "retrieval-ablation.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    export_result_csv(report, output)
     lines = ["# So sánh phương án tìm nguồn", "", report["warning"], "", report["latency_note"], "",
              "| Phương án | Câu có nguồn / tổng | Recall@5 | MRR@5 | p50 ms | p95 ms |", "| --- | --- | --- | --- | --- | --- |"]
     for name, metric in summary.items():
         lines.append(f"| {name} | {metric['questions_with_source']}/{len(results)} | {metric['recall_at_5']} | {metric['mrr_at_5']} | {metric['latency_p50_ms']} | {metric['latency_p95_ms']} |")
+    lines.extend(["", report["metric_protocol"], ""])
+    for field, heading in [("by_company", "Theo doanh nghiệp"), ("by_category", "Theo loại câu hỏi")]:
+        lines.extend([f"## {heading}", "", "| Nhóm | Phương án | Số câu | Recall@5 | MRR@5 | Đủ bằng chứng |", "| --- | --- | --- | --- | --- | --- |"])
+        for group, strategies in report[field].items():
+            for strategy, metric in strategies.items():
+                lines.append(f"| {group} | {strategy} | {metric['cases']} | {metric['recall_at_5']} | {metric['mrr_at_5']} | {metric['evidence_complete_questions']}/{metric['evidence_cases']} |")
     lines.extend(["", report["evidence_note"], "", "| Phương án | Đủ bằng chứng / có nhãn | Recall bằng chứng@5 | MRR đủ bằng chứng@5 | Đúng trang nhưng thiếu bằng chứng |",
                   "| --- | --- | --- | --- | --- |"])
     for name, metric in summary.items():

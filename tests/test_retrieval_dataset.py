@@ -108,7 +108,7 @@ class DatasetIntegrationTests(unittest.TestCase):
         original = copy.deepcopy(self.dataset["cases"][0])
         validate_cases([{**original, "scope": "standalone"}], strict=True)
         for key, value in [("gold_pages", [True]), ("gold_pages", [2, 2]), ("source_sha256", "wrong"),
-                           ("scope", "separate"),
+                           ("scope", "separate"), ("category", None), ("category", {}),
                            ("evidence", []), ("evidence", [{"page": 1, "quotes": ["x"]}]),
                            ("evidence", [{"page": 2, "quotes": [" "]}]), ("question", "")]:
             case = {**original, key: value}
