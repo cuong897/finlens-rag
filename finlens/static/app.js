@@ -316,7 +316,7 @@ async function openSource(documentId, page) {
 
 function renderAnswer(result) {
   $('#result-empty').hidden = true; $('#result-content').hidden = false;
-  $('#result-title').textContent = statusLabels[result.status] || result.status;
+  $('#result-title').textContent = result.review_required ? 'Cần xác nhận số liệu' : (statusLabels[result.status] || result.status);
   $('#result-meta').textContent = `${modeLabels[result.mode]}${result.generation_model && result.mode === 'generated' ? ` · ${result.generation_model}${result.fallback_used ? ' (dự phòng)' : ''}` : ''} · ${result.latency_ms} ms`;
   $('#answer-text').textContent = result.answer;
   $('#comparison-tables').replaceChildren();

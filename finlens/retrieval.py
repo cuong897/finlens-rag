@@ -7,6 +7,7 @@ import re
 from finlens.text import tokens
 from finlens.text import normalize
 from finlens.financial_retrieval import expansion, profile, rank_rows
+from finlens.query_language import canonical_query
 
 STOPWORDS = set("la va cua co cac cho trong mot nhung voi tu den thi nay bao cao nam hay nhu nao bao nhieu ve toi gi vi sao tai khi the".split())
 
@@ -28,12 +29,12 @@ FINANCIAL_TERMS = {
 
 def financial_query(query: str):
     """Deterministic bilingual aliases for lexical retrieval; no LLM call."""
-    normalized = normalize(query)
+    normalized = canonical_query(query)
     extra = [english for vietnamese, english in FINANCIAL_TERMS.items() if vietnamese in normalized]
     extra.append(expansion(query))
     if net_sales_intent(query):
         extra.append("net revenue sales deductions")
-    return query + (" " + " ".join(extra) if extra else "")
+    return normalized + (" " + " ".join(extra) if extra else "")
 
 
 def net_sales_intent(query):

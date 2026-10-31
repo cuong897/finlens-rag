@@ -141,11 +141,11 @@ def evaluate_retrieval(store, output_dir="artifacts/retrieval", *, cases=None, r
               "corpus_sha256": fingerprint(sorted(corpus.values(), key=lambda c: (c["company"], c["report_year"], c["scope"], c["source_sha256"], c["page"], c["text"]))),
               "eligible_chunks": len(corpus),
               "implementation_sha256": fingerprint({name: (Path(__file__).parent / name).read_text(encoding="utf-8")
-                                                    for name in ("retrieval.py", "financial_retrieval.py", "pdf_text.py", "ocr.py", "retrieval_check.py", "retrieval_dataset.py", "retrieval_diagnostics.py", "retrieval_reporting.py", "text.py", "store.py", "models.py", "providers.py")}),
+                                                    for name in ("retrieval.py", "financial_retrieval.py", "query_language.py", "pdf_text.py", "ocr.py", "retrieval_check.py", "retrieval_dataset.py", "retrieval_diagnostics.py", "retrieval_reporting.py", "text.py", "store.py", "models.py", "providers.py")}),
               "ranking_config": {"top_k": 5, "shortlist_per_strategy": 60, "rrf_k": 60, "context_pool_limit": 120},
               "metric_protocol": "Company/year/scope are supplied. Rank budget is 5 chunks, including repeated pages. Recall counts distinct canonical gold pages; MRR@5 uses the first canonical-page hit, zero after rank 5. No gold labels enter ranking. References are not exhaustive semantic relevance judgments.",
               "retrieval_source_sha256": fingerprint({name: (Path(__file__).parent / name).read_text(encoding="utf-8")
-                                                      for name in ("retrieval.py", "financial_retrieval.py", "text.py", "pdf_text.py", "ocr.py")}),
+                                                      for name in ("retrieval.py", "financial_retrieval.py", "query_language.py", "text.py", "pdf_text.py", "ocr.py")}),
               "evidence_note": "All quotes of an anchor must occur in one top-5 chunk on its source page. Complete-evidence reciprocal rank uses the last required anchor. Literal coverage does not establish answer entailment.",
               "context_reranker": "bilingual financial rows, local statement headers and concept coverage; causal questions retain base ranking",
               "cases": len(results), "companies": sorted({r["company"] for r in results}),

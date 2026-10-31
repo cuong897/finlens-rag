@@ -3,6 +3,7 @@
 import re
 from functools import lru_cache
 from finlens.text import normalize, tokens
+from finlens.query_language import canonical_query
 
 # Domain vocabulary is independent of company, year, amount and benchmark pages.
 # key | Vietnamese phrases | English row labels | default statement
@@ -92,7 +93,7 @@ def contains(text, phrase):
 
 
 def profile(query):
-    q = clean(query)
+    q = clean(canonical_query(query))
     causal_text = q.replace("theo yeu to", "")
     if any(contains(causal_text, phrase) for phrase in ("vi sao", "tai sao", "nguyen nhan", "giai thich", "nho dau", "yeu to", "dong luc", "why", "reason", "explain", "drivers")):
         return []

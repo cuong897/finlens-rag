@@ -7,7 +7,9 @@ from finlens.store import Store
 
 
 class EvidenceError(ValueError):
-    pass
+    def __init__(self, message, *, code="evidence_error"):
+        super().__init__(message)
+        self.code = code
 
 
 DEBT_RATIOS = (
@@ -86,7 +88,7 @@ def fact_citation(fact: dict, label: str):
 def select_fact(store: Store, company: str, metric: str, year: int, scope: str, dataset: str):
     facts = [f for f in store.facts(company, scope, dataset, metric, [year]) if f["verified"]]
     if not facts:
-        raise EvidenceError(f"Chưa có {METRICS[metric]} năm {year} được xác nhận trong phạm vi đã chọn.")
+        raise EvidenceError(f"Chưa có {METRICS[metric]} năm {year} được xác nhận trong phạm vi đã chọn.", code="missing_fact")
     with localcontext() as ctx:
         ctx.prec = 50
         values = {(Decimal(f["value"]) * Decimal(UNITS[f["unit"]]), f["currency"]) for f in facts}

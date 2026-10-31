@@ -49,6 +49,32 @@ class EngineTests(unittest.TestCase):
         for citation in result["citations"]:
             self.assertIsNotNone(self.store.page(citation["document_id"], citation["page"]))
 
+    def test_abbreviated_comparison_uses_same_verified_calculation(self):
+        result = self.engine.answer(self.request("So sánh DTT năm 2023 và 2024"))
+        self.assertEqual(result["mode"], "calculated")
+        self.assertEqual(result["comparisons"][0]["growth_percent"], "25.00")
+        self.assertFalse(result["generation_attempted"])
+
+    def test_missing_fact_offers_review_sources_without_generation_or_fact_writes(self):
+        with self.store.connection() as db:
+            db.execute("DELETE FROM facts WHERE metric='revenue'")
+        count = len(self.store.facts())
+        with patch.object(self.engine.provider, 'generate', create=True, side_effect=AssertionError('No generation')):
+            result = self.engine.answer(self.request("DTT năm 2024 là bao nhiêu?"))
+        self.assertEqual(result["status"], "insufficient_evidence")
+        self.assertTrue(result["review_required"])
+        self.assertTrue(result["citations"])
+        self.assertFalse(result["generation_attempted"])
+        self.assertEqual(result["comparisons"], [])
+        self.assertEqual(len(self.store.facts()), count)
+
+    def test_conflicting_facts_do_not_become_review_or_generated_answer(self):
+        self.add_fact(value='999')
+        with patch.object(self.engine, 'retrieve', side_effect=AssertionError('Conflict must stop')):
+            result = self.engine.answer(self.request('DTT năm 2024 là bao nhiêu?'))
+        self.assertEqual(result['status'], 'insufficient_evidence')
+        self.assertEqual(result['citations'], [])
+
     def test_missing_or_wrong_scope_refuses(self):
         for scope, dataset in [("standalone", "demo"), ("consolidated", "real")]:
             with self.assertRaises(EvidenceError):

@@ -9,7 +9,7 @@ from finlens.models import METRICS, UNIT_LABELS, AskRequest
 from finlens.providers import ModelConfig, ProviderError, make_provider
 from finlens.retrieval import bm25, content_terms, contextual_fusion, cosine, financial_query, net_sales_intent
 from finlens.store import Store
-from finlens.text import normalize
+from finlens.query_language import canonical_query
 
 ALIASES = {
     "revenue": ["doanh thu", "revenue"],
@@ -100,7 +100,7 @@ class Engine:
         years = question_years or request.years
         request = request.model_copy(update={"years": years})
         result["years"] = years
-        normalized = normalize(request.question)
+        normalized = canonical_query(request.question)
         metrics = [metric for metric, aliases in ALIASES.items() if any(a in normalized for a in aliases)]
         if net_sales_intent(request.question) and "revenue" not in metrics:
             metrics.insert(0, "revenue")
@@ -196,6 +196,23 @@ class Engine:
                     numeric_answer.append(f"{METRICS[metric]} năm {years[0]}: {fact['value']} {UNIT_LABELS[fact['unit']]} {fact['currency']}. [{citation['id']}]")
         except EvidenceError as exc:
             result.update(answer=str(exc), citations=[], comparisons=[])
+            if exc.code == "missing_fact":
+                hits, retrieval_mode, warnings = self.retrieve(request)
+                result["retrieval"] = retrieval_mode
+                result["warnings"].extend(warnings)
+                # Source candidates are for human review, never promoted to facts.
+                result["citations"] = [{
+                    "id": f"S{i}", "document_id": h["document_id"], "page": h["page"],
+                    "company": h["company"], "report_year": h["report_year"],
+                    "filename": h["filename"], "is_demo": bool(h["is_demo"]),
+                    "excerpt": h["text"], "source_label": h.get("source_label"),
+                    "period_label": h.get("period_label"),
+                    "url": f"/api/documents/{h['document_id']}/pages/{h['page']}"
+                } for i, h in enumerate(hits[:3], 1)]
+                if result["citations"]:
+                    result["review_required"] = True
+                    result["answer"] += "\n\nĐã tìm thấy các đoạn nguồn để đối chiếu. Mở nguồn, kiểm tra chỉ tiêu, cột năm và đơn vị rồi xác nhận số liệu để tra cứu hoặc tính toán."
+                    result["warnings"].append("Các đoạn gợi ý chưa phải số liệu đã xác nhận và có thể chưa chứa đủ chỉ tiêu cần tìm.")
             return finish()
         if numeric_answer and not wants_reason:
             result.update(status="answered", mode="calculated", answer="\n\n".join(numeric_answer))
