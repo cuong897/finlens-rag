@@ -27,14 +27,15 @@ def main():
         values = [report["summary"][name][key] for name in strategies]
         bars = axis.bar(names, values, color=colors, width=.62)
         axis.bar_label(bars, labels=[f"{value:.4f}" for value in values], padding=4, fontsize=10)
-        axis.set_ylim(0, 1)
+        axis.set_ylim(0, 1.08)
+        axis.set_yticks([0, .2, .4, .6, .8, 1])
         axis.set_title(title, fontsize=12, fontweight="bold", pad=15)
         axis.tick_params(axis="x", labelrotation=25)
         axis.set_axisbelow(True)
         axis.grid(axis="y", color="#e5e9e5", linewidth=.7)
         for edge in ("top", "right"):
             axis.spines[edge].set_visible(False)
-    figure.suptitle(f"FinLens · {report['cases']} câu hỏi trên HPG và PNJ", fontsize=16, fontweight="bold")
+    figure.suptitle(f"FinLens · {report['cases']} câu hỏi trên {' và '.join(report['companies'])}", fontsize=16, fontweight="bold")
     figure.supxlabel("Top 5 đoạn nguồn · Toàn bộ báo cáo · Nhãn do trợ lý biên soạn, chưa có thẩm định độc lập", fontsize=10)
     for extension in ("png", "svg"):
         figure.savefig(output / f"retrieval-benchmark.{extension}", dpi=300, facecolor="white")
