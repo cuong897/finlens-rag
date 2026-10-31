@@ -1,0 +1,32 @@
+[
+  {
+    "filename": "HPG_2024_annual.pdf",
+    "url": "https://file.hoaphat.com.vn/hoaphat-com-vn/2025/04/hpg-annual-report-2024.pdf",
+    "pages": 156,
+    "sha256": "cd18325074be3d976eab5963db5052fef3c5d8c9f4abe8387603418b1cbee02d",
+    "company": "HPG",
+    "year": 2024,
+    "scope": "consolidated",
+    "publisher": "Hoa Phat Group",
+    "language": "en",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "Năm tài chính 2024: 01/01/2024 - 31/12/2024; báo cáo hợp nhất trong báo cáo thường niên",
+    "facts": []
+  },
+  {
+    "filename": "PNJ_2024_annual.pdf",
+    "url": "https://cdn.pnj.io/images/quan-he-co-dong/2025/20250416-Annual-Report-PNJ-2024-en.pdf",
+    "pages": 117,
+    "sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
+    "company": "PNJ",
+    "year": 2024,
+    "scope": "consolidated",
+    "publisher": "Phu Nhuan Jewelry Joint Stock Company",
+    "language": "en",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "Năm tài chính 2024: 01/01/2024 - 31/12/2024; báo cáo hợp nhất trong báo cáo thường niên",
+    "facts": []
+  }
+]

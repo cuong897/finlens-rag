@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "name": "finlens-financial-holdout-v1",
+  "frozen_retrieval_commit": "ed4a45f",
+  "frozen_on": "2026-10-31",
+  "split_unit": "company",
+  "development_companies": [
+    "FPT",
+    "CMG",
+    "ELC"
+  ],
+  "test_companies": [
+    "HPG",
+    "PNJ"
+  ],
+  "language": "Vietnamese queries / English reports",
+  "corpus_policy": "Full annual reports; company, report year and consolidated scope supplied as query metadata; no gold-page filtering.",
+  "question_design": "108 cases: 36 statement lookups + 10 note lookups + 4 cross-statement requests + 4 year comparisons per company. No paraphrase padding.",
+  "annotation": "Assistant-authored and visually checked against rendered source tables; no second human adjudicator. Reference pages are canonical locations for the specified statement/note, not exhaustive semantic relevance judgments.",
+  "ranking": "unchanged since ed4a45f: BM25, BGE-M3 dense threshold 0.25, RRF k=60, context fusion; top 5 chunks; common query vector per case",
+  "metrics": "Macro mean of per-case distinct reference-page recall in top 5 chunks and truncated reciprocal rank of first reference-page hit; also literal label+value evidence coverage and complete-evidence MRR.",
+  "exclusions": [
+    "No model-generated answer accuracy evaluation",
+    "No unanswerable-query/refusal evaluation",
+    "No algorithm tuning on this test set",
+    "No claim of independent human labels or statistical generalization from two companies"
+  ],
+  "reproduction": [
+    "finlens benchmark-import",
+    "finlens index with FINLENS_EMBED_MODEL=bge-m3:latest",
+    "finlens evaluate-retrieval --cases-file finlens/fixtures/benchmark_v1.json"
+  ]
+}
