@@ -98,6 +98,14 @@ def check_split(cases, split):
             raise ValueError("Tập test trùng doanh nghiệp đã dùng phát triển.")
 
 
+def evidence_ranks(hits, document_id, evidence, *, limit):
+    """Find each literal anchor inside one source chunk, within an explicit budget."""
+    return [next((i for i, hit in enumerate(hits[:limit], 1)
+                  if hit["document_id"] == document_id and hit["page"] == anchor["page"]
+                  and all(quote_text(q) in quote_text(hit["text"]) for q in anchor["quotes"])), None)
+            for anchor in evidence]
+
+
 def score_evidence(hits, document_id, evidence):
     """All quotes for one anchor must occur in the same retrieved chunk.
 
@@ -107,12 +115,7 @@ def score_evidence(hits, document_id, evidence):
     if not evidence:
         return {"evidence_recall_at_5": None, "evidence_complete_at_5": None,
                 "evidence_reciprocal_rank": None, "evidence_ranks": []}
-    ranks = []
-    for anchor in evidence:
-        rank = next((i for i, hit in enumerate(hits[:5], 1)
-                     if hit["document_id"] == document_id and hit["page"] == anchor["page"]
-                     and all(quote_text(q) in quote_text(hit["text"]) for q in anchor["quotes"])), None)
-        ranks.append(rank)
+    ranks = evidence_ranks(hits, document_id, evidence, limit=5)
     found = [r for r in ranks if r is not None]
     complete = len(found) == len(ranks)
     return {"evidence_recall_at_5": len(found) / len(ranks), "evidence_complete_at_5": complete,

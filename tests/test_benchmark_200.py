@@ -28,10 +28,17 @@ class ReferenceIntegerTests(unittest.TestCase):
 class Benchmark200IntegrityTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.dataset = load_dataset(FIXTURES / "benchmark_holdout_v3_200.json")
+        cls.dataset = load_dataset(FIXTURES / "benchmark_development_v3_200.json")
 
     def test_dataset_is_reproducible_from_source_row_ledger(self):
-        self.assertEqual(self.dataset, build_dataset())
+        self.assertEqual(self.dataset, build_dataset(development=True))
+
+    def test_exposed_companies_cannot_be_reused_as_independent_test_and_labels_stay_unchanged(self):
+        historical = json.loads((FIXTURES / "benchmark_holdout_v3_200.json").read_text(encoding="utf-8"))
+        self.assertEqual(historical, build_dataset())
+        self.assertEqual(historical["cases"], self.dataset["cases"])
+        with self.assertRaisesRegex(ValueError, "trùng PDF"):
+            load_dataset(FIXTURES / "benchmark_holdout_v3_200.json")
 
     def test_200_questions_are_balanced_and_have_distinct_requirements(self):
         cases = self.dataset["cases"]

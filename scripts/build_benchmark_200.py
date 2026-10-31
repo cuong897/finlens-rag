@@ -32,7 +32,7 @@ def section(row):
             "note_flow": "thuyết minh chi phí theo yếu tố"}[row["kind"]]
 
 
-def build_dataset():
+def build_dataset(*, development=False):
     ledger = json.loads((FIXTURES / "benchmark_targets_v3.json").read_text(encoding="utf-8"))
     reports = json.loads((FIXTURES / "benchmark_reports_v3.json").read_text(encoding="utf-8"))
     cases = []
@@ -90,7 +90,7 @@ def build_dataset():
             add(f"compare-{key}", f"Đối chiếu {row['question_label_vi']} năm 2024 với năm 2023 trong {section(row)}: nêu cả hai số ở hai cột.",
                 "year_comparison", [(key, 2024), (key, 2023)])
     validate_cases(cases, strict=True)
-    return {"version": 1, "name": "finlens-new-company-holdout-v3-200", "split": "test",
+    dataset = {"version": 1, "name": "finlens-new-company-holdout-v3-200", "split": "test",
             "label_origin": "Assistant-authored from original PDF tables rendered and checked on 2026-10-31; no independent human adjudicator. Fixed retrieval/parser from 4eff99a; labels committed before first scoring.",
             "protocol": {"version": 3, "frozen_implementation_commit": "4eff99a",
                          "previously_evaluated_companies": ["FPT", "CMG", "ELC", "HPG", "PNJ", "VHC", "DHG"],
@@ -103,14 +103,23 @@ def build_dataset():
                          "targets_sha256": fingerprint(ledger), "generation_evaluated": False,
                          "independent_human_adjudication": False},
             "reports": reports, "cases": cases}
+    if development:
+        dataset["name"] = "finlens-development-v3-200"
+        dataset["split"] = "development"
+        dataset["label_origin"] += " Exposed for retrieval tuning after the original 200-case measurement; no longer an independent test. Original questions/labels unchanged."
+        dataset["protocol"]["exposed_on"] = "2026-10-31"
+        dataset["protocol"]["historical_test_commit"] = "bac3146"
+        dataset["protocol"]["development_companies"] = dataset["protocol"].pop("test_companies")
+    return dataset
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true", help="Check the versioned dataset matches the transcription ledger")
+    parser.add_argument("--development", action="store_true", help="Use the exposed development copy, preserving historical labels")
     args = parser.parse_args()
-    dataset = build_dataset()
-    path = FIXTURES / "benchmark_holdout_v3_200.json"
+    dataset = build_dataset(development=args.development)
+    path = FIXTURES / ("benchmark_development_v3_200.json" if args.development else "benchmark_holdout_v3_200.json")
     if args.check:
         if dataset != json.loads(path.read_text(encoding="utf-8")):
             raise SystemExit("Versioned dataset differs from the source-row ledger")

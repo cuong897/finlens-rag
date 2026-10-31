@@ -10,5 +10,29 @@
     "sha256": "28e80abe2efa01cf5cdaf06e3c6e86b9d9be0db1c7439bd886045dd24e0ec043",
     "exposed_on": "2026-10-31",
     "reason": "retrieval tuning after 108-case baseline"
+  },
+  {
+    "company": "DPM",
+    "sha256": "259098bf3c38c73f0b4da441fdc0149d2e7b0eee5beaa27e2b919c9b6d467ea4",
+    "exposed_on": "2026-10-31",
+    "reason": "retrieval tuning after original 200-case held-out result bac3146"
+  },
+  {
+    "company": "BMP",
+    "sha256": "a964568e06d7e17b8fc5e6b3ca51adde915864b628dfcb7fc2dbd17d8fdcab30",
+    "exposed_on": "2026-10-31",
+    "reason": "retrieval tuning after original 200-case held-out result bac3146"
+  },
+  {
+    "company": "REE",
+    "sha256": "3d00c25e1a057222d6a685d66724286cef9a471ccf50e879d2ecc91bdbb263f1",
+    "exposed_on": "2026-10-31",
+    "reason": "retrieval tuning after original 200-case held-out result bac3146"
+  },
+  {
+    "company": "GMD",
+    "sha256": "31356e72766ae2b338accf516556fc09a925d309f05c50e1247248fdbc18faf7",
+    "exposed_on": "2026-10-31",
+    "reason": "retrieval tuning after original 200-case held-out result bac3146"
   }
 ]
