@@ -25,8 +25,9 @@ function addImport(source) {
 function addFiles(files) {
   if (imports.busy) return;
   for (const file of files) {
-    if (!/\.(pdf|xlsx|csv)$/i.test(file.name) || file.size > 20 * 1024 * 1024 || !file.size) {
-      toast(`${file.name}: cần PDF, XLSX hoặc CSV không rỗng, tối đa 20 MB.`, true); continue;
+    const limitMB = /\.pdf$/i.test(file.name) ? 32 : 20;
+    if (!/\.(pdf|xlsx|csv)$/i.test(file.name) || file.size > limitMB * 1024 * 1024 || !file.size) {
+      toast(`${file.name}: cần PDF, XLSX hoặc CSV không rỗng, tối đa ${limitMB} MB.`, true); continue;
     }
     addImport({ file, name: file.name, isTable: /\.(xlsx|csv)$/i.test(file.name) });
   }

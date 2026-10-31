@@ -1,10 +1,14 @@
 import unittest
 
-from finlens.financial_retrieval import expansion, label_strength, profile, rank_rows
+from finlens.financial_retrieval import expansion, label_strength, profile, rank_rows, statement_kinds
 from finlens.retrieval import contextual_fusion
 
 
 class FinancialRowsTests(unittest.TestCase):
+    def test_statement_detection_also_supports_standalone_scope(self):
+        self.assertEqual(statement_kinds("INCOME STATEMENT\nNet profit after tax 321"), {"income"})
+        self.assertEqual(statement_kinds("Balance sheet\nTotal assets 123"), {"balance"})
+        self.assertEqual(statement_kinds("NOTES TO THE FINANCIAL STATEMENTS\nINCOME STATEMENT detail"), {"notes"})
     def test_specific_bilingual_concepts_and_negation_do_not_collapse_to_parent_metric(self):
         self.assertEqual({c["key"] for c in profile("Doanh thu thuần từ bán trang sức trong thuyết minh")}, {"jewelry_revenue"})
         self.assertEqual({c["key"] for c in profile("Khoản tiền không gồm tương đương tiền")}, {"cash"})

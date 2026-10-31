@@ -15,11 +15,12 @@ from defusedxml.ElementTree import iterparse
 from openpyxl import load_workbook
 from openpyxl.utils import column_index_from_string, get_column_letter
 
-from finlens.ingest import IngestError, MAX_PDF_BYTES
+from finlens.ingest import IngestError
 from finlens.models import METRICS, UNIT_LABELS, TableOptions
 from finlens.suggestions import identify_metric
 
 MAX_ROWS, MAX_COLS = 5000, 64
+MAX_TABLE_BYTES = 20 * 1024 * 1024
 
 
 def table_amount(raw, style):
@@ -39,7 +40,7 @@ def table_amount(raw, style):
 
 
 def read_table(content, filename, *, sheet="", delimiter="auto", encoding="utf-8-sig"):
-    if not content or len(content) > MAX_PDF_BYTES:
+    if not content or len(content) > MAX_TABLE_BYTES:
         raise IngestError("Tệp bảng phải không rỗng và tối đa 20 MB.")
     extension = Path(filename).suffix.lower()
     try:

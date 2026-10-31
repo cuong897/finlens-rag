@@ -78,7 +78,7 @@ def create_app(data_dir=None, config=None):
         async for part in request.stream():
             content.extend(part)
             if len(content) > MAX_PDF_BYTES:
-                raise HTTPException(413, "PDF vượt giới hạn 20 MB.")
+                raise HTTPException(413, "PDF vượt giới hạn 32 MB.")
         try:
             return await run_in_threadpool(ingest_pdf, store, bytes(content), filename, company, year, scope)
         except IngestError as exc:
@@ -105,10 +105,11 @@ def create_app(data_dir=None, config=None):
             raise HTTPException(422, str(exc)) from exc
 
     async def table_content(request):
+        from finlens.tables import MAX_TABLE_BYTES
         content = bytearray()
         async for part in request.stream():
             content.extend(part)
-            if len(content) > MAX_PDF_BYTES:
+            if len(content) > MAX_TABLE_BYTES:
                 raise HTTPException(413, "Tệp vượt giới hạn 20 MB.")
         return bytes(content)
 

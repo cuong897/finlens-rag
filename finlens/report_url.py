@@ -75,7 +75,7 @@ def download_pdf(url):
                     raise IngestError("Máy chủ trả tệp nén không được hỗ trợ. Hãy tải PDF về máy rồi nhập.")
                 length = response.getheader("Content-Length")
                 if length and (not length.isdigit() or int(length) > MAX_PDF_BYTES):
-                    raise IngestError("PDF vượt giới hạn 20 MB hoặc kích thước tải không hợp lệ.")
+                    raise IngestError("PDF vượt giới hạn 32 MB hoặc kích thước tải không hợp lệ.")
                 content = bytearray()
                 while True:
                     remaining = deadline - time.monotonic()
@@ -88,7 +88,7 @@ def download_pdf(url):
                         break
                     content.extend(block)
                     if len(content) > MAX_PDF_BYTES:
-                        raise IngestError("PDF vượt giới hạn 20 MB.")
+                        raise IngestError("PDF vượt giới hạn 32 MB.")
                     if len(content) >= 5 and not content.startswith(b"%PDF-"):
                         raise IngestError("Liên kết trả về trang web hoặc tệp khác. Hãy dùng đường dẫn PDF trực tiếp.")
                 if length and len(content) != int(length):

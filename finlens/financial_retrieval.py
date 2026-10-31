@@ -122,17 +122,17 @@ def statement_kinds(text):
         return {"notes"}
     kinds = set()
     for kind, patterns in {
-        "balance": ["CONSOLIDATED BALANCE SHEET", "CONSOLIDATED STATEMENT OF FINANCIAL POSITION"],
-        "income": ["CONSOLIDATED INCOME STATEMENT", "CONSOLIDATED STATEMENT OF INCOME", "CONSOLIDATED STATEMENT OF PROFIT"],
-        "cashflow": ["CONSOLIDATED CASH FLOW STATEMENT", "CONSOLIDATED STATEMENT OF CASH FLOWS"],
+        "balance": ["BALANCE SHEET", "STATEMENT OF FINANCIAL POSITION"],
+        "income": ["INCOME STATEMENT", "STATEMENT OF INCOME", "STATEMENT OF PROFIT"],
+        "cashflow": ["CASH FLOW STATEMENT", "STATEMENT OF CASH FLOWS"],
     }.items():
         if any(p in header for p in patterns): kinds.add(kind)
     if not kinds:
         normalized = clean(header)
         if "notes" in normalized or "thuyet minh" in normalized: return {"notes"}
-        if "bang can doi" in normalized or "consolidated balance sheet" in normalized: kinds.add("balance")
-        if "ket qua" in normalized or "consolidated income statement" in normalized: kinds.add("income")
-        if "luu chuyen tien te" in normalized or "consolidated cash flow statement" in normalized: kinds.add("cashflow")
+        if "bang can doi" in normalized or "balance sheet" in normalized: kinds.add("balance")
+        if "ket qua" in normalized or "income statement" in normalized or "statement of income" in normalized: kinds.add("income")
+        if "luu chuyen tien te" in normalized or "cash flow statement" in normalized or "statement of cash flows" in normalized: kinds.add("cashflow")
     return kinds
 
 

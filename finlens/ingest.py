@@ -10,7 +10,7 @@ import pymupdf
 from finlens.store import Store
 from finlens.pdf_text import read_page, VERSION
 
-MAX_PDF_BYTES = 20 * 1024 * 1024
+MAX_PDF_BYTES = 32 * 1024 * 1024
 MAX_PAGES = 250
 MAX_TEXT_CHARS = 2_000_000
 
@@ -21,7 +21,7 @@ class IngestError(ValueError):
 
 def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: int, scope: str, *, context=None):
     if len(content) > MAX_PDF_BYTES:
-        raise IngestError("PDF vượt giới hạn 20 MB.")
+        raise IngestError("PDF vượt giới hạn 32 MB.")
     if not content.startswith(b"%PDF-"):
         raise IngestError("Tệp không có định dạng PDF hợp lệ.")
     digest = hashlib.sha256(content).hexdigest()
