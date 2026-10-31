@@ -14,7 +14,8 @@ from finlens import __version__
 from finlens.engine import Engine
 from finlens.finance import EvidenceError, compare
 from finlens.ingest import MAX_PDF_BYTES, IngestError, ingest_pdf, seed_demo
-from finlens.models import METRICS, UNIT_LABELS, AskRequest, CompareRequest, FactRequest, ImportURLRequest
+from finlens.models import METRICS, UNIT_LABELS, AskRequest, CompareRequest, FactRequest, ImportURLRequest, TableOptions
+from pydantic import ValidationError
 from finlens.providers import ModelConfig, ProviderError, gemini_key_configured
 from finlens.store import Store
 from finlens.suggestions import suggest_page
@@ -103,6 +104,49 @@ def create_app(data_dir=None, config=None):
         except IngestError as exc:
             raise HTTPException(422, str(exc)) from exc
 
+    async def table_content(request):
+        content = bytearray()
+        async for part in request.stream():
+            content.extend(part)
+            if len(content) > MAX_PDF_BYTES:
+                raise HTTPException(413, "Tệp vượt giới hạn 20 MB.")
+        return bytes(content)
+
+    @app.post("/api/tables/preview")
+    async def preview(request: Request, filename: str = Query(max_length=200), sheet: str = Query(default="", max_length=100),
+                      header_row: int = Query(default=1, ge=1, le=100),
+                      delimiter: Literal["auto", ",", ";", "tab"] = "auto", encoding: Literal["utf-8-sig", "cp1258"] = "utf-8-sig"):
+        from finlens.tables import preview_table
+        content = await table_content(request)
+        try:
+            return await run_in_threadpool(preview_table, content, filename, sheet=sheet, header_row=header_row, delimiter=delimiter, encoding=encoding)
+        except IngestError as exc:
+            raise HTTPException(422, str(exc)) from exc
+
+    @app.post("/api/tables")
+    async def import_table(request: Request, filename: str = Query(max_length=200), company: str = Query(min_length=1, max_length=120),
+                           year: int = Query(ge=1990, le=2100), scope: Literal["consolidated", "standalone"] = "consolidated",
+                           options: str = Query(max_length=6000)):
+        from finlens.tables import ingest_table
+        if not company.strip():
+            raise HTTPException(422, "Tên doanh nghiệp không được để trống.")
+        try:
+            mapping = TableOptions.model_validate_json(options)
+        except ValidationError as exc:
+            raise HTTPException(422, "Cần chọn đúng sheet, dòng tiêu đề, cột chỉ tiêu và cột năm.") from exc
+        content = await table_content(request)
+        try:
+            return await run_in_threadpool(ingest_table, store, content, filename, company, year, scope, mapping)
+        except IngestError as exc:
+            raise HTTPException(422, str(exc)) from exc
+
+    @app.get("/api/documents/{document_id}/file")
+    def source_file(document_id: str):
+        path = store.source_path(document_id)
+        if not path:
+            raise HTTPException(404, "Không tìm thấy tệp gốc.")
+        return FileResponse(path, media_type="application/octet-stream", filename=store.get_document(document_id)["filename"])
+
     @app.post("/api/documents/{document_id}/index")
     def index_document(document_id: str):
         if not store.get_document(document_id):
@@ -125,17 +169,22 @@ def create_app(data_dir=None, config=None):
         return store.facts(company=company, scope=scope, dataset=dataset)
 
     @app.get("/api/documents/{document_id}/suggestions")
-    def suggestions(document_id: str, page: int = Query(ge=1, le=250)):
+    def suggestions(document_id: str, page: int = Query(ge=1, le=5000)):
         document = store.get_document(document_id)
         if not document or not store.page(document_id, page):
             raise HTTPException(404, "Không tìm thấy tài liệu hoặc trang nguồn.")
         path = store.pdf_path(document_id)
-        if document["is_demo"] or not path:
-            raise HTTPException(409, "Đề xuất số liệu cần PDF gốc. Hãy chọn tài liệu bạn đã nhập.")
+        table = store.table_row(document_id, page)
+        if document["is_demo"] or not (path or table):
+            raise HTTPException(409, "Đề xuất số liệu cần tệp gốc. Hãy chọn tài liệu bạn đã nhập.")
         if not store.page_allowed(document_id, page):
             raise HTTPException(409, "Trang này nằm ngoài phần báo cáo đã chọn để phân tích.")
         try:
-            result = suggest_page(path, document_id, page, context=document)
+            if table:
+                from finlens.tables import table_suggestions
+                result = table_suggestions(table, document_id, page)
+            else:
+                result = suggest_page(path, document_id, page, context=document)
         except ValueError as exc:
             raise HTTPException(422, str(exc)) from exc
         existing = {(f["metric"], f["year"], f["value"], f["unit"], f["currency"])

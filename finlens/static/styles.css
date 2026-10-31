@@ -746,6 +746,13 @@ tr:last-child td {
 .import-fields input,.import-fields select { width:100%; }
 .import-item-status,#import-progress { font-size:11px; line-height:1.7; color:var(--muted); margin-bottom:0; }
 .import-actions { display:flex; flex-wrap:wrap; gap:12px; }
+.table-year-mapping { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; }
+.table-preview { max-height:320px; overflow:auto; border:1px solid var(--line); border-radius:8px; }
+.table-preview table,#source-table table { width:100%; border-collapse:collapse; font-size:11px; }
+.table-preview th,.table-preview td,#source-table th,#source-table td { padding:10px; border:1px solid var(--line); min-width:100px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.table-preview th { position:sticky; top:0; background:#f2f6ec; }
+#source-table { margin:14px 24px; max-height:380px; overflow:auto; }
+#source-table th,#source-table td { min-width:75px; }
 @media(max-width:600px) { .import-fields { grid-template-columns:1fr 1fr; } .import-fields label:first-child { grid-column:1 / -1; } .import-item { padding:12px; } }
 .document-list {
   padding:0 24px 20px;

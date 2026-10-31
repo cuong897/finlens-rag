@@ -70,7 +70,8 @@ def grounded_request(question: str, evidence: list[dict]):
         " report_year là nhãn năm báo cáo; period_label mô tả kỳ tài chính, có thể khác năm dương lịch."
     )
     user = json.dumps({"question": question, "evidence": [{"id": c["id"], "text": c["excerpt"],
-                       "report_year": c.get("report_year"), "period_label": c.get("period_label")} for c in evidence]}, ensure_ascii=False)
+                       "report_year": c.get("report_year"), "period_label": c.get("period_label"),
+                       "source_label": c.get("source_label")} for c in evidence]}, ensure_ascii=False)
     return schema, system, user
 
 

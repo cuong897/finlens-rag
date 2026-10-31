@@ -217,6 +217,7 @@ class Engine:
                      "company": h["company"], "report_year": h["report_year"], "filename": h["filename"],
                      "is_demo": bool(h["is_demo"]), "excerpt": h["text"], "score": h["score"],
                      "period_label": h.get("period_label"),
+                     "source_label": h.get("source_label"),
                      "url": f"/api/documents/{h['document_id']}/pages/{h['page']}"} for i, h in enumerate(hits, 1)]
         if self.config.chat_model:
             result["generation_attempted"] = True

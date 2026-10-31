@@ -61,6 +61,16 @@ class Store:
                     allowed_pages TEXT, period_start TEXT, period_end TEXT,
                     period_label TEXT NOT NULL DEFAULT ''
                 );
+                CREATE TABLE IF NOT EXISTS table_sources (
+                    document_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
+                    file_sha256 TEXT NOT NULL, options TEXT NOT NULL
+                );
+                CREATE TABLE IF NOT EXISTS table_rows (
+                    document_id TEXT NOT NULL, page INTEGER NOT NULL,
+                    sheet TEXT NOT NULL, row_number INTEGER NOT NULL, cell_range TEXT NOT NULL,
+                    cells TEXT NOT NULL, PRIMARY KEY(document_id,page),
+                    FOREIGN KEY(document_id,page) REFERENCES pages(document_id,page) ON DELETE CASCADE
+                );
             """)
 
     @contextmanager
@@ -77,7 +87,7 @@ class Store:
         finally:
             db.close()
 
-    def add_document(self, document: dict, pages: list[str], *, context=None) -> tuple[dict, bool]:
+    def add_document(self, document: dict, pages: list[str], *, context=None, table_source=None, table_rows=None) -> tuple[dict, bool]:
         context_values = self._context_values(len(pages), **context) if context else None
         with self.connection() as db:
             existing = db.execute(
@@ -100,6 +110,10 @@ class Store:
                                (document["id"], number, chunk))
             if context_values is not None:
                 db.execute("INSERT INTO document_context VALUES (?,?,?,?,?)", (document["id"], *context_values))
+            if table_source:
+                db.execute("INSERT INTO table_sources VALUES (?,?,?)", (document["id"], table_source["file_sha256"], json.dumps(table_source["options"], ensure_ascii=False)))
+                for number, row in enumerate(table_rows, 1):
+                    db.execute("INSERT INTO table_rows VALUES (?,?,?,?,?,?)", (document["id"], number, row["sheet"], row["row_number"], row["cell_range"], json.dumps(row["cells"], ensure_ascii=False)))
         return self.get_document(document["id"]), True
 
     def find_document(self, company: str, year: int, scope: str, sha256: str):
@@ -112,7 +126,10 @@ class Store:
     def _document(row):
         result = dict(row)
         result["is_demo"] = bool(result["is_demo"])
-        result["has_pdf"] = bool(result.pop("pdf_path", None))
+        path = result.pop("pdf_path", None)
+        result["file_type"] = Path(path).suffix.lstrip(".").lower() if path else "text"
+        result["has_file"] = bool(path)
+        result["has_pdf"] = bool(path) and result["file_type"] == "pdf"
         result["warnings"] = json.loads(result["warnings"])
         result["allowed_pages"] = json.loads(result["allowed_pages"]) if result.get("allowed_pages") else None
         return result
@@ -163,6 +180,9 @@ class Store:
         result, policies = [], {}
         for row in rows:
             item = dict(row)
+            sheet, cells = item.pop("_sheet", None), item.pop("_cell_range", None)
+            if sheet:
+                item["source_label"] = f"{sheet} · {cells}"
             raw = item.pop("_allowed_pages", None)
             if raw is not None:
                 if raw not in policies:
@@ -172,13 +192,28 @@ class Store:
             result.append(item)
         return result
 
-    def pdf_path(self, document_id: str):
+    def source_path(self, document_id: str):
         with self.connection() as db:
             row = db.execute("SELECT pdf_path FROM documents WHERE id=?", (document_id,)).fetchone()
         if not row or not row[0]:
             return None
         path = (self.root / row[0]).resolve()
         return path if path.is_relative_to(self.root / "uploads") and path.is_file() else None
+
+    def pdf_path(self, document_id: str):
+        path = self.source_path(document_id)
+        return path if path and path.suffix.lower() == ".pdf" else None
+
+    def table_row(self, document_id, page):
+        with self.connection() as db:
+            row = db.execute("SELECT r.*,s.options FROM table_rows r JOIN table_sources s ON s.document_id=r.document_id WHERE r.document_id=? AND r.page=?", (document_id, page)).fetchone()
+        if not row:
+            return None
+        result = dict(row)
+        result["cells"] = json.loads(result["cells"])
+        result["options"] = json.loads(result["options"])
+        result["source_label"] = f"{result['sheet']} · {result['cell_range']}"
+        return result
 
     def documents(self):
         with self.connection() as db:
@@ -196,7 +231,10 @@ class Store:
         with self.connection() as db:
             row = db.execute("SELECT * FROM pages WHERE document_id=? AND page=?",
                              (document_id, number)).fetchone()
-            return dict(row) if row else None
+            result = dict(row) if row else None
+        if result:
+            result["table"] = self.table_row(document_id, number)
+        return result
 
     @staticmethod
     def filters(company=None, years=None, scope=None, dataset="all"):
@@ -219,9 +257,10 @@ class Store:
         where, args = self.filters(company, years, scope, dataset)
         with self.connection() as db:
             rows = db.execute("""SELECT c.*,d.company,d.report_year,d.scope,d.filename,d.is_demo,
-                                  x.allowed_pages AS _allowed_pages,x.period_label
+                                  x.allowed_pages AS _allowed_pages,x.period_label,r.sheet AS _sheet,r.cell_range AS _cell_range
                                   FROM chunks c JOIN documents d ON c.document_id=d.id
-                                  LEFT JOIN document_context x ON x.document_id=d.id""" + where, args)
+                                  LEFT JOIN document_context x ON x.document_id=d.id
+                                  LEFT JOIN table_rows r ON r.document_id=c.document_id AND r.page=c.page""" + where, args)
             return self._eligible(rows)
 
     def add_fact(self, fact: dict):
@@ -250,9 +289,10 @@ class Store:
             where += (" AND " if where else " WHERE ") + " AND ".join(clauses)
         with self.connection() as db:
             rows = db.execute("""SELECT f.*,d.company,d.scope,d.filename,d.is_demo,d.report_year,
-                x.allowed_pages AS _allowed_pages,x.period_label
+                x.allowed_pages AS _allowed_pages,x.period_label,r.sheet AS _sheet,r.cell_range AS _cell_range
                 FROM facts f JOIN documents d ON f.document_id=d.id
-                LEFT JOIN document_context x ON x.document_id=d.id""" + where + " ORDER BY f.year,f.id", args)
+                LEFT JOIN document_context x ON x.document_id=d.id
+                LEFT JOIN table_rows r ON r.document_id=f.document_id AND r.page=f.page""" + where + " ORDER BY f.year,f.id", args)
             return self._eligible(rows)
 
     def embeddings(self, model: str):

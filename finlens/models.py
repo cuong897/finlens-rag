@@ -62,9 +62,31 @@ class ImportURLRequest(StrictModel):
     scope: Scope = "consolidated"
 
 
+class TableOptions(StrictModel):
+    sheet: str = Field(default="", max_length=100)
+    header_row: int = Field(default=1, ge=1, le=100)
+    label_column: str = Field(default="A", pattern=r"^[A-Z]{1,2}$")
+    year_columns: dict[str, int] = Field(min_length=1, max_length=10)
+    unit: Literal["one", "thousand", "million", "billion"] = "one"
+    currency: Literal["VND", "USD", "EUR"] = "VND"
+    number_style: Literal["vi", "en"] = "vi"
+    delimiter: Literal["auto", ",", ";", "tab"] = "auto"
+    encoding: Literal["utf-8-sig", "cp1258"] = "utf-8-sig"
+
+    @field_validator("year_columns")
+    @classmethod
+    def validate_columns(cls, columns):
+        import re
+        if any(not re.fullmatch(r"[A-Z]{1,2}", col) or type(year) is not int or not 1990 <= year <= 2100 for col, year in columns.items()):
+            raise ValueError("Cột và năm số liệu không hợp lệ.")
+        if len(set(columns.values())) != len(columns):
+            raise ValueError("Mỗi năm chỉ chọn một cột giá trị.")
+        return columns
+
+
 class FactRequest(StrictModel):
     document_id: str = Field(min_length=1, max_length=64)
-    page: int = Field(ge=1, le=250)
+    page: int = Field(ge=1, le=5000)
     metric: str
     year: int = Field(ge=1990, le=2100)
     value: str = Field(pattern=r"^-?\d{1,24}(?:\.\d{1,8})?$")

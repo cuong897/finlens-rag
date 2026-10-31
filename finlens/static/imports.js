@@ -25,10 +25,10 @@ function addImport(source) {
 function addFiles(files) {
   if (imports.busy) return;
   for (const file of files) {
-    if (!file.name.toLowerCase().endsWith('.pdf') || file.size > 20 * 1024 * 1024 || !file.size) {
-      toast(`${file.name}: cần PDF không rỗng, tối đa 20 MB.`, true); continue;
+    if (!/\.(pdf|xlsx|csv)$/i.test(file.name) || file.size > 20 * 1024 * 1024 || !file.size) {
+      toast(`${file.name}: cần PDF, XLSX hoặc CSV không rỗng, tối đa 20 MB.`, true); continue;
     }
-    addImport({ file, name: file.name });
+    addImport({ file, name: file.name, isTable: /\.(xlsx|csv)$/i.test(file.name) });
   }
   renderImports();
   if (imports.items.length) $('#import-review').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -59,12 +59,18 @@ function renderImports() {
       label.append(input); fields.append(label);
     }
     card.append(fields, node('p', 'import-item-status', item.message));
+    if (item.isTable) {
+      card.append(node('p', 'field-hint', item.tableOptions ? `${item.tableOptions.sheet} · Tiêu đề dòng ${item.tableOptions.header_row} · ${state.catalog.units[item.tableOptions.unit]} ${item.tableOptions.currency}` : 'Cần chọn sheet, dòng tiêu đề, cột chỉ tiêu và cột năm trước khi nhập.'));
+      const configure = node('button', 'button secondary', item.tableOptions ? 'Sửa cách đọc bảng' : 'Chọn sheet và cột ↗');
+      configure.type = 'button'; configure.disabled = imports.busy || item.status === 'done';
+      configure.addEventListener('click', () => configureTable(item)); card.append(configure);
+    }
     $('#import-items').append(card);
   });
   const done = imports.items.filter(item => item.status === 'done').length;
   const failed = imports.items.filter(item => item.status === 'failed').length;
   $('#import-progress').textContent = `${imports.items.length} báo cáo · ${done} hoàn tất${failed ? ` · ${failed} cần thử lại` : ''}`;
-  $('#import-start').disabled = imports.busy || done === imports.items.length;
+  $('#import-start').disabled = imports.busy || imports.editing || done === imports.items.length;
   $('#import-start').textContent = imports.busy ? 'Đang nhập báo cáo…' : `Nhập ${imports.items.length - done} báo cáo ↗`;
   $('#import-clear').disabled = imports.busy;
   $('#import-stop').hidden = !imports.busy;
@@ -100,6 +106,7 @@ $('#import-clear').addEventListener('click', () => { imports.items = []; renderI
 $('#import-stop').addEventListener('click', () => { imports.stop = true; $('#import-stop').disabled = true; $('#import-progress').textContent = 'Sẽ dừng sau báo cáo đang xử lý. Các mục còn lại được giữ để nhập tiếp.'; });
 $('#import-form').addEventListener('submit', async event => {
   event.preventDefault(); if (imports.busy) return;
+  if (imports.items.some(item => item.isTable && !item.tableOptions)) { toast('Hãy chọn sheet và cột cho mỗi tệp Excel/CSV trước khi nhập.', true); return; }
   if (imports.items.some(item => item.status !== 'done' && (!item.company.trim() || !Number.isInteger(Number(item.year)) || Number(item.year) < 1990 || Number(item.year) > 2100))) {
     toast('Hãy kiểm tra doanh nghiệp và năm của từng báo cáo.', true); return;
   }
@@ -113,26 +120,28 @@ $('#import-form').addEventListener('submit', async event => {
       item.status = 'working'; item.message = item.url ? 'Đang tải và đọc PDF…' : 'Đang đọc PDF…'; renderImports();
       try {
         const metadata = { company: item.company.trim(), year: Number(item.year), scope: item.scope };
-        const result = item.url ? await post('/api/import-url', { ...metadata, url: item.url })
+        const result = item.isTable ? await api(`/api/tables?${new URLSearchParams({ ...metadata, filename: item.file.name, options: JSON.stringify(item.tableOptions) })}`, {
+            method: 'POST', headers: { 'Content-Type': 'application/octet-stream' }, body: item.file,
+          }) : item.url ? await post('/api/import-url', { ...metadata, url: item.url })
           : await api(`/api/documents?${new URLSearchParams({ ...metadata, filename: item.file.name })}`, {
             method: 'POST', headers: { 'Content-Type': 'application/pdf' }, body: item.file,
           });
         selected = result.document;
         item.status = 'done';
-        item.message = result.created ? 'Đã nhập PDF.' : 'PDF đã có trong kho, không tạo bản trùng.';
+        item.message = result.created ? 'Đã nhập tài liệu.' : 'Tài liệu đã có trong kho, không tạo bản trùng.';
         if (state.embeddingModel) {
           item.message += ' Đang chuẩn bị tìm kiếm…'; renderImports();
           try {
             await post(`/api/documents/${encodeURIComponent(result.document.id)}/index`, {});
-            item.message = `${result.created ? 'Đã nhập PDF.' : 'Đã có trong kho.'} Tìm kiếm đã sẵn sàng.`;
-          } catch { item.message = 'PDF đã lưu. Tìm kiếm từ khóa đã sẵn sàng; tìm kiếm ngữ nghĩa chưa sẵn sàng.'; }
+            item.message = `${result.created ? 'Đã nhập tài liệu.' : 'Đã có trong kho.'} Tìm kiếm đã sẵn sàng.`;
+          } catch { item.message = 'Tài liệu đã lưu. Tìm kiếm từ khóa đã sẵn sàng; tìm kiếm ngữ nghĩa chưa sẵn sàng.'; }
         } else item.message += ' Có thể tìm kiếm từ khóa.';
       } catch (error) { item.status = 'failed'; item.message = error.message; }
       renderImports();
     }
     if (selected) {
       $('#dataset').value = 'real'; $('#scope').value = selected.scope; resetAnalysis();
-      await refresh(); $('#company').value = selected.company; updateFilters(false);
+      await refresh(); updateFilters(false, selected.company);
     }
   } catch (error) { toast(`Danh sách đã xử lý được giữ lại. ${error.message}`, true); }
   finally { imports.busy = false; renderImports(); }

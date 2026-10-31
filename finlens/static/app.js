@@ -64,8 +64,8 @@ function resetAnalysis() {
   $('#source-content').hidden = true;
 }
 
-function updateFilters(preserve = true) {
-  const previousCompany = preserve ? $('#company').value : '';
+function updateFilters(preserve = true, selectedCompany = null) {
+  const previousCompany = selectedCompany ?? (preserve ? $('#company').value : '');
   const previousYears = new Set([...document.querySelectorAll('#year-options input:checked')].map(el => Number(el.value)));
   const demo = $('#dataset').value === 'demo';
   const documents = state.documents.filter(d => d.is_demo === demo && d.scope === $('#scope').value);
@@ -73,7 +73,8 @@ function updateFilters(preserve = true) {
   $('#company').replaceChildren(...companies.map(c => option(c, c)));
   if (companies.includes(previousCompany)) $('#company').value = previousCompany;
   if (!companies.length) $('#company').append(option('', 'Chưa có tài liệu phù hợp'));
-  const years = [...new Set(documents.filter(d => d.company === $('#company').value).map(d => d.report_year))].sort();
+  const factYears = state.facts.filter(f => f.verified && f.company === $('#company').value && f.scope === $('#scope').value && Boolean(f.is_demo) === demo).map(f => f.year);
+  const years = [...new Set([...documents.filter(d => d.company === $('#company').value).map(d => d.report_year), ...factYears])].sort();
   $('#year-options').replaceChildren();
   const defaults = years.length > 1 ? years.slice(0, 2) : years;
   for (const year of years) {
@@ -109,9 +110,9 @@ async function refresh() {
   renderDocuments();
   renderFacts();
   const selectedDocument = $('#fact-document').value;
-  $('#fact-document').replaceChildren(...state.documents.filter(d => !d.is_demo && d.has_pdf).map(d => option(d.id, `${d.company} · ${d.report_year} · ${d.scope === 'consolidated' ? 'Hợp nhất' : 'Riêng lẻ'}`)));
+  $('#fact-document').replaceChildren(...state.documents.filter(d => !d.is_demo && d.has_file).map(d => option(d.id, `${d.company} · ${d.report_year} · ${d.scope === 'consolidated' ? 'Hợp nhất' : 'Riêng lẻ'}`)));
   if ([...$('#fact-document').options].some(o => o.value === selectedDocument)) $('#fact-document').value = selectedDocument;
-  if (!$('#fact-document').options.length) $('#fact-document').append(option('', 'Hãy nhập PDF của bạn trước'));
+  if (!$('#fact-document').options.length) $('#fact-document').append(option('', 'Hãy nhập tài liệu của bạn trước'));
   const factDocument = state.documents.find(d => d.id === $('#fact-document').value);
   if (factDocument) {
     $('#fact-page').max = factDocument.page_count;
@@ -123,9 +124,9 @@ async function refresh() {
   $('#fact-button').disabled = !$('#fact-document').value;
   $('#fact-preview').disabled = !$('#fact-document').value;
   const suggestionDocument = $('#suggestion-document').value;
-  $('#suggestion-document').replaceChildren(...state.documents.filter(d => !d.is_demo && d.has_pdf).map(d => option(d.id, `${d.company} · ${d.report_year}`)));
+  $('#suggestion-document').replaceChildren(...state.documents.filter(d => !d.is_demo && d.has_file).map(d => option(d.id, `${d.company} · ${d.report_year}`)));
   if ([...$('#suggestion-document').options].some(o => o.value === suggestionDocument)) $('#suggestion-document').value = suggestionDocument;
-  if (!$('#suggestion-document').options.length) $('#suggestion-document').append(option('', 'Hãy nhập PDF trước'));
+  if (!$('#suggestion-document').options.length) $('#suggestion-document').append(option('', 'Hãy nhập tài liệu trước'));
   $('#suggestion-button').disabled = !$('#suggestion-document').value;
   const suggestionSource = state.documents.find(d => d.id === $('#suggestion-document').value);
   $('#suggestion-page').max = suggestionSource?.page_count || 250;
@@ -137,9 +138,9 @@ function clearSuggestions() {
   state.suggestionRevision += 1;
   state.suggestions = [];
   $('#suggestion-list').replaceChildren(); $('#suggestion-warnings').replaceChildren();
-  $('#suggestion-status').textContent = 'Chọn trang bảng số liệu rồi bấm Tìm số liệu trên trang.';
+  $('#suggestion-status').textContent = 'Chọn trang PDF hoặc mục nguồn của bảng rồi bấm Tìm số liệu.';
   $('#suggestion-button').disabled = !$('#suggestion-document').value;
-  $('#suggestion-button').textContent = 'Tìm số liệu trên trang ↗';
+  $('#suggestion-button').textContent = 'Tìm số liệu ↗';
   $('#draft-proof').hidden = true;
 }
 
@@ -158,13 +159,14 @@ function renderSuggestions() {
       $('#fact-page').max = state.documents.find(d => d.id === candidate.document_id)?.page_count || 250;
       $('#fact-metric').value = candidate.metric; $('#fact-year').value = candidate.year;
       $('#fact-value').value = candidate.value; $('#fact-unit').value = candidate.unit; $('#fact-currency').value = candidate.currency;
-      $('#fact-note').value = `Đối chiếu dòng ${candidate.source_label}, cột ${candidate.year}, trang PDF ${candidate.page}; đơn vị ${state.catalog.units[candidate.unit]} ${candidate.currency}.`.slice(0, 600);
+      $('#fact-note').value = `Đối chiếu ${candidate.source_cell ? `${candidate.source_label}, ô ${candidate.source_cell}` : `dòng ${candidate.source_label}, trang PDF ${candidate.page}`}, cột năm ${candidate.year}; đơn vị ${state.catalog.units[candidate.unit]} ${candidate.currency}.`.slice(0, 600);
       $('#fact-confirm').checked = false;
-      const pdf = node('a', 'text-link', 'Mở PDF gốc để kiểm tra ↗');
-      pdf.href = `/api/documents/${encodeURIComponent(candidate.document_id)}/pdf#page=${candidate.page}`;
+      const tableSource = state.documents.find(d => d.id === candidate.document_id)?.file_type !== 'pdf';
+      const pdf = node('a', 'text-link', tableSource ? 'Tải tệp gốc để kiểm tra ↗' : 'Mở PDF gốc để kiểm tra ↗');
+      pdf.href = tableSource ? `/api/documents/${encodeURIComponent(candidate.document_id)}/file` : `/api/documents/${encodeURIComponent(candidate.document_id)}/pdf#page=${candidate.page}`;
       pdf.target = '_blank'; pdf.rel = 'noopener';
       const yearNote = candidate.year_basis === 'document_fiscal_period' ? ' · Năm được ghép theo kỳ tài chính của tài liệu' : candidate.year_basis === 'period_date' ? ' · Năm được đối chiếu từ ngày đầu/cuối kỳ' : '';
-      $('#draft-proof').replaceChildren(node('strong', '', 'Đang đối chiếu bản nháp'), node('p', '', `Giá trị gốc: ${candidate.raw_value} · Cột năm ${candidate.year} · Trang ${candidate.page}${yearNote}`), node('p', 'draft-row', candidate.row_excerpt), pdf);
+      $('#draft-proof').replaceChildren(node('strong', '', 'Đang đối chiếu bản nháp'), node('p', '', `Giá trị gốc: ${candidate.raw_value} · Cột năm ${candidate.year} · ${candidate.source_cell ? `${candidate.source_label} · Ô ${candidate.source_cell}` : `Trang ${candidate.page}`}${yearNote}`), node('p', 'draft-row', candidate.row_excerpt), pdf);
       $('#draft-proof').hidden = false;
       $('.fact-entry').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
@@ -178,7 +180,7 @@ async function loadSuggestions() {
   if (!documentId) return;
   const revision = ++state.suggestionRevision;
   state.suggestions = []; renderSuggestions(); $('#suggestion-warnings').replaceChildren();
-  $('#suggestion-button').disabled = true; $('#suggestion-button').textContent = 'Đang đọc trang…';
+  $('#suggestion-button').disabled = true; $('#suggestion-button').textContent = 'Đang đọc nguồn…';
   $('#suggestion-status').textContent = 'Đang đọc bảng trên máy này…';
   try {
     const result = await api(`/api/documents/${encodeURIComponent(documentId)}/suggestions?page=${page}`);
@@ -188,7 +190,7 @@ async function loadSuggestions() {
     $('#suggestion-warnings').replaceChildren(...result.warnings.map(w => node('p', 'warning', w)));
     renderSuggestions();
   } catch (error) { if (revision === state.suggestionRevision) $('#suggestion-status').textContent = error.message; }
-  finally { if (revision === state.suggestionRevision) { $('#suggestion-button').disabled = false; $('#suggestion-button').textContent = 'Tìm số liệu trên trang ↗'; } }
+  finally { if (revision === state.suggestionRevision) { $('#suggestion-button').disabled = false; $('#suggestion-button').textContent = 'Tìm số liệu ↗'; } }
 }
 
 $('#suggestion-form').addEventListener('submit', event => { event.preventDefault(); loadSuggestions(); });
@@ -215,7 +217,7 @@ function renderDocuments() {
     const details = node('div', 'doc-details');
     const title = node('p', 'doc-title', `${document.company} · ${document.report_year}`);
     if (document.is_demo) title.append(node('span', 'demo-tag', 'GIẢ LẬP'));
-    details.append(title, node('div', 'doc-meta', `${document.scope === 'consolidated' ? 'Hợp nhất' : 'Riêng lẻ'} · ${document.page_count} trang · ${document.allowed_pages ? `${document.allowed_pages.length} trang trong phạm vi phân tích` : `${document.chunk_count} đoạn nguồn`}`), node('div', 'doc-meta', document.filename));
+    details.append(title, node('div', 'doc-meta', `${document.scope === 'consolidated' ? 'Hợp nhất' : 'Riêng lẻ'} · ${document.page_count} ${['xlsx','csv'].includes(document.file_type) ? 'dòng có nhãn' : 'trang'} · ${document.allowed_pages ? `${document.allowed_pages.length} trang trong phạm vi phân tích` : `${document.chunk_count} đoạn nguồn`}`), node('div', 'doc-meta', document.filename));
     if (document.period_label) details.append(node('div', 'doc-meta', document.period_label));
     if (document.source_url && /^https:\/\//.test(document.source_url)) {
       const source = node('a', 'doc-meta', `Nguồn: ${document.source_publisher || 'Website công bố'} ↗`);
@@ -244,7 +246,7 @@ function renderFacts() {
     label.append(node('span', 'company-small', fact.company), document.createTextNode(state.catalog.metrics[fact.metric] || fact.metric));
     if (fact.is_demo) label.append(node('span', 'demo-tag', 'GIẢ LẬP'));
     const source = node('td');
-    const sourceButton = node('button', '', `Trang ${fact.page} ↗`);
+    const sourceButton = node('button', '', `${fact.source_label || `Trang ${fact.page}`} ↗`);
     sourceButton.addEventListener('click', () => openSource(fact.document_id, fact.page));
     source.append(sourceButton);
     const actions = node('td');
@@ -262,8 +264,26 @@ function renderFacts() {
     $('#facts-table-body').append(row);
   }
   if (!state.facts.length) {
-    const row = node('tr'); const cell = node('td', 'empty-list', 'Chưa có chỉ tiêu. Nạp dữ liệu demo hoặc xác nhận số liệu từ PDF của bạn.'); cell.colSpan = 5; row.append(cell); $('#facts-table-body').append(row);
+    const row = node('tr'); const cell = node('td', 'empty-list', 'Chưa có chỉ tiêu. Nạp dữ liệu demo hoặc xác nhận số liệu từ tài liệu của bạn.'); cell.colSpan = 5; row.append(cell); $('#facts-table-body').append(row);
   }
+}
+
+function renderSourceTable(source) {
+  const container = $('#source-table');
+  container.hidden = !source;
+  $('#source-text').hidden = Boolean(source);
+  container.replaceChildren();
+  if (!source) return;
+  const table = node('table');
+  const header = node('tr'), values = node('tr');
+  source.cells.forEach((cell, index) => {
+    const col = String.fromCharCode(65 + index % 26); // Exact addresses below use source range/row metadata.
+    const column = index < 26 ? col : String.fromCharCode(64 + Math.floor(index / 26)) + col;
+    header.append(node('th', '', `${column}${source.row_number}${source.options.year_columns[column] ? ` · ${source.options.year_columns[column]}` : ''}`));
+    values.append(node('td', '', cell.value + (cell.formula ? ' (công thức chưa tính)' : '')));
+  });
+  const head = node('thead'), body = node('tbody'); head.append(header); body.append(values); table.append(head, body);
+  container.append(node('p', 'section-description', `${source.sheet} · ${source.cell_range}`), table);
 }
 
 async function openSource(documentId, page) {
@@ -275,17 +295,21 @@ async function openSource(documentId, page) {
     setView('analysis');
     $('#source-empty').hidden = true; $('#source-content').hidden = false;
     $('#source-label').textContent = `${source.document.company} · ${source.document.report_year}${source.document.is_demo ? ' · GIẢ LẬP' : ''}${source.document.period_label ? ` · ${source.document.period_label}` : ''}`;
-    $('#source-page').textContent = `Trang ${page}`;
+    $('#source-page').textContent = source.table ? source.table.source_label : `Trang ${page}`;
+    renderSourceTable(source.table);
     $('#source-text').textContent = source.text || '(Trang không có văn bản trích xuất)';
     const metadata = state.documents.find(d => d.id === documentId);
     $('#prev-page').disabled = page <= 1;
     $('#next-page').disabled = page >= (metadata?.page_count || page);
-    $('#source-pdf').hidden = !source.document.has_pdf;
-    $('#source-suggest').hidden = !source.document.has_pdf || source.in_scope === false;
+    $('#source-pdf').hidden = !source.document.has_file;
+    $('#source-pdf').textContent = source.table ? 'Tải tệp gốc ↗' : 'Mở PDF ↗';
+    $('#source-suggest').hidden = !source.document.has_file || source.in_scope === false;
+    $('#source-suggest').textContent = source.table ? 'Đề xuất số liệu từ dòng này ↗' : 'Đề xuất số liệu từ trang này ↗';
     $('.source-footnote').textContent = source.in_scope === false
       ? 'Trang này nằm ngoài phần báo cáo được chọn để phân tích; chỉ mở để tham khảo PDF gốc.'
       : 'Nội dung trích xuất có thể mất định dạng bảng. Hãy mở PDF gốc để kiểm tra trước khi xác nhận chỉ tiêu.';
-    $('#source-pdf').href = `/api/documents/${encodeURIComponent(documentId)}/pdf#page=${page}`;
+    $('#source-pdf').href = source.table ? `/api/documents/${encodeURIComponent(documentId)}/file` : `/api/documents/${encodeURIComponent(documentId)}/pdf#page=${page}`;
+    if (source.table) $('.source-footnote').textContent = `Nguồn: ${source.document.filename} → ${source.table.source_label}. Ô công thức không được tính. Hãy đối chiếu đơn vị và cột năm trước khi xác nhận.`;
     if (window.innerWidth < 1000) $('.source-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (error) { toast(error.message, true); }
 }
@@ -331,7 +355,7 @@ function renderAnswer(result) {
   for (const citation of result.citations) {
     const button = node('button', 'citation-button');
     button.type = 'button';
-    button.append(node('span', 'citation-id', citation.id), node('span', '', `${citation.company} · ${citation.report_year} · Trang ${citation.page}${citation.is_demo ? ' · Giả lập' : ''}`), node('span', 'citation-arrow', '↗'));
+    button.append(node('span', 'citation-id', citation.id), node('span', '', `${citation.company} · ${citation.report_year} · ${citation.source_label || `Trang ${citation.page}`}${citation.is_demo ? ' · Giả lập' : ''}`), node('span', 'citation-arrow', '↗'));
     button.addEventListener('click', () => openSource(citation.document_id, citation.page));
     $('#citation-list').append(button);
   }
@@ -388,7 +412,7 @@ document.querySelectorAll('[data-question]').forEach(button => button.addEventLi
 }));
 $('#dataset').addEventListener('change', () => { resetAnalysis(); updateFilters(false); });
 $('#scope').addEventListener('change', () => { resetAnalysis(); updateFilters(false); });
-$('#company').addEventListener('change', () => { resetAnalysis(); updateFilters(false); });
+$('#company').addEventListener('change', () => { resetAnalysis(); updateFilters(false, $('#company').value); });
 $('#year-options').addEventListener('change', () => { resetAnalysis(); renderPeriodNotice(); });
 $('#prev-page').addEventListener('click', () => { if (state.source) openSource(state.source.documentId, state.source.page - 1); });
 $('#next-page').addEventListener('click', () => { if (state.source) openSource(state.source.documentId, state.source.page + 1); });
