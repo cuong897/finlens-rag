@@ -19,6 +19,41 @@ class FinancialRowsTests(unittest.TestCase):
         self.assertTrue(profile("Chi phí nguyên vật liệu theo yếu tố trong thuyết minh"))
         self.assertEqual(profile("Vì sao chi phí nguyên vật liệu tăng?"), [])
 
+    def test_note_intents_remain_distinct_from_balances_and_material_costs(self):
+        examples = {"Chi phí nhân công theo yếu tố": "labour_cost",
+                    "Tiền gửi ngân hàng không kỳ hạn": "cash_bank",
+                    "Tiền đang chuyển": "cash_transit", "Sản phẩm dở dang": "work_in_progress",
+                    "Lãi phải thu": "interest_receivable", "Chi phí dịch vụ mua ngoài": "external_services",
+                    "Tiền thuê đất trả trước dài hạn": "prepaid_land",
+                    "Chi phí sửa chữa cải tạo trả trước dài hạn": "renovation",
+                    "Thành phẩm và hàng hóa": "finished_merchandise",
+                    "Chi phí nguyên vật liệu theo yếu tố": "materials_cost",
+                    "Giá gốc nguyên vật liệu tồn kho": "raw_materials"}
+        for question, key in examples.items():
+            with self.subTest(question=question):
+                self.assertEqual([c["key"] for c in profile(question)], [key])
+        self.assertEqual(profile("Vì sao chi phí nhân công tăng?"), [])
+
+    def test_wrapped_cashflow_label_with_interleaved_row_code_and_columns(self):
+        cfi = profile("Lưu chuyển tiền thuần từ hoạt động đầu tư")[0]
+        text = "Net cash flows from 30 123,456 234,567\ninvesting activities"
+        self.assertGreater(label_strength(text, cfi), 1)
+        equity = profile("Vốn chủ sở hữu")[0]
+        liabilities = profile("Tổng nợ phải trả")[0]
+        combined = "TOTAL LIABILITIES AND OWNER'S EQUITY 440 123,456 234,567"
+        self.assertLess(label_strength(combined, equity), 1)
+        self.assertLess(label_strength(combined, liabilities), 1)
+
+    def test_better_rows_on_same_page_are_not_suppressed_by_weak_prior_matches(self):
+        hits = [{"id": 1, "document_id": "a", "page": 1,
+                 "text": "BALANCE SHEET\nDiscussion of current assets 100 and current liabilities 200"},
+                {"id": 2, "document_id": "a", "page": 1,
+                 "text": "BALANCE SHEET\nA. CURRENT ASSETS 300"},
+                {"id": 3, "document_id": "a", "page": 1,
+                 "text": "BALANCE SHEET\nI. Current liabilities 400"}]
+        ranked = rank_rows("Tài sản ngắn hạn và nợ ngắn hạn trên bảng cân đối", hits, {})
+        self.assertTrue({2, 3} <= {h["id"] for h in ranked})
+
     def test_sibling_rows_are_not_confused(self):
         for question, wrong in [("Tổng nợ phải trả", "Current liabilities 123456"),
                                  ("Tài sản ngắn hạn", "Non-current assets 123456"),
