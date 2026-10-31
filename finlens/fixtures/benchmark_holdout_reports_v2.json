@@ -1,0 +1,30 @@
+[
+  {
+    "company": "VHC",
+    "year": 2024,
+    "scope": "consolidated",
+    "filename": "VHC_2024_annual.pdf",
+    "url": "https://www.vinhhoan.com/wp-content/uploads/2025/04/VHC_Bao-cao-Thuong-nien-2024_EN.pdf",
+    "publisher": "Vinh Hoan Corporation",
+    "pages": 91,
+    "sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024",
+    "facts": []
+  },
+  {
+    "company": "DHG",
+    "year": 2024,
+    "scope": "standalone",
+    "filename": "DHG_2024_annual.pdf",
+    "url": "https://dhgpharma.com.vn/sites/default/files/2025-04/1.%20Annual-Report-2024.pdf",
+    "publisher": "DHG Pharmaceutical Joint Stock Company",
+    "pages": 98,
+    "sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024",
+    "facts": []
+  }
+]

@@ -37,7 +37,7 @@ def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: 
                 raise IngestError("PDF phải có từ 1 đến 250 trang.")
             total_chars = 0
             for i, page in enumerate(pdf):
-                text, page_warnings = read_page(page)
+                text, page_warnings = read_page(page, ocr_dir=store.root / "ocr/tessdata")
                 warnings.extend(f"Trang {i + 1}: {warning}" for warning in page_warnings)
                 if len(text) < 20:
                     warnings.append(f"Trang {i + 1} có ít văn bản; có thể cần OCR.")
@@ -104,7 +104,7 @@ def reprocess_pdfs(store):
         pages, warnings = [], []
         with pymupdf.open(path) as pdf:
             for i, page in enumerate(pdf):
-                text, issues = read_page(page)
+                text, issues = read_page(page, ocr_dir=store.root / "ocr/tessdata")
                 pages.append(text)
                 warnings.extend(f"Trang {i + 1}: {issue}" for issue in issues)
         if sum(map(len, pages)) > MAX_TEXT_CHARS:

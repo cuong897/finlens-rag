@@ -36,6 +36,10 @@ def validate_cases(cases, *, strict=False):
         ids.add(case["id"])
         if "category" in case and (not isinstance(case["category"], str) or not case["category"].strip()):
             raise ValueError("Loại câu hỏi cần là chuỗi không rỗng.")
+        if case.get("evidence_origin", "digital_text") not in {"digital_text", "rendered_pdf"}:
+            raise ValueError("Nguồn nhãn phải là digital_text hoặc rendered_pdf.")
+        if case.get("evidence_origin") == "rendered_pdf" and not case.get("annotation", {}).get("reviewed_on"):
+            raise ValueError("Nhãn từ ảnh PDF cần khai báo ngày đối chiếu trực quan.")
         if type(case.get("report_year")) is not int or not 1990 <= case["report_year"] <= 2100:
             raise ValueError("Năm báo cáo không hợp lệ.")
         if case.get("scope") not in get_args(Scope):

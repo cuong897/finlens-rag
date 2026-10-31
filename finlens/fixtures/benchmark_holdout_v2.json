@@ -1,0 +1,2912 @@
+{
+  "version": 1,
+  "name": "finlens-new-company-holdout-v2",
+  "split": "test",
+  "label_origin": "Assistant authored 2026-10-31 from original PDF renders, after ranking frozen at e877aa6 and before any retrieval score was computed on VHC/DHG. OCR parsing extended after seeing missing text in vector tables. No independent human adjudication.",
+  "protocol": {
+    "version": 2,
+    "ranking_frozen_commit": "e877aa6",
+    "development_companies": [
+      "FPT",
+      "CMG",
+      "ELC",
+      "HPG",
+      "PNJ"
+    ],
+    "test_companies": [
+      "VHC",
+      "DHG"
+    ],
+    "scope_policy": "VHC consolidated; DHG standalone. All annual-report pages eligible, no gold-page filters.",
+    "corpus_policy": "Selected official annual reports with readable source or OCR, under the application file limit; SAB scan and oversized annual report not used.",
+    "annotation": "Assistant visual transcription, no independent adjudicator. Input parser extended for vector-outline OCR before this dataset was scored; ranking not tuned on these cases.",
+    "design": "64 questions: 40 statement lookups, 12 note lookups, 8 multi-value, 4 year comparisons. 52 distinct scalar targets; correlated questions share source pages.",
+    "metrics": "Same top-5 chunk page recall/MRR and strict literal evidence coverage as baseline. Missing OCR digits count as misses rather than altering reference labels.",
+    "generation_evaluated": false,
+    "input_parser_sha256": "df3260414c8db9de878c470749dc42858890095fc91da445c5a9838a41b55258"
+  },
+  "reports": [
+    {
+      "company": "VHC",
+      "year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "url": "https://www.vinhhoan.com/wp-content/uploads/2025/04/VHC_Bao-cao-Thuong-nien-2024_EN.pdf",
+      "publisher": "Vinh Hoan Corporation",
+      "pages": 91,
+      "sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "period_label": "2024: 01/01/2024 - 31/12/2024",
+      "facts": []
+    },
+    {
+      "company": "DHG",
+      "year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "url": "https://dhgpharma.com.vn/sites/default/files/2025-04/1.%20Annual-Report-2024.pdf",
+      "publisher": "DHG Pharmaceutical Joint Stock Company",
+      "pages": 98,
+      "sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "period_start": "2024-01-01",
+      "period_end": "2024-12-31",
+      "period_label": "2024: 01/01/2024 - 31/12/2024",
+      "facts": []
+    }
+  ],
+  "cases": [
+    {
+      "id": "vhc-v2-current_assets",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tài sản ngắn hạn cuối năm 2024 trên bảng cân đối kế toán là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "current_assets"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "CURRENT ASSET",
+            "8,238,447,590,991"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_assets",
+          "year": 2024,
+          "raw_value": "8,238,447,590,991",
+          "value": "8238447590991",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-cash_eq",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tiền và tương đương tiền tại cuối năm 2024 trên bảng cân đối kế toán bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cash_eq"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "Cash and cash equivalents",
+            "570,012,125,911"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cash_eq",
+          "year": 2024,
+          "raw_value": "570,012,125,911",
+          "value": "570012125911",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-inventory",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Hàng tồn kho sau dự phòng cuối năm 2024 trên bảng cân đối kế toán có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "inventory"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "Inventories",
+            "2,914,883,330,804"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "inventory",
+          "year": 2024,
+          "raw_value": "2,914,883,330,804",
+          "value": "2914883330804",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-total_assets",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tổng tài sản tại 31/12/2024 trên bảng cân đối kế toán là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "total_assets"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "TOTAL ASSETS",
+            "12,234,180,221,537"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "total_assets",
+          "year": 2024,
+          "raw_value": "12,234,180,221,537",
+          "value": "12234180221537",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-liabilities",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tổng nợ phải trả cuối năm 2024 trên bảng cân đối kế toán bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "liabilities"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "LIABILITIES",
+            "3,240,574,236,572"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "liabilities",
+          "year": 2024,
+          "raw_value": "3,240,574,236,572",
+          "value": "3240574236572",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-current_liabilities",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Nợ ngắn hạn tại 31/12/2024 trên bảng cân đối kế toán là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "current_liabilities"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "Short-term liabilities",
+            "3,183,722,367,033"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_liabilities",
+          "year": 2024,
+          "raw_value": "3,183,722,367,033",
+          "value": "3183722367033",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-equity",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Vốn chủ sở hữu cuối năm 2024 trên bảng cân đối kế toán bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "equity"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "OWNERS’ EQUITY",
+            "8,993,605,984,965"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "equity",
+          "year": 2024,
+          "raw_value": "8,993,605,984,965",
+          "value": "8993605984965",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-revenue",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Doanh thu thuần năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "revenue"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Net revenue from sales of goods and rendering of services",
+            "12,512,793,481,045"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "revenue",
+          "year": 2024,
+          "raw_value": "12,512,793,481,045",
+          "value": "12512793481045",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-net_income",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Lợi nhuận sau thuế toàn tập đoàn năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "net_income"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Profit after tax",
+            "1,302,647,623,375"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "net_income",
+          "year": 2024,
+          "raw_value": "1,302,647,623,375",
+          "value": "1302647623375",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-gross_profit",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Lợi nhuận gộp năm 2024 trên báo cáo kết quả kinh doanh có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "gross_profit"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Gross profit from sales of goods and rendering of services",
+            "1,895,040,783,097"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_profit",
+          "year": 2024,
+          "raw_value": "1,895,040,783,097",
+          "value": "1895040783097",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-cost_sales",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Giá vốn hàng bán năm 2024 trên báo cáo kết quả kinh doanh bằng bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cost_sales"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Cost of goods sold and services rendered",
+            "(10,617,752,697,948)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cost_sales",
+          "year": 2024,
+          "raw_value": "(10,617,752,697,948)",
+          "value": "-10617752697948",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-financial_expenses",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Chi phí tài chính năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "financial_expenses"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Financial expenses",
+            "(216,754,217,673)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "financial_expenses",
+          "year": 2024,
+          "raw_value": "(216,754,217,673)",
+          "value": "-216754217673",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-interest_expense",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Chi phí lãi vay năm 2024 trên báo cáo kết quả kinh doanh bằng bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "interest_expense"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Including interest expense",
+            "(73,329,339,325)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_expense",
+          "year": 2024,
+          "raw_value": "(73,329,339,325)",
+          "value": "-73329339325",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-selling",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Chi phí bán hàng năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "selling"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Selling expenses",
+            "(296,508,835,027)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "selling",
+          "year": 2024,
+          "raw_value": "(296,508,835,027)",
+          "value": "-296508835027",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-admin",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Chi phí quản lý doanh nghiệp năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "admin"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "General and administration expenses",
+            "(357,769,168,574)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "admin",
+          "year": 2024,
+          "raw_value": "(357,769,168,574)",
+          "value": "-357769168574",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-cfo",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Dòng tiền thuần từ hoạt động kinh doanh năm 2024 trên báo cáo lưu chuyển tiền tệ là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cfo"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Net cash inflows from operating activities",
+            "2,073,015,394,093"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "raw_value": "2,073,015,394,093",
+          "value": "2073015394093",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-cfi",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Dòng tiền thuần từ hoạt động đầu tư năm 2024 trên báo cáo lưu chuyển tiền tệ bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cfi"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Net cash outflows from investing activities",
+            "(855,045,466,455)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfi",
+          "year": 2024,
+          "raw_value": "(855,045,466,455)",
+          "value": "-855045466455",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-cff",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Dòng tiền thuần từ hoạt động tài chính năm 2024 trên báo cáo lưu chuyển tiền tệ là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cff"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Net cash outflows from financing activities",
+            "(879,932,083,267)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cff",
+          "year": 2024,
+          "raw_value": "(879,932,083,267)",
+          "value": "-879932083267",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-capex",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tiền chi mua sắm tài sản cố định và tài sản dài hạn khác năm 2024 trên báo cáo lưu chuyển tiền tệ là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "capex"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Purchases of fixed assets and other long-term assets",
+            "(677,527,089,191)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "capex",
+          "year": 2024,
+          "raw_value": "(677,527,089,191)",
+          "value": "-677527089191",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-interest_paid",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tiền lãi vay đã trả năm 2024 trên báo cáo lưu chuyển tiền tệ bằng bao nhiêu, giữ dấu dòng tiền?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "interest_paid"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Interest paid",
+            "(73,949,592,731)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_paid",
+          "year": 2024,
+          "raw_value": "(73,949,592,731)",
+          "value": "-73949592731",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-raw_materials",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Theo thuyết minh hàng tồn kho, giá gốc nguyên vật liệu cuối năm 2024 bằng bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "raw_materials"
+      ],
+      "gold_pages": [
+        74
+      ],
+      "evidence": [
+        {
+          "page": 74,
+          "quotes": [
+            "Raw materials",
+            "384,920,051,202"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "raw_materials",
+          "year": 2024,
+          "raw_value": "384,920,051,202",
+          "value": "384920051202",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-finished_goods",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Trong thuyết minh hàng tồn kho, giá gốc thành phẩm cuối năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "finished_goods"
+      ],
+      "gold_pages": [
+        74
+      ],
+      "evidence": [
+        {
+          "page": 74,
+          "quotes": [
+            "Finished goods",
+            "1,077,338,324,367"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "finished_goods",
+          "year": 2024,
+          "raw_value": "1,077,338,324,367",
+          "value": "1077338324367",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-deposit_interest",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Lãi tiền gửi năm 2024 trong thuyết minh doanh thu tài chính là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "deposit_interest"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Interest income from deposits",
+            "110,691,635,554"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "deposit_interest",
+          "year": 2024,
+          "raw_value": "110,691,635,554",
+          "value": "110691635554",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-fx_loss",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Lỗ chênh lệch tỷ giá đã thực hiện năm 2024 trong thuyết minh chi phí tài chính bằng bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "fx_loss"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Realised foreign exchange losses",
+            "140,403,259,999"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "fx_loss",
+          "year": 2024,
+          "raw_value": "140,403,259,999",
+          "value": "140403259999",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-selling_staff",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Trong thuyết minh chi phí bán hàng, chi phí nhân viên năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "selling_staff"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Staff costs",
+            "19,135,725,129"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "selling_staff",
+          "year": 2024,
+          "raw_value": "19,135,725,129",
+          "value": "19135725129",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-transport",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Thuyết minh chi phí bán hàng ghi nhận chi phí vận chuyển, kho bãi và dịch vụ thuê ngoài khác năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "transport"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Transportation, storage and other outsourced services",
+            "231,174,385,522"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "transport",
+          "year": 2024,
+          "raw_value": "231,174,385,522",
+          "value": "231174385522",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-multi-liquidity",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tìm tài sản ngắn hạn và nợ ngắn hạn cuối năm 2024 trên bảng cân đối kế toán để đối chiếu khả năng thanh toán hiện hành.",
+      "category": "multi_value",
+      "target_ids": [
+        "current_assets",
+        "current_liabilities"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "CURRENT ASSET",
+            "8,238,447,590,991"
+          ]
+        },
+        {
+          "page": 64,
+          "quotes": [
+            "Short-term liabilities",
+            "3,183,722,367,033"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_assets",
+          "year": 2024,
+          "raw_value": "8,238,447,590,991",
+          "value": "8238447590991",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "current_liabilities",
+          "year": 2024,
+          "raw_value": "3,183,722,367,033",
+          "value": "3183722367033",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-multi-leverage",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tìm cả nợ phải trả và tổng tài sản cuối năm 2024 trên bảng cân đối kế toán để tính tỷ lệ nợ trên tài sản.",
+      "category": "multi_value",
+      "target_ids": [
+        "liabilities",
+        "total_assets"
+      ],
+      "gold_pages": [
+        64
+      ],
+      "evidence": [
+        {
+          "page": 64,
+          "quotes": [
+            "LIABILITIES",
+            "3,240,574,236,572"
+          ]
+        },
+        {
+          "page": 64,
+          "quotes": [
+            "TOTAL ASSETS",
+            "12,234,180,221,537"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "liabilities",
+          "year": 2024,
+          "raw_value": "3,240,574,236,572",
+          "value": "3240574236572",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "total_assets",
+          "year": 2024,
+          "raw_value": "12,234,180,221,537",
+          "value": "12234180221537",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-multi-gross_margin",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Cần cả lợi nhuận gộp và doanh thu thuần năm 2024 trên báo cáo kết quả kinh doanh để tính biên lợi nhuận gộp.",
+      "category": "multi_value",
+      "target_ids": [
+        "gross_profit",
+        "revenue"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Gross profit from sales of goods and rendering of services",
+            "1,895,040,783,097"
+          ]
+        },
+        {
+          "page": 65,
+          "quotes": [
+            "Net revenue from sales of goods and rendering of services",
+            "12,512,793,481,045"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_profit",
+          "year": 2024,
+          "raw_value": "1,895,040,783,097",
+          "value": "1895040783097",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "revenue",
+          "year": 2024,
+          "raw_value": "12,512,793,481,045",
+          "value": "12512793481045",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-multi-cash_vs_profit",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Đối chiếu dòng tiền kinh doanh thuần trên báo cáo lưu chuyển tiền tệ với lợi nhuận sau thuế trên báo cáo kết quả kinh doanh năm 2024; cần hai giá trị nào?",
+      "category": "multi_value",
+      "target_ids": [
+        "cfo",
+        "net_income"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Net cash inflows from operating activities",
+            "2,073,015,394,093"
+          ]
+        },
+        {
+          "page": 65,
+          "quotes": [
+            "Profit after tax",
+            "1,302,647,623,375"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "raw_value": "2,073,015,394,093",
+          "value": "2073015394093",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "net_income",
+          "year": 2024,
+          "raw_value": "1,302,647,623,375",
+          "value": "1302647623375",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-compare-revenue",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tìm hai giá trị doanh thu thuần năm 2024 và cột năm 2023 trên báo cáo kết quả kinh doanh để so sánh.",
+      "category": "year_comparison",
+      "target_ids": [
+        "revenue"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Net revenue from sales of goods and rendering of services",
+            "12,512,793,481,045",
+            "10,033,016,452,094"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "revenue",
+          "year": 2024,
+          "raw_value": "12,512,793,481,045",
+          "value": "12512793481045",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "revenue",
+          "year": 2023,
+          "raw_value": "10,033,016,452,094",
+          "value": "10033016452094",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "vhc-v2-compare-net_income",
+      "company": "VHC",
+      "report_year": 2024,
+      "scope": "consolidated",
+      "filename": "VHC_2024_annual.pdf",
+      "source_sha256": "1b73e85fb65797e4a07e6f1f8fcde849febc655d360e9ecb2ea39f9a7052d63a",
+      "question": "VHC (hợp nhất): Tìm hai giá trị lợi nhuận sau thuế năm 2024 và cột năm 2023 trên báo cáo kết quả kinh doanh để so sánh.",
+      "category": "year_comparison",
+      "target_ids": [
+        "net_income"
+      ],
+      "gold_pages": [
+        65
+      ],
+      "evidence": [
+        {
+          "page": 65,
+          "quotes": [
+            "Profit after tax",
+            "1,302,647,623,375",
+            "973,756,841,307"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "net_income",
+          "year": 2024,
+          "raw_value": "1,302,647,623,375",
+          "value": "1302647623375",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "net_income",
+          "year": 2023,
+          "raw_value": "973,756,841,307",
+          "value": "973756841307",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-current_assets",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Tài sản ngắn hạn cuối năm 2024 trên bảng cân đối kế toán là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "current_assets"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "CURRENT ASSETS",
+            "4,604,003,766,930"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_assets",
+          "year": 2024,
+          "raw_value": "4,604,003,766,930",
+          "value": "4604003766930",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-cash",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Khoản tiền mặt cuối năm 2024 trên bảng cân đối kế toán bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cash"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "Cash",
+            "62,857,547,612"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cash",
+          "year": 2024,
+          "raw_value": "62,857,547,612",
+          "value": "62857547612",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-inventory",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Hàng tồn kho sau dự phòng tại 31/12/2024 trên bảng cân đối kế toán bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "inventory"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "Inventories",
+            "1,115,429,265,990"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "inventory",
+          "year": 2024,
+          "raw_value": "1,115,429,265,990",
+          "value": "1115429265990",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-total_assets",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Tổng tài sản cuối năm 2024 trên bảng cân đối kế toán là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "total_assets"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "TOTAL ASSETS",
+            "5,959,243,276,265"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "total_assets",
+          "year": 2024,
+          "raw_value": "5,959,243,276,265",
+          "value": "5959243276265",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-liabilities",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Nợ phải trả cuối năm 2024 trên bảng cân đối kế toán có giá trị bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "liabilities"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "LIABILITIES",
+            "1,864,488,178,296"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "liabilities",
+          "year": 2024,
+          "raw_value": "1,864,488,178,296",
+          "value": "1864488178296",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-current_liabilities",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Nợ ngắn hạn tại 31/12/2024 trên bảng cân đối kế toán bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "current_liabilities"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "Current liabilities",
+            "1,790,292,694,239"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_liabilities",
+          "year": 2024,
+          "raw_value": "1,790,292,694,239",
+          "value": "1790292694239",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-equity",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Vốn chủ sở hữu cuối năm 2024 trên bảng cân đối kế toán là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "equity"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "OWNERS’ EQUITY",
+            "4,094,755,097,969"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "equity",
+          "year": 2024,
+          "raw_value": "4,094,755,097,969",
+          "value": "4094755097969",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-revenue",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Doanh thu thuần năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "revenue"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Net revenue from sale of goods",
+            "4,884,867,655,092"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "revenue",
+          "year": 2024,
+          "raw_value": "4,884,867,655,092",
+          "value": "4884867655092",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-net_income",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Lợi nhuận sau thuế năm 2024 trên báo cáo kết quả kinh doanh bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "net_income"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Net profit after tax",
+            "778,920,119,960"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "net_income",
+          "year": 2024,
+          "raw_value": "778,920,119,960",
+          "value": "778920119960",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-gross_profit",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Lợi nhuận gộp năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "gross_profit"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Gross profit from sale of goods",
+            "2,137,766,133,150"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_profit",
+          "year": 2024,
+          "raw_value": "2,137,766,133,150",
+          "value": "2137766133150",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-cost_sales",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Giá vốn hàng bán năm 2024 trên báo cáo kết quả kinh doanh bằng bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cost_sales"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Cost of goods sold",
+            "(2,747,101,521,942)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cost_sales",
+          "year": 2024,
+          "raw_value": "(2,747,101,521,942)",
+          "value": "-2747101521942",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-financial_expenses",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Chi phí tài chính năm 2024 trên báo cáo kết quả kinh doanh bằng bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "financial_expenses"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Finance expenses",
+            "(89,739,210,554)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "financial_expenses",
+          "year": 2024,
+          "raw_value": "(89,739,210,554)",
+          "value": "-89739210554",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-interest_expense",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Chi phí lãi vay năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "interest_expense"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Interest expense",
+            "(24,810,529,888)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_expense",
+          "year": 2024,
+          "raw_value": "(24,810,529,888)",
+          "value": "-24810529888",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-selling",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Chi phí bán hàng năm 2024 trên báo cáo kết quả kinh doanh bằng bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "selling"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Selling expenses",
+            "(904,667,099,165)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "selling",
+          "year": 2024,
+          "raw_value": "(904,667,099,165)",
+          "value": "-904667099165",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-admin",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Chi phí quản lý doanh nghiệp năm 2024 trên báo cáo kết quả kinh doanh là bao nhiêu, giữ dấu như báo cáo?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "admin"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "General and administrative expenses",
+            "(312,823,418,686)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "admin",
+          "year": 2024,
+          "raw_value": "(312,823,418,686)",
+          "value": "-312823418686",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-cfo",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Dòng tiền thuần từ hoạt động kinh doanh năm 2024 trên báo cáo lưu chuyển tiền tệ bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cfo"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Net cash flows from operating activities",
+            "1,317,583,405,328"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "raw_value": "1,317,583,405,328",
+          "value": "1317583405328",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-cfi",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Dòng tiền thuần từ hoạt động đầu tư năm 2024 trên báo cáo lưu chuyển tiền tệ là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cfi"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Net cash flows used in investing activities",
+            "(445,951,194,424)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfi",
+          "year": 2024,
+          "raw_value": "(445,951,194,424)",
+          "value": "-445951194424",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-cff",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Dòng tiền thuần từ hoạt động tài chính năm 2024 trên báo cáo lưu chuyển tiền tệ bằng bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "cff"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Net cash flows used in financing activities",
+            "(902,846,163,646)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cff",
+          "year": 2024,
+          "raw_value": "(902,846,163,646)",
+          "value": "-902846163646",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-capex",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Tiền chi mua sắm xây dựng tài sản cố định và tài sản dài hạn khác năm 2024 trên báo cáo lưu chuyển tiền tệ là bao nhiêu?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "capex"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Purchase and construction of fixed assets and other",
+            "(88,704,714,502)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "capex",
+          "year": 2024,
+          "raw_value": "(88,704,714,502)",
+          "value": "-88704714502",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-interest_paid",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Tiền lãi vay đã trả năm 2024 trên báo cáo lưu chuyển tiền tệ là bao nhiêu, giữ dấu dòng tiền?",
+      "category": "statement_lookup",
+      "target_ids": [
+        "interest_paid"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Interest paid",
+            "(24,766,314,819)"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "interest_paid",
+          "year": 2024,
+          "raw_value": "(24,766,314,819)",
+          "value": "-24766314819",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-raw_materials",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Theo thuyết minh hàng tồn kho, giá gốc nguyên vật liệu cuối năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "raw_materials"
+      ],
+      "gold_pages": [
+        85
+      ],
+      "evidence": [
+        {
+          "page": 85,
+          "quotes": [
+            "Raw materials",
+            "558,533,781,102"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "raw_materials",
+          "year": 2024,
+          "raw_value": "558,533,781,102",
+          "value": "558533781102",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-finished_goods",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Theo thuyết minh hàng tồn kho, giá gốc thành phẩm cuối năm 2024 bằng bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "finished_goods"
+      ],
+      "gold_pages": [
+        85
+      ],
+      "evidence": [
+        {
+          "page": 85,
+          "quotes": [
+            "Finished goods",
+            "353,996,808,325"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "finished_goods",
+          "year": 2024,
+          "raw_value": "353,996,808,325",
+          "value": "353996808325",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-materials_cost",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Theo thuyết minh chi phí sản xuất và hoạt động, chi phí nguyên vật liệu năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "materials_cost"
+      ],
+      "gold_pages": [
+        92
+      ],
+      "evidence": [
+        {
+          "page": 92,
+          "quotes": [
+            "Raw materials",
+            "2,325,405,858,858"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "materials_cost",
+          "year": 2024,
+          "raw_value": "2,325,405,858,858",
+          "value": "2325405858858",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-labour_cost",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Thuyết minh chi phí sản xuất và hoạt động ghi nhận chi phí nhân công năm 2024 bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "labour_cost"
+      ],
+      "gold_pages": [
+        92
+      ],
+      "evidence": [
+        {
+          "page": 92,
+          "quotes": [
+            "Labour cost",
+            "1,000,468,416,730"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "labour_cost",
+          "year": 2024,
+          "raw_value": "1,000,468,416,730",
+          "value": "1000468416730",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-selling_labour",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Trong thuyết minh chi phí bán hàng, chi phí lao động năm 2024 là bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "selling_labour"
+      ],
+      "gold_pages": [
+        91
+      ],
+      "evidence": [
+        {
+          "page": 91,
+          "quotes": [
+            "Labour expense",
+            "482,878,885,202"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "selling_labour",
+          "year": 2024,
+          "raw_value": "482,878,885,202",
+          "value": "482878885202",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-marketing",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Trong thuyết minh chi phí bán hàng, chi phí quảng cáo và tiếp thị năm 2024 bằng bao nhiêu?",
+      "category": "note_lookup",
+      "target_ids": [
+        "marketing"
+      ],
+      "gold_pages": [
+        91
+      ],
+      "evidence": [
+        {
+          "page": 91,
+          "quotes": [
+            "Advertising and marketing expenses",
+            "61,742,301,845"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "marketing",
+          "year": 2024,
+          "raw_value": "61,742,301,845",
+          "value": "61742301845",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-multi-liquidity",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Tìm tài sản ngắn hạn và nợ ngắn hạn cuối năm 2024 trên bảng cân đối kế toán để đối chiếu khả năng thanh toán hiện hành.",
+      "category": "multi_value",
+      "target_ids": [
+        "current_assets",
+        "current_liabilities"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "CURRENT ASSETS",
+            "4,604,003,766,930"
+          ]
+        },
+        {
+          "page": 79,
+          "quotes": [
+            "Current liabilities",
+            "1,790,292,694,239"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "current_assets",
+          "year": 2024,
+          "raw_value": "4,604,003,766,930",
+          "value": "4604003766930",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "current_liabilities",
+          "year": 2024,
+          "raw_value": "1,790,292,694,239",
+          "value": "1790292694239",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-multi-leverage",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Tìm cả nợ phải trả và tổng tài sản cuối năm 2024 trên bảng cân đối kế toán để tính tỷ lệ nợ trên tài sản.",
+      "category": "multi_value",
+      "target_ids": [
+        "liabilities",
+        "total_assets"
+      ],
+      "gold_pages": [
+        79
+      ],
+      "evidence": [
+        {
+          "page": 79,
+          "quotes": [
+            "LIABILITIES",
+            "1,864,488,178,296"
+          ]
+        },
+        {
+          "page": 79,
+          "quotes": [
+            "TOTAL ASSETS",
+            "5,959,243,276,265"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "liabilities",
+          "year": 2024,
+          "raw_value": "1,864,488,178,296",
+          "value": "1864488178296",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "total_assets",
+          "year": 2024,
+          "raw_value": "5,959,243,276,265",
+          "value": "5959243276265",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-multi-gross_margin",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Cần cả lợi nhuận gộp và doanh thu thuần năm 2024 trên báo cáo kết quả kinh doanh để tính biên lợi nhuận gộp.",
+      "category": "multi_value",
+      "target_ids": [
+        "gross_profit",
+        "revenue"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Gross profit from sale of goods",
+            "2,137,766,133,150"
+          ]
+        },
+        {
+          "page": 80,
+          "quotes": [
+            "Net revenue from sale of goods",
+            "4,884,867,655,092"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "gross_profit",
+          "year": 2024,
+          "raw_value": "2,137,766,133,150",
+          "value": "2137766133150",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "revenue",
+          "year": 2024,
+          "raw_value": "4,884,867,655,092",
+          "value": "4884867655092",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-multi-cash_vs_profit",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Đối chiếu dòng tiền kinh doanh thuần trên báo cáo lưu chuyển tiền tệ với lợi nhuận sau thuế trên báo cáo kết quả kinh doanh năm 2024; cần hai giá trị nào?",
+      "category": "multi_value",
+      "target_ids": [
+        "cfo",
+        "net_income"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Net cash flows from operating activities",
+            "1,317,583,405,328"
+          ]
+        },
+        {
+          "page": 80,
+          "quotes": [
+            "Net profit after tax",
+            "778,920,119,960"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "cfo",
+          "year": 2024,
+          "raw_value": "1,317,583,405,328",
+          "value": "1317583405328",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "net_income",
+          "year": 2024,
+          "raw_value": "778,920,119,960",
+          "value": "778920119960",
+          "unit": "one",
+          "currency": "VND"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-compare-revenue",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Tìm hai giá trị doanh thu thuần năm 2024 và cột năm 2023 trên báo cáo kết quả kinh doanh để so sánh.",
+      "category": "year_comparison",
+      "target_ids": [
+        "revenue"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Net revenue from sale of goods",
+            "4,884,867,655,092",
+            "5,015,395,040,721"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "revenue",
+          "year": 2024,
+          "raw_value": "4,884,867,655,092",
+          "value": "4884867655092",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "revenue",
+          "year": 2023,
+          "raw_value": "5,015,395,040,721",
+          "value": "5015395040721",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    },
+    {
+      "id": "dhg-v2-compare-net_income",
+      "company": "DHG",
+      "report_year": 2024,
+      "scope": "standalone",
+      "filename": "DHG_2024_annual.pdf",
+      "source_sha256": "99a86c81427692691f898b899380f298abcbe3f75783f3f40ee13df1a5d2398d",
+      "question": "DHG (riêng lẻ): Tìm hai giá trị lợi nhuận sau thuế năm 2024 và cột năm 2023 trên báo cáo kết quả kinh doanh để so sánh.",
+      "category": "year_comparison",
+      "target_ids": [
+        "net_income"
+      ],
+      "gold_pages": [
+        80
+      ],
+      "evidence": [
+        {
+          "page": 80,
+          "quotes": [
+            "Net profit after tax",
+            "778,920,119,960",
+            "1,050,662,658,695"
+          ]
+        }
+      ],
+      "reference_answers": [
+        {
+          "target": "net_income",
+          "year": 2024,
+          "raw_value": "778,920,119,960",
+          "value": "778920119960",
+          "unit": "one",
+          "currency": "VND"
+        },
+        {
+          "target": "net_income",
+          "year": 2023,
+          "raw_value": "1,050,662,658,695",
+          "value": "1050662658695",
+          "currency": "VND",
+          "unit": "one"
+        }
+      ],
+      "evidence_origin": "rendered_pdf",
+      "annotation": {
+        "author": "assistant",
+        "reviewed_on": "2026-10-31",
+        "method": "visually transcribed from rendered original PDF tables before retrieval scoring",
+        "independent_review": false
+      }
+    }
+  ]
+}

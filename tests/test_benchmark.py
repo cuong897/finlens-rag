@@ -5,7 +5,7 @@ import unittest
 
 import pymupdf
 
-from finlens.benchmark import audit_benchmark, benchmark_reports, import_benchmark
+from finlens.benchmark import audit_benchmark, benchmark_reports, import_benchmark, holdout_reports
 from finlens.ingest import IngestError
 from finlens.public_pilot import manifest
 from finlens.retrieval_dataset import load_dataset
@@ -66,6 +66,15 @@ class BenchmarkImportTests(unittest.TestCase):
         self.assertEqual({c["category"] for c in cases}, {"statement_lookup", "note_lookup", "multi_value", "year_comparison"})
         self.assertEqual(dataset["protocol"]["frozen_retrieval_commit"], "ed4a45f")
         self.assertTrue(all(c["annotation"]["independent_review"] is False for c in cases))
+
+    def test_fresh_holdout_is_company_disjoint_and_keeps_ocr_misses_in_the_denominator(self):
+        path = Path(__file__).resolve().parents[1] / "finlens/fixtures/benchmark_holdout_v2.json"
+        dataset = load_dataset(path)
+        self.assertEqual(len(dataset["cases"]), 64)
+        self.assertEqual(len({c["question"] for c in dataset["cases"]}), 64)
+        self.assertEqual({c["company"] for c in dataset["cases"]}, {r["company"] for r in holdout_reports()})
+        self.assertTrue(all(c["evidence_origin"] == "rendered_pdf" for c in dataset["cases"]))
+        self.assertEqual({r["scope"] for r in holdout_reports()}, {"consolidated", "standalone"})
 
     def test_label_audit_detects_wrong_values_duplicate_questions_and_page_filtering(self):
         import copy

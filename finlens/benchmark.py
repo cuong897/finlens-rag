@@ -1,6 +1,7 @@
 """Held-out public reports, kept separate from the development pilot registry."""
 
 import json
+import hashlib
 from pathlib import Path
 
 import httpx
@@ -15,6 +16,10 @@ def benchmark_reports():
     return json.loads((Path(__file__).parent / "fixtures/benchmark_reports.json").read_text(encoding="utf-8"))
 
 
+def holdout_reports():
+    return json.loads((Path(__file__).parent / "fixtures/benchmark_holdout_reports_v2.json").read_text(encoding="utf-8"))
+
+
 def audit_benchmark(store, dataset):
     """Check source/label consistency, not independent semantic correctness."""
     cases = dataset["cases"]
@@ -25,7 +30,7 @@ def audit_benchmark(store, dataset):
         raise ValueError("Benchmark trùng doanh nghiệp phát triển.")
     questions, targets, pages, documents = set(), set(), set(), {}
     summaries = {d["id"]: d for d in store.documents()}
-    categories = {}
+    categories, missing = {}, []
     for case in cases:
         question = quote_text(case["question"])
         if question in questions:
@@ -40,7 +45,10 @@ def audit_benchmark(store, dataset):
         for anchor in case["evidence"]:
             source = store.page(document["id"], anchor["page"])
             if not source or any(quote_text(q) not in quote_text(source["text"]) for q in anchor["quotes"]):
-                raise ValueError(f"Trích đoạn không khớp: {case['id']} trang {anchor['page']}.")
+                original = store.pdf_path(document["id"])
+                if case.get("evidence_origin") != "rendered_pdf" or not original or hashlib.sha256(original.read_bytes()).hexdigest() != case["source_sha256"]:
+                    raise ValueError(f"Trích đoạn không khớp: {case['id']} trang {anchor['page']}.")
+                missing.append({"id": case["id"], "page": anchor["page"]})
             pages.add((case["company"], anchor["page"]))
         for answer in case["reference_answers"]:
             raw = answer["raw_value"]
@@ -53,7 +61,8 @@ def audit_benchmark(store, dataset):
     return {"cases": len(cases), "unique_lookup_targets": len(targets), "reference_pages": len(pages),
             "companies": sorted({c["company"] for c in cases}), "categories": categories,
             "full_report_pages": sum(d["page_count"] for d in documents.values()),
-            "dataset_sha256": fingerprint(dataset), "literal_source_check": "passed",
+            "dataset_sha256": fingerprint(dataset), "literal_source_check": "passed" if not missing else "visual_labels_partially_unavailable_in_extracted_text",
+            "visual_labels_missing_from_extracted_text": missing,
             "independent_human_review": False}
 
 

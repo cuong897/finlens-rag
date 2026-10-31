@@ -5,7 +5,7 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="FinLens local financial document assistant")
-    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "reprocess", "prepare-embeddings", "gemini", "public-pilot", "benchmark-import", "check-pilot", "evaluate-retrieval"], nargs="?", default="serve")
+    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "reprocess", "prepare-ocr", "prepare-embeddings", "gemini", "public-pilot", "benchmark-import", "benchmark-holdout-import", "check-pilot", "evaluate-retrieval"], nargs="?", default="serve")
     parser.add_argument("--data-dir", default=None)
     parser.add_argument("--env-file", default=None, help="Explicit local configuration file; never prints values")
     parser.add_argument("--host", default="127.0.0.1")
@@ -49,6 +49,10 @@ def main():
         config = prepare_embeddings(args.data_dir)
         print(json.dumps({"embedding_model": config.embed_model, "ready": True}))
         return
+    if args.command == "prepare-ocr":
+        from finlens.ocr import prepare_ocr
+        print(json.dumps(prepare_ocr(args.data_dir), ensure_ascii=True))
+        return
     if args.command == "serve":
         import uvicorn
         from finlens.api import create_app
@@ -70,6 +74,9 @@ def main():
     elif args.command == "benchmark-import":
         from finlens.benchmark import import_benchmark
         result = import_benchmark(store)
+    elif args.command == "benchmark-holdout-import":
+        from finlens.benchmark import import_benchmark, holdout_reports
+        result = import_benchmark(store, reports=holdout_reports())
     elif args.command == "reprocess":
         from finlens.ingest import reprocess_pdfs
         result = reprocess_pdfs(store)
