@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "code_commit_for_reproduction": "4a66b40",
+  "kind": "synthetic_answer_integration_development",
+  "dataset_sha256": "05fa789b300be84e623dcde2b15644a01a4c58798f50bf010441341694979220",
+  "completed_unique_cases": 15,
+  "contract_passed": 15,
+  "local_cases": 10,
+  "generation_cases": 5,
+  "recorded_provider_attempts": 7,
+  "actual_models": {
+    "gemini-3.6-flash": 5
+  },
+  "primary_timeouts": 2,
+  "model_abstention_cases": 2,
+  "model_abstentions_returned": 2,
+  "generation_latency_p50_ms": 3153.64,
+  "generation_latency_p95_ms": 12148.43,
+  "unit_tests_passed": 204,
+  "human_review_status": "pending",
+  "semantic_accuracy": null,
+  "source_entailment_accuracy": null,
+  "facts_unchanged": true,
+  "warning": "Tiny assistant-authored synthetic integration suite; pass means contract checks only. No independent semantic grading or real-document answer benchmark. These results do not estimate service reliability or financial answer accuracy.",
+  "report": "artifacts/answer-check-v1/REPORT.md"
+}
