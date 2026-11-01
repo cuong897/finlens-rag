@@ -198,7 +198,8 @@ function renderSuggestions() {
     if (candidate.unit_source_page) {
       const unitSource = node('a', 'text-link', `Đối chiếu đơn vị ở trang ${candidate.unit_source_page} ↗`);
       unitSource.href = `/api/documents/${encodeURIComponent(candidate.document_id)}/pdf#page=${candidate.unit_source_page}`;
-      unitSource.target = '_blank'; unitSource.rel = 'noopener'; content.append(unitSource);
+      unitSource.target = '_blank'; unitSource.rel = 'noopener';
+      const unitProof = node('div', 'doc-meta'); unitProof.append(unitSource); content.append(unitProof);
     }
     if (!confirmed) {
       const selection = node('label', 'check-label');
