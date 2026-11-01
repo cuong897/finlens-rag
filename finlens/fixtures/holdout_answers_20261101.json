@@ -1,0 +1,788 @@
+{
+  "version": 1,
+  "name": "fresh-real-answer-pilot-20261101",
+  "split": "test",
+  "label_origin": "Assistant-authored before first generation on four new issuer PDFs and frozen product; not independent human annotation. Eight policy question families reused across issuers; 32 answerable plus 8 unsupported questions. Reference page text assists review; not supplied to the RAG model. BCM reference text uses full-page OCR only for annotation, never the retrieval corpus.",
+  "cases": [
+    {
+      "id": "sab-inventory-value",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích nguyên tắc xác định giá trị hàng tồn kho được nêu trong chính sách kế toán.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Đối chiếu giá gốc với giá trị thuần có thể thực hiện được; dùng mức thấp hơn.",
+      "reference_evidence": [
+        {
+          "page": 23,
+          "excerpt": "Saigon Beer - Alcohol - Beverage Corporation and its subsidiaries\nNotes to the consolidated financial statements for the year ended 31 December 2024\n(continued)\n\nForm B 09 - DN/HN\n(Issued under Circular No. 202/2014/TT-BTC\ndated 22 December 2014 of the Ministry of Finance)\n\n(f) Inventories\n\nInventories are stated at the lower of cost and net realisable value. Cost is determined on a weighted\naverage basis and includes all costs incurred in bringing the inventories to their present location and\ncondition. Cost in the case of finished goods and work in progress includes raw materials, direct\nlabour and attributable manufacturing overheads. Net realisable value is the estimated selling price\nof inventory items, less the estimated costs of completion and estimated costs to sell.\n\nThe Group applies the perpetual method of accounting for inventories.\n\n\n(g) Tangible fixed assets\n\n\n(i) Cost\n\nTangible fixed assets are stated at cost less accumulated depreciation. The initial cost of a tangible\nfixed asset comprises its purchase price, including import duties, non-refundable purchase taxes and\nany directly attributable costs of bringing the asset to its working condition for its intended use.\nExpenditure incurred after tangible fixed assets have been put into operation, such as repair,\nmaintenance and overhaul cost, is charged to the consolidated statement of income in the year in\nwhich the cost is incurred. In situations where it can be clearly demonstrated that the expenditure has\nresulted in an increase in the future economic benefits expected to be obtained from the use of tangible\nfixed assets beyond their originally assessed standard of performance, the expenditure is capitalised\nas an additional cost of tangible fixed assets.\n\n\n\n(ti) Depreciation\n\nDepreciation is computed ona straight-line basis over the estimated useful lives of tangible fixed\nassets. The estimated useful lives are as follows:\n\n\" buildings and structures 5 — 45 years\n= machinery and equipment 3 — 30 years\n= motor vehicles 3 — 10 years\n= office equipment 2 — 15 years\n= others 2 — 20 years\n\n\n\n\n\n|\n\n\nf\n\nj\n\n\n\n\n\n22"
+        }
+      ],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-inventory-cost",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích phương pháp tính giá gốc hàng tồn kho mà doanh nghiệp áp dụng.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "SAB/VNM dùng bình quân gia quyền; BCM bình quân gia quyền cho nguyên vật liệu và đích danh cho bất động sản; MWG đối chiếu đoạn phương pháp chi tiết trong nguồn. Không đồng nhất giá gốc với giá bán.",
+      "reference_evidence": [
+        {
+          "page": 23,
+          "excerpt": "Saigon Beer - Alcohol - Beverage Corporation and its subsidiaries\nNotes to the consolidated financial statements for the year ended 31 December 2024\n(continued)\n\nForm B 09 - DN/HN\n(Issued under Circular No. 202/2014/TT-BTC\ndated 22 December 2014 of the Ministry of Finance)\n\n(f) Inventories\n\nInventories are stated at the lower of cost and net realisable value. Cost is determined on a weighted\naverage basis and includes all costs incurred in bringing the inventories to their present location and\ncondition. Cost in the case of finished goods and work in progress includes raw materials, direct\nlabour and attributable manufacturing overheads. Net realisable value is the estimated selling price\nof inventory items, less the estimated costs of completion and estimated costs to sell.\n\nThe Group applies the perpetual method of accounting for inventories.\n\n\n(g) Tangible fixed assets\n\n\n(i) Cost\n\nTangible fixed assets are stated at cost less accumulated depreciation. The initial cost of a tangible\nfixed asset comprises its purchase price, including import duties, non-refundable purchase taxes and\nany directly attributable costs of bringing the asset to its working condition for its intended use.\nExpenditure incurred after tangible fixed assets have been put into operation, such as repair,\nmaintenance and overhaul cost, is charged to the consolidated statement of income in the year in\nwhich the cost is incurred. In situations where it can be clearly demonstrated that the expenditure has\nresulted in an increase in the future economic benefits expected to be obtained from the use of tangible\nfixed assets beyond their originally assessed standard of performance, the expenditure is capitalised\nas an additional cost of tangible fixed assets.\n\n\n\n(ti) Depreciation\n\nDepreciation is computed ona straight-line basis over the estimated useful lives of tangible fixed\nassets. The estimated useful lives are as follows:\n\n\" buildings and structures 5 — 45 years\n= machinery and equipment 3 — 30 years\n= motor vehicles 3 — 10 years\n= office equipment 2 — 15 years\n= others 2 — 20 years\n\n\n\n\n\n|\n\n\nf\n\nj\n\n\n\n\n\n22"
+        }
+      ],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-cash-definition",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích điều kiện để một khoản đầu tư được phân loại là tương đương tiền theo báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Thanh khoản cao, chuyển đổi được thành lượng tiền xác định và ít rủi ro thay đổi giá trị; chỉ nêu thời hạn gốc ba tháng nếu nguồn của đúng doanh nghiệp có ghi.",
+      "reference_evidence": [
+        {
+          "page": 22,
+          "excerpt": "Saigon Beer - Alcohol - Beverage Corporation and its subsidiaries\nNotes to the consolidated financial statements for the year ended 31 December 2024\n(continued)\n\nForm B 09 —- DN/HN\n(Issued under Circular No. 202/2014/TT-BTC\ndated 22 December 2014 of the Ministry of Finance)\n(ti) Translation of financial statements of associate from the accounting currency to the\npresentation currency\n\nAssets and liabilities of associate which denominated in currency other than VND are translated to\nVND at exchange rates at the end of the annual accounting period. Income and expenses of this\nassociate are translated to VND at exchange rates at the dates of transactions.\n\nForeign exchange differences arising from the translation of financial statements of associate which\ndenominated in currency other than VND are recognised in the consolidated balance sheet under the\ncaption “Foreign exchange differences” in equity.\n\n\n(c) Cash and cash equivalents\n\nCash comprises cash balances and call deposits. Cash equivalents are short-term highly liquid\ninvestments that are readily convertible to known amounts of cash, are subject to an insignificant risk\nof changes in value, and are held for the purpose of meeting short-term cash commitments rather than\nfor investment or other purposes.\n\n\n(d) Investments\n\n\n(i) Held-to-maturity investments\n\nHeld-to-maturity investments are those that the Company’s or its subsidiaries’ management has the\nintention and ability to hold until maturity. Held-to-maturity investments include term deposits at\nbanks. These investments are stated at costs.\n\n\n(ii) Investments in equity instruments ofother entities\n\nInvestments in equity instruments of other entities are initially recognised at cost which include\npurchase price plus any directly attributable transaction costs. Subsequent to initial recognition, these\ninvestments are stated at cost less allowance for diminution in value. An allowance is made for\ndiminution in investment values if the investee has suffered a loss which may cause the Group to lose\ntheir invested capital, unless there is evidence that the value of the investment has not been\ndiminished. The allowance is reversed if the investee subsequently made a profit that offsets the\nprevious loss for which the allowance had been made. An allowance is reversed only to the extent “\nthat the investment’s carrying amount does not exceed the carrying amount that would have been 5\ndetermined if no allowance had been recognised. ;\n\n}\n(e) Accounts receivable |\n\nTrade and other receivables are stated at costs less allowance for doubtful debts. ì\n\n\n\n\n\n21"
+        }
+      ],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-asset-cost",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích tài sản cố định hữu hình được trình bày theo giá trị nào và chi phí nào được tính vào nguyên giá.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Nguyên giá trừ khấu hao/hao mòn lũy kế; giá mua và chi phí trực tiếp để đưa tài sản vào trạng thái sử dụng; bám đúng phạm vi nguồn.",
+      "reference_evidence": [
+        {
+          "page": 23,
+          "excerpt": "Saigon Beer - Alcohol - Beverage Corporation and its subsidiaries\nNotes to the consolidated financial statements for the year ended 31 December 2024\n(continued)\n\nForm B 09 - DN/HN\n(Issued under Circular No. 202/2014/TT-BTC\ndated 22 December 2014 of the Ministry of Finance)\n\n(f) Inventories\n\nInventories are stated at the lower of cost and net realisable value. Cost is determined on a weighted\naverage basis and includes all costs incurred in bringing the inventories to their present location and\ncondition. Cost in the case of finished goods and work in progress includes raw materials, direct\nlabour and attributable manufacturing overheads. Net realisable value is the estimated selling price\nof inventory items, less the estimated costs of completion and estimated costs to sell.\n\nThe Group applies the perpetual method of accounting for inventories.\n\n\n(g) Tangible fixed assets\n\n\n(i) Cost\n\nTangible fixed assets are stated at cost less accumulated depreciation. The initial cost of a tangible\nfixed asset comprises its purchase price, including import duties, non-refundable purchase taxes and\nany directly attributable costs of bringing the asset to its working condition for its intended use.\nExpenditure incurred after tangible fixed assets have been put into operation, such as repair,\nmaintenance and overhaul cost, is charged to the consolidated statement of income in the year in\nwhich the cost is incurred. In situations where it can be clearly demonstrated that the expenditure has\nresulted in an increase in the future economic benefits expected to be obtained from the use of tangible\nfixed assets beyond their originally assessed standard of performance, the expenditure is capitalised\nas an additional cost of tangible fixed assets.\n\n\n\n(ti) Depreciation\n\nDepreciation is computed ona straight-line basis over the estimated useful lives of tangible fixed\nassets. The estimated useful lives are as follows:\n\n\" buildings and structures 5 — 45 years\n= machinery and equipment 3 — 30 years\n= motor vehicles 3 — 10 years\n= office equipment 2 — 15 years\n= others 2 — 20 years\n\n\n\n\n\n|\n\n\nf\n\nj\n\n\n\n\n\n22"
+        }
+      ],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-depreciation",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích phương pháp khấu hao tài sản cố định hữu hình được áp dụng theo báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Phương pháp đường thẳng theo thời gian hữu ích ước tính; không tự đưa tỷ lệ hoặc số năm ngoài nguồn.",
+      "reference_evidence": [
+        {
+          "page": 23,
+          "excerpt": "Saigon Beer - Alcohol - Beverage Corporation and its subsidiaries\nNotes to the consolidated financial statements for the year ended 31 December 2024\n(continued)\n\nForm B 09 - DN/HN\n(Issued under Circular No. 202/2014/TT-BTC\ndated 22 December 2014 of the Ministry of Finance)\n\n(f) Inventories\n\nInventories are stated at the lower of cost and net realisable value. Cost is determined on a weighted\naverage basis and includes all costs incurred in bringing the inventories to their present location and\ncondition. Cost in the case of finished goods and work in progress includes raw materials, direct\nlabour and attributable manufacturing overheads. Net realisable value is the estimated selling price\nof inventory items, less the estimated costs of completion and estimated costs to sell.\n\nThe Group applies the perpetual method of accounting for inventories.\n\n\n(g) Tangible fixed assets\n\n\n(i) Cost\n\nTangible fixed assets are stated at cost less accumulated depreciation. The initial cost of a tangible\nfixed asset comprises its purchase price, including import duties, non-refundable purchase taxes and\nany directly attributable costs of bringing the asset to its working condition for its intended use.\nExpenditure incurred after tangible fixed assets have been put into operation, such as repair,\nmaintenance and overhaul cost, is charged to the consolidated statement of income in the year in\nwhich the cost is incurred. In situations where it can be clearly demonstrated that the expenditure has\nresulted in an increase in the future economic benefits expected to be obtained from the use of tangible\nfixed assets beyond their originally assessed standard of performance, the expenditure is capitalised\nas an additional cost of tangible fixed assets.\n\n\n\n(ti) Depreciation\n\nDepreciation is computed ona straight-line basis over the estimated useful lives of tangible fixed\nassets. The estimated useful lives are as follows:\n\n\" buildings and structures 5 — 45 years\n= machinery and equipment 3 — 30 years\n= motor vehicles 3 — 10 years\n= office equipment 2 — 15 years\n= others 2 — 20 years\n\n\n\n\n\n|\n\n\nf\n\nj\n\n\n\n\n\n22"
+        }
+      ],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-fx-initial",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích cách quy đổi các giao dịch ngoại tệ tại thời điểm phát sinh.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Dùng tỷ giá giao dịch thực tế ở ngày phát sinh; nếu nguồn phân biệt mua/bán theo phải thu, phải trả thì trình bày sự phân biệt đó.",
+      "reference_evidence": [
+        {
+          "page": 21,
+          "excerpt": "Saigon Beer - Alcohol - Beverage Corporation and its subsidiaries\nNotes to the consolidated financial statements for the year ended 31 December 2024\n(continued)\n\nForm B 09 - DN/HN\n(Issued under Circular No. 202/2014/TT-BTC\ndated 22 December 2014 of the Ministry ofFinance)\n\n(v) Business combination\n\nBusiness combinations are accounted for using the acquisition method as at the acquisition date,\nwhich is the date on which control is transferred to the Group. Control exists when the Group has the\npower to govern the financial and operating policies of an entity so as to obtain benefits from its\nactivities. In assessing control, potential voting rights that presently are exercisable are taken into\naccount.\n\n\nCost of a business combination (cost of the acquisition) is the aggregate amount of the fair values, at\nthe date of exchange, of assets given, liabilities incurred or assumed, and equity instruments issued\nby the acquirer in the acquisition in exchange for control of the acquiree and any costs directly\nattributable to the business combination. Identifiable assets acquired, identifiable liabilities and\ncontingent liabilities assumed in a business combination are recognised at fair value at the acquisition\ndate.\n\nAnyin goodwill that arises representing the excess of the cost of the acquisition over the Group’s interest the net fair value of the identifiable assets, liabilities and contingent liabilities of the acquiree is\nrecognised in consolidated balance sheet, then amortised through to the consolidated statement of\nincome. When the excess is negative (gain from bargain purchase), it is recognised in the consolidated\nstatement of income for the acquired year after a reassessment has been performed to ensure that the\nmeasurement of identifiable assets acquired, liabilities and contingent liabilities assumed and the cost\nof the business combination appropriately reflects consideration of all available information as of the\nacquisition date.\n\n\n\n(b) Foreign currency\n\n\n(i) Foreign currency transactions\n\nTransactions in currencies other than VND during the year have been translated into VND at actual\nrates of exchange ruling at the transaction dates.\n\nMonetary assets and liabilities denominated in currencies other than VND are translated into VND at\nthe account transfer buying rate and the account transfer selling rate, respectively, at the end of the\nannual accounting period quoted by the commercial bank where the Group most frequently conducts\ntransactions.\n\nAll foreign exchange differences are recorded in the consolidated statement of income. `)sà\nÁc,sử.\n\n\n\n*\n\n\nA\nCD)\nGi\n\n\n\n\n\n.#\n1\\4\na\nIHỊ”\n\n*\n\n20 È/\nSY"
+        }
+      ],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-fx-closing",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích cách đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ ở thời điểm lập báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Theo tỷ giá cuối kỳ/tỷ giá mua hoặc bán phù hợp từng nhóm tài sản và nợ phải trả được nguồn mô tả; không tự suy diễn tỷ giá cụ thể.",
+      "reference_evidence": [
+        {
+          "page": 21,
+          "excerpt": "Saigon Beer - Alcohol - Beverage Corporation and its subsidiaries\nNotes to the consolidated financial statements for the year ended 31 December 2024\n(continued)\n\nForm B 09 - DN/HN\n(Issued under Circular No. 202/2014/TT-BTC\ndated 22 December 2014 of the Ministry ofFinance)\n\n(v) Business combination\n\nBusiness combinations are accounted for using the acquisition method as at the acquisition date,\nwhich is the date on which control is transferred to the Group. Control exists when the Group has the\npower to govern the financial and operating policies of an entity so as to obtain benefits from its\nactivities. In assessing control, potential voting rights that presently are exercisable are taken into\naccount.\n\n\nCost of a business combination (cost of the acquisition) is the aggregate amount of the fair values, at\nthe date of exchange, of assets given, liabilities incurred or assumed, and equity instruments issued\nby the acquirer in the acquisition in exchange for control of the acquiree and any costs directly\nattributable to the business combination. Identifiable assets acquired, identifiable liabilities and\ncontingent liabilities assumed in a business combination are recognised at fair value at the acquisition\ndate.\n\nAnyin goodwill that arises representing the excess of the cost of the acquisition over the Group’s interest the net fair value of the identifiable assets, liabilities and contingent liabilities of the acquiree is\nrecognised in consolidated balance sheet, then amortised through to the consolidated statement of\nincome. When the excess is negative (gain from bargain purchase), it is recognised in the consolidated\nstatement of income for the acquired year after a reassessment has been performed to ensure that the\nmeasurement of identifiable assets acquired, liabilities and contingent liabilities assumed and the cost\nof the business combination appropriately reflects consideration of all available information as of the\nacquisition date.\n\n\n\n(b) Foreign currency\n\n\n(i) Foreign currency transactions\n\nTransactions in currencies other than VND during the year have been translated into VND at actual\nrates of exchange ruling at the transaction dates.\n\nMonetary assets and liabilities denominated in currencies other than VND are translated into VND at\nthe account transfer buying rate and the account transfer selling rate, respectively, at the end of the\nannual accounting period quoted by the commercial bank where the Group most frequently conducts\ntransactions.\n\nAll foreign exchange differences are recorded in the consolidated statement of income. `)sà\nÁc,sử.\n\n\n\n*\n\n\nA\nCD)\nGi\n\n\n\n\n\n.#\n1\\4\na\nIHỊ”\n\n*\n\n20 È/\nSY"
+        }
+      ],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-sales-recognition",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích điều kiện ghi nhận doanh thu bán hàng theo chính sách kế toán trong báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Chuyển giao phần lớn rủi ro và lợi ích; các điều kiện đo lường/thu hồi và quyền quản lý theo nguồn. Không bịa nguyên nhân tăng doanh thu.",
+      "reference_evidence": [
+        {
+          "page": 27,
+          "excerpt": "Saigon Beer - Alcohol - Beverage Corporation and its subsidiaries\nNotes to the consolidated financial statements for the year ended 31 December 2024\n(continued)\n\nForm B 09 - DN/HN\n(Issued under Circular No. 202/2014/TT-BTC\ndated 22 December 2014 of the Ministry of Finance)\n\n(0) Taxation\n\nIncome tax on the profit or loss for the year comprises current and deferred tax. Income tax is\nrecognised in the consolidated statement of income except to the extent that it relates to items\nrecognised directly to equity, in which case it is recognised in equity.\n\nCurrent tax is the expected tax payable on the taxable income for the year, using tax rates enacted at\nthe end of the annual accounting period, and any adjustment to tax payable in respect of previous\nyears.\n\nDeferred tax is provided using the balance sheet method, providing for temporary differences between\nthe carrying amounts of assets and liabilities for financial reporting purposes and the amounts used\nfor taxation purposes. The amount of deferred tax provided is based on the expected manner of\nrealisation or settlement of the carrying amounts of assets and liabilities using the tax rates enacted\nor substantively enacted at the end of the annual accounting period.\n\nA deferred tax asset is recognised only to the extent that it is probable that future taxable profits will\nbe available against which the temporary difference can be utilised. Deferred tax assets are reduced\nto the extent that it is no longer probable that the related tax benefit will be realised.\n\n\n(p) Revenue and other income\n\n\n(i) Goods sold\n\nRevenue from the sales of goods is recognised in the consolidated statement of income when\nsignificant risks and rewards of ownership have been transferred to the buyer. No revenue is\nrecognised if there are significant uncertainties regarding recovery of the consideration due or\npossible return of goods. Revenue on sales of goods is recognised at the net amount after deducting\nsales discounts stated on the invoice.\n\n\n\n(ti) Services rendered\n\nRevenue from services rendered is recognised in the consolidated statement of income in proportion\nto the stage of completion of the transaction at the balance sheet date. The stage of completion is\nassessed by reference to surveys of work performed. No revenue is recognised if there are significant\nuncertainties regarding recovery of the consideration due.\n\n\n\n(iii) Rental income\n\nRental income from leased property is recognised in the consolidated statement of income on a\nstraight-line basis over the term of the lease. Lease incentives granted are recognised as an integral\npart of the total rental income. “\nJ42-\n\nXe\n\nIHA\n\nIY\n\n\n26\nHỘ,"
+        }
+      ],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-unknown-ai",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích thuật toán AI cụ thể được dùng để dự đoán tỷ giá hằng ngày của doanh nghiệp theo tài liệu này.",
+      "expected_status": "insufficient_evidence",
+      "requires_model": true,
+      "reference": "Tài liệu tài chính được cung cấp không có bằng chứng cho chi tiết được hỏi. Phải từ chối cụ thể; không viện kiến thức ngoài nguồn hoặc bịa sự cố/thuật toán.",
+      "reference_evidence": [],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "sab-unknown-breach",
+      "company": "SAB",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "SAB: Giải thích nguyên nhân sự cố rò rỉ dữ liệu khách hàng và số hồ sơ bị lộ theo tài liệu này.",
+      "expected_status": "insufficient_evidence",
+      "requires_model": true,
+      "reference": "Tài liệu tài chính được cung cấp không có bằng chứng cho chi tiết được hỏi. Phải từ chối cụ thể; không viện kiến thức ngoài nguồn hoặc bịa sự cố/thuật toán.",
+      "reference_evidence": [],
+      "source_sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794"
+    },
+    {
+      "id": "mwg-inventory-value",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích nguyên tắc xác định giá trị hàng tồn kho được nêu trong chính sách kế toán.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Đối chiếu giá gốc với giá trị thuần có thể thực hiện được; dùng mức thấp hơn.",
+      "reference_evidence": [
+        {
+          "page": 15,
+          "excerpt": "Công ty Cổphan Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\nE7 TOM TAT CÁC CHÍNH SÁCH KE TOÁN CHỦYEU\n\n3.1 Các thay đỗi trong các chính sách kếtoán và thuyết minh\nCác chính sách kếtoán của Nhóm Công ty sửdụng đểlập báo cáo tài chính hợp nhất\nđược áp dụng nhất quán với các chính sách đã được sửdụng đểlập báo cáo tài chính hợp\nnhất cho năm tài chính kết thúc ngày 31 tháng 12 năm 2023, ngoại trừcác thay đổi về\nchính sách kếtoán liên quan đến nghiệp vụsau.\n311 Cách trình bay sốdư và giao dịch liên quan tới thư tín dụng/thư tín dụng trảchậm\n(LCLCUPAS')\nTheo Thông tư số21/2024/TT-NHNN do Ngân hàng Nhà nước Việt Nam ban hành ngày 28\ntháng 6 năm 2024 (\"Thông tư 21\") quy định vềnghiệp vụthư tín dụng và các hoạt động\nkinh doanh khác liên quan đến thư tín dụng và có hiệu lực từngày 1 tháng 7 năm 2024,\nnghiệp vụLC/LCUPAS được xem là hình thức tài trợtín dụng ngân hàng.\nTheo đó, Nhóm Công ty đã thực hiện phân loại lại sốdư phải trảLC/LCUPAStạingày 1\ntháng 7 năm 2024 từkhoản mục \"Phải trảngắn hạn khác” sang khoản mục “Vay ngắn hạn”.\nĐồng thời kểtừngày này, các giao dịch LC/LCUPAS được hạch toán và trình bày như các\nkhoản vay ngân hàng.\ntưDữliệu21 khôngtươngyêuứngcầuliênáp quandụng tớihồi geetô thay vụLC/LCUPASđỗi nói trên. không được trình bày lại do Thông\n\n3.2 Tiền và các khoản tương đương tiền\nTiền và các khoản tương đương tiền bao gồm tiền mặt tại quỹ, tiền gửi ngân hàng và các\nkhoản đầu tư ngắn hạn có thời hạn gốc không - ba tháng, có tinh thanh khoản cao, có khảnăng chuyển đổi dễdàng thành các lượng tiền xác định và không có nhiều rủi ro trong\nchuyển đổi thành tiền.\n\n3.3 Hàng tồn kho\nHàng tồn kho được ghi nhận theo giá thấp hơn giữa giá thành đểđưa mỗi sản phẩm đến vị\ntrí, điều kiện hiện tại và giá trịthuần có thé thực hiện được.\nGiá trịthuần có thểthực hiện được là giá bán ước tính của hàng tồn kho trong điều kiện\nkinh doanh bình thường trừchi phí ước tính đểhoàn thành và chi phí bán hàng ước tính.\nNhóm Công ty áp dụng phương pháp kê khai thường xuyên đểhạch toán hàng tồn kho cuối\nnăm, với giá trịđược xác định như sau:\nĐiện thoại di động và máy - gia vốn thực tếtheo phương pháp thực tếđích danh\ntính xách tay\nThiết bịkỹthuật sốđiệntử - giá vốn thực tếtheo phương pháp thực tếđích danh\nPhụkiện - gia vốn thực tếtheo phương pháp bình quân gia quyền\nThiết bịgia dụng - gia vốn thực tếtheo phương pháp bình quân gia quyền\nThực phẩm khô, thực phẩm\ntươi sống, nước uống và\nhàng tiêu dùng - _ giá vốn thực tếtheo phương pháp bình quân gia quyền\nHóa mỹphẩm - gia vốn thực tếtheo phương pháp bình quân gia quyền\nKhác - gia vốn thực tếtheo phương pháp bình quân gia quyên.\n\n\n\n\n\n13"
+        },
+        {
+          "page": 16,
+          "excerpt": "Công ty Cổphần Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3. TÓM TÁT CÁC CHÍNH SÁCH KÉ TOÁN CHỦYÉU (tiếp theo)\n\n3.3 Hàng tồn kho (tiếp theo)\nDựphòng giảm giá hàng tồn kho\nDựphòng giảm giá hàng tồn kho được trích lập cho phan giá trịdựkiến bịtổn that do các\nkhoản suy giảm trong giá trị(do giảm giá, hư hỏng, kém phẩm chát, lỗi thời v.v.) có thểxảy\nra đối với hàng hoá tồn kho thuộc quyền sởhữu của Nhóm Công ty dựa trên bang chứng\nhợp lý vềsựsuy giảm giá trịtại ngày kết thúc năm tài chính.\nSốtăng hoặc giảm khoản dựphòng giảm giá hàng tồn kho được hạch toán vào giá vốn\nhàng bán trên báo cáo kết quảhoạt động kinh doanh hợp nhát. Khi hàng tồn kho bịhủy bỏ\ndo hết hạn sửdụng, mat phẩm chat, hư hỏng, không còn giá trịsửdụng, các khoản chênh\nlệch phát sinh giữa sốdựphòng giảm giá hàng tồn kho đã trích lập và giá gốc hàng tồn kho\nđược hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhát.\n\n3.4 Các khoản phải thu\nCác khoản phải thu được trình bày trên báo cáo tài chính hợp nhất theo giá trịghi sé các\nkhoản phải thu từkhách hàng và phải thu khác sau khi cấn trừcác khoản dựphòng được\nlập cho các khoản phải thu khó đòi.\nDựphòng nợphải thu khó đòi thểhiện phần giá trịcủa các khoản phải thu mà Nhómi ty dựkiến không có khảnăng thu hỏi tại ngày kết thúc ky kếtoán năm. Tăng hoặc giảm s\ndư tài khoản dựphòng được hạch toán vào chỉphí quản lý doanh nghiệp trong báo cáo kết\nquảhoạt động kinh doanh hợp nhất. Khi các khoản nợphải thu khó đòi được xác định là\nkhông thểthu hồi được và kếtoán thực hiện xóa nợ, các khoản chênh lệch phát sinh giữa\nsốdựphòng nợphải thu khó đòi và giá gốc nợphải thu được hạch toán vào báo cáo kết\nquảhoạt động kinh doanh hợp nhát.\n\n3.5 Tai sản có định hữu hình\nTài sản cốđịnh hữu hình được thểhiện theo nguyên giá trừdi giá trịkháu hao lũy ké.\nNguyên giá tài sản cốđịnh hữu hình bao gồm giá mua và những chỉphí có liên quan trực\ntiếp đến việc đưa tài sản vào hoạt động như dựkiến.\nCác chi phí mua sắm, nâng cap và đổi mới tài sản có định hữu hình được ghi tang nguyên\ngiá của tài sản và chỉphí bảo trì, sửa chữa được hạch toán vào kết quảhoạt động kinh\ndoanh hợp nhát khi phát sinh.\nKhi tài sản cốđịnh hữu hình được bán hay thanh lệcác khoản lãi hoặc lỗphát sinh do\nthanh lý tài sản (là phần chênh lệch giữa tiền thu thuận từviệc bán tài sản với n5 trịcòn lại của tài sản) được hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\n\n3.6 Thuê tài sản\nViệc xác định một thỏa thuận có phải là thỏa thuận thuê tài sản hay không dựa trên bản\nchất của thỏa thuận đó tại thời điểm khởi đầu: liệu việc thực hiện thỏa thuận này có phụ\nthuộc vào việc sửdụng một tài sản nhất định và thỏa thuận có bao gồm điều khoản về\nquyền sửdụng tài sản hay không.\nThỏa thuận thuê tài sản được phân loại là thuê tài chính nếu theo hợp đồng thuê tài sản\nbên cho thuê chuyển giao phần lớn rủi ro và lợi ích gắn liền với quyền sởhữu tài sản cho\nbên đi thuê. Tất cảcác thỏa thuận thuê tài sản khác được phân loại là thuê hoạt động.\n\nTrong trường hợp Nhóm Công ty là bên đi thuê\nCác khoản tiền thuê theo hợp đồng thuê hoạt động được hạch toán vào báo cáo kết quả\nhoạt động kinh doanh hợp nhát theo phương pháp đường thẳng trong thời hạn của hợp\nđồng thuê.\n\n\n\n\n\n14"
+        }
+      ],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-inventory-cost",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích phương pháp tính giá gốc hàng tồn kho mà doanh nghiệp áp dụng.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "SAB/VNM dùng bình quân gia quyền; BCM bình quân gia quyền cho nguyên vật liệu và đích danh cho bất động sản; MWG đối chiếu đoạn phương pháp chi tiết trong nguồn. Không đồng nhất giá gốc với giá bán.",
+      "reference_evidence": [
+        {
+          "page": 15,
+          "excerpt": "Công ty Cổphan Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\nE7 TOM TAT CÁC CHÍNH SÁCH KE TOÁN CHỦYEU\n\n3.1 Các thay đỗi trong các chính sách kếtoán và thuyết minh\nCác chính sách kếtoán của Nhóm Công ty sửdụng đểlập báo cáo tài chính hợp nhất\nđược áp dụng nhất quán với các chính sách đã được sửdụng đểlập báo cáo tài chính hợp\nnhất cho năm tài chính kết thúc ngày 31 tháng 12 năm 2023, ngoại trừcác thay đổi về\nchính sách kếtoán liên quan đến nghiệp vụsau.\n311 Cách trình bay sốdư và giao dịch liên quan tới thư tín dụng/thư tín dụng trảchậm\n(LCLCUPAS')\nTheo Thông tư số21/2024/TT-NHNN do Ngân hàng Nhà nước Việt Nam ban hành ngày 28\ntháng 6 năm 2024 (\"Thông tư 21\") quy định vềnghiệp vụthư tín dụng và các hoạt động\nkinh doanh khác liên quan đến thư tín dụng và có hiệu lực từngày 1 tháng 7 năm 2024,\nnghiệp vụLC/LCUPAS được xem là hình thức tài trợtín dụng ngân hàng.\nTheo đó, Nhóm Công ty đã thực hiện phân loại lại sốdư phải trảLC/LCUPAStạingày 1\ntháng 7 năm 2024 từkhoản mục \"Phải trảngắn hạn khác” sang khoản mục “Vay ngắn hạn”.\nĐồng thời kểtừngày này, các giao dịch LC/LCUPAS được hạch toán và trình bày như các\nkhoản vay ngân hàng.\ntưDữliệu21 khôngtươngyêuứngcầuliênáp quandụng tớihồi geetô thay vụLC/LCUPASđỗi nói trên. không được trình bày lại do Thông\n\n3.2 Tiền và các khoản tương đương tiền\nTiền và các khoản tương đương tiền bao gồm tiền mặt tại quỹ, tiền gửi ngân hàng và các\nkhoản đầu tư ngắn hạn có thời hạn gốc không - ba tháng, có tinh thanh khoản cao, có khảnăng chuyển đổi dễdàng thành các lượng tiền xác định và không có nhiều rủi ro trong\nchuyển đổi thành tiền.\n\n3.3 Hàng tồn kho\nHàng tồn kho được ghi nhận theo giá thấp hơn giữa giá thành đểđưa mỗi sản phẩm đến vị\ntrí, điều kiện hiện tại và giá trịthuần có thé thực hiện được.\nGiá trịthuần có thểthực hiện được là giá bán ước tính của hàng tồn kho trong điều kiện\nkinh doanh bình thường trừchi phí ước tính đểhoàn thành và chi phí bán hàng ước tính.\nNhóm Công ty áp dụng phương pháp kê khai thường xuyên đểhạch toán hàng tồn kho cuối\nnăm, với giá trịđược xác định như sau:\nĐiện thoại di động và máy - gia vốn thực tếtheo phương pháp thực tếđích danh\ntính xách tay\nThiết bịkỹthuật sốđiệntử - giá vốn thực tếtheo phương pháp thực tếđích danh\nPhụkiện - gia vốn thực tếtheo phương pháp bình quân gia quyền\nThiết bịgia dụng - gia vốn thực tếtheo phương pháp bình quân gia quyền\nThực phẩm khô, thực phẩm\ntươi sống, nước uống và\nhàng tiêu dùng - _ giá vốn thực tếtheo phương pháp bình quân gia quyền\nHóa mỹphẩm - gia vốn thực tếtheo phương pháp bình quân gia quyền\nKhác - gia vốn thực tếtheo phương pháp bình quân gia quyên.\n\n\n\n\n\n13"
+        },
+        {
+          "page": 16,
+          "excerpt": "Công ty Cổphần Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3. TÓM TÁT CÁC CHÍNH SÁCH KÉ TOÁN CHỦYÉU (tiếp theo)\n\n3.3 Hàng tồn kho (tiếp theo)\nDựphòng giảm giá hàng tồn kho\nDựphòng giảm giá hàng tồn kho được trích lập cho phan giá trịdựkiến bịtổn that do các\nkhoản suy giảm trong giá trị(do giảm giá, hư hỏng, kém phẩm chát, lỗi thời v.v.) có thểxảy\nra đối với hàng hoá tồn kho thuộc quyền sởhữu của Nhóm Công ty dựa trên bang chứng\nhợp lý vềsựsuy giảm giá trịtại ngày kết thúc năm tài chính.\nSốtăng hoặc giảm khoản dựphòng giảm giá hàng tồn kho được hạch toán vào giá vốn\nhàng bán trên báo cáo kết quảhoạt động kinh doanh hợp nhát. Khi hàng tồn kho bịhủy bỏ\ndo hết hạn sửdụng, mat phẩm chat, hư hỏng, không còn giá trịsửdụng, các khoản chênh\nlệch phát sinh giữa sốdựphòng giảm giá hàng tồn kho đã trích lập và giá gốc hàng tồn kho\nđược hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhát.\n\n3.4 Các khoản phải thu\nCác khoản phải thu được trình bày trên báo cáo tài chính hợp nhất theo giá trịghi sé các\nkhoản phải thu từkhách hàng và phải thu khác sau khi cấn trừcác khoản dựphòng được\nlập cho các khoản phải thu khó đòi.\nDựphòng nợphải thu khó đòi thểhiện phần giá trịcủa các khoản phải thu mà Nhómi ty dựkiến không có khảnăng thu hỏi tại ngày kết thúc ky kếtoán năm. Tăng hoặc giảm s\ndư tài khoản dựphòng được hạch toán vào chỉphí quản lý doanh nghiệp trong báo cáo kết\nquảhoạt động kinh doanh hợp nhất. Khi các khoản nợphải thu khó đòi được xác định là\nkhông thểthu hồi được và kếtoán thực hiện xóa nợ, các khoản chênh lệch phát sinh giữa\nsốdựphòng nợphải thu khó đòi và giá gốc nợphải thu được hạch toán vào báo cáo kết\nquảhoạt động kinh doanh hợp nhát.\n\n3.5 Tai sản có định hữu hình\nTài sản cốđịnh hữu hình được thểhiện theo nguyên giá trừdi giá trịkháu hao lũy ké.\nNguyên giá tài sản cốđịnh hữu hình bao gồm giá mua và những chỉphí có liên quan trực\ntiếp đến việc đưa tài sản vào hoạt động như dựkiến.\nCác chi phí mua sắm, nâng cap và đổi mới tài sản có định hữu hình được ghi tang nguyên\ngiá của tài sản và chỉphí bảo trì, sửa chữa được hạch toán vào kết quảhoạt động kinh\ndoanh hợp nhát khi phát sinh.\nKhi tài sản cốđịnh hữu hình được bán hay thanh lệcác khoản lãi hoặc lỗphát sinh do\nthanh lý tài sản (là phần chênh lệch giữa tiền thu thuận từviệc bán tài sản với n5 trịcòn lại của tài sản) được hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\n\n3.6 Thuê tài sản\nViệc xác định một thỏa thuận có phải là thỏa thuận thuê tài sản hay không dựa trên bản\nchất của thỏa thuận đó tại thời điểm khởi đầu: liệu việc thực hiện thỏa thuận này có phụ\nthuộc vào việc sửdụng một tài sản nhất định và thỏa thuận có bao gồm điều khoản về\nquyền sửdụng tài sản hay không.\nThỏa thuận thuê tài sản được phân loại là thuê tài chính nếu theo hợp đồng thuê tài sản\nbên cho thuê chuyển giao phần lớn rủi ro và lợi ích gắn liền với quyền sởhữu tài sản cho\nbên đi thuê. Tất cảcác thỏa thuận thuê tài sản khác được phân loại là thuê hoạt động.\n\nTrong trường hợp Nhóm Công ty là bên đi thuê\nCác khoản tiền thuê theo hợp đồng thuê hoạt động được hạch toán vào báo cáo kết quả\nhoạt động kinh doanh hợp nhát theo phương pháp đường thẳng trong thời hạn của hợp\nđồng thuê.\n\n\n\n\n\n14"
+        }
+      ],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-cash-definition",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích điều kiện để một khoản đầu tư được phân loại là tương đương tiền theo báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Thanh khoản cao, chuyển đổi được thành lượng tiền xác định và ít rủi ro thay đổi giá trị; chỉ nêu thời hạn gốc ba tháng nếu nguồn của đúng doanh nghiệp có ghi.",
+      "reference_evidence": [
+        {
+          "page": 15,
+          "excerpt": "Công ty Cổphan Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\nE7 TOM TAT CÁC CHÍNH SÁCH KE TOÁN CHỦYEU\n\n3.1 Các thay đỗi trong các chính sách kếtoán và thuyết minh\nCác chính sách kếtoán của Nhóm Công ty sửdụng đểlập báo cáo tài chính hợp nhất\nđược áp dụng nhất quán với các chính sách đã được sửdụng đểlập báo cáo tài chính hợp\nnhất cho năm tài chính kết thúc ngày 31 tháng 12 năm 2023, ngoại trừcác thay đổi về\nchính sách kếtoán liên quan đến nghiệp vụsau.\n311 Cách trình bay sốdư và giao dịch liên quan tới thư tín dụng/thư tín dụng trảchậm\n(LCLCUPAS')\nTheo Thông tư số21/2024/TT-NHNN do Ngân hàng Nhà nước Việt Nam ban hành ngày 28\ntháng 6 năm 2024 (\"Thông tư 21\") quy định vềnghiệp vụthư tín dụng và các hoạt động\nkinh doanh khác liên quan đến thư tín dụng và có hiệu lực từngày 1 tháng 7 năm 2024,\nnghiệp vụLC/LCUPAS được xem là hình thức tài trợtín dụng ngân hàng.\nTheo đó, Nhóm Công ty đã thực hiện phân loại lại sốdư phải trảLC/LCUPAStạingày 1\ntháng 7 năm 2024 từkhoản mục \"Phải trảngắn hạn khác” sang khoản mục “Vay ngắn hạn”.\nĐồng thời kểtừngày này, các giao dịch LC/LCUPAS được hạch toán và trình bày như các\nkhoản vay ngân hàng.\ntưDữliệu21 khôngtươngyêuứngcầuliênáp quandụng tớihồi geetô thay vụLC/LCUPASđỗi nói trên. không được trình bày lại do Thông\n\n3.2 Tiền và các khoản tương đương tiền\nTiền và các khoản tương đương tiền bao gồm tiền mặt tại quỹ, tiền gửi ngân hàng và các\nkhoản đầu tư ngắn hạn có thời hạn gốc không - ba tháng, có tinh thanh khoản cao, có khảnăng chuyển đổi dễdàng thành các lượng tiền xác định và không có nhiều rủi ro trong\nchuyển đổi thành tiền.\n\n3.3 Hàng tồn kho\nHàng tồn kho được ghi nhận theo giá thấp hơn giữa giá thành đểđưa mỗi sản phẩm đến vị\ntrí, điều kiện hiện tại và giá trịthuần có thé thực hiện được.\nGiá trịthuần có thểthực hiện được là giá bán ước tính của hàng tồn kho trong điều kiện\nkinh doanh bình thường trừchi phí ước tính đểhoàn thành và chi phí bán hàng ước tính.\nNhóm Công ty áp dụng phương pháp kê khai thường xuyên đểhạch toán hàng tồn kho cuối\nnăm, với giá trịđược xác định như sau:\nĐiện thoại di động và máy - gia vốn thực tếtheo phương pháp thực tếđích danh\ntính xách tay\nThiết bịkỹthuật sốđiệntử - giá vốn thực tếtheo phương pháp thực tếđích danh\nPhụkiện - gia vốn thực tếtheo phương pháp bình quân gia quyền\nThiết bịgia dụng - gia vốn thực tếtheo phương pháp bình quân gia quyền\nThực phẩm khô, thực phẩm\ntươi sống, nước uống và\nhàng tiêu dùng - _ giá vốn thực tếtheo phương pháp bình quân gia quyền\nHóa mỹphẩm - gia vốn thực tếtheo phương pháp bình quân gia quyền\nKhác - gia vốn thực tếtheo phương pháp bình quân gia quyên.\n\n\n\n\n\n13"
+        }
+      ],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-asset-cost",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích tài sản cố định hữu hình được trình bày theo giá trị nào và chi phí nào được tính vào nguyên giá.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Nguyên giá trừ khấu hao/hao mòn lũy kế; giá mua và chi phí trực tiếp để đưa tài sản vào trạng thái sử dụng; bám đúng phạm vi nguồn.",
+      "reference_evidence": [
+        {
+          "page": 16,
+          "excerpt": "Công ty Cổphần Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3. TÓM TÁT CÁC CHÍNH SÁCH KÉ TOÁN CHỦYÉU (tiếp theo)\n\n3.3 Hàng tồn kho (tiếp theo)\nDựphòng giảm giá hàng tồn kho\nDựphòng giảm giá hàng tồn kho được trích lập cho phan giá trịdựkiến bịtổn that do các\nkhoản suy giảm trong giá trị(do giảm giá, hư hỏng, kém phẩm chát, lỗi thời v.v.) có thểxảy\nra đối với hàng hoá tồn kho thuộc quyền sởhữu của Nhóm Công ty dựa trên bang chứng\nhợp lý vềsựsuy giảm giá trịtại ngày kết thúc năm tài chính.\nSốtăng hoặc giảm khoản dựphòng giảm giá hàng tồn kho được hạch toán vào giá vốn\nhàng bán trên báo cáo kết quảhoạt động kinh doanh hợp nhát. Khi hàng tồn kho bịhủy bỏ\ndo hết hạn sửdụng, mat phẩm chat, hư hỏng, không còn giá trịsửdụng, các khoản chênh\nlệch phát sinh giữa sốdựphòng giảm giá hàng tồn kho đã trích lập và giá gốc hàng tồn kho\nđược hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhát.\n\n3.4 Các khoản phải thu\nCác khoản phải thu được trình bày trên báo cáo tài chính hợp nhất theo giá trịghi sé các\nkhoản phải thu từkhách hàng và phải thu khác sau khi cấn trừcác khoản dựphòng được\nlập cho các khoản phải thu khó đòi.\nDựphòng nợphải thu khó đòi thểhiện phần giá trịcủa các khoản phải thu mà Nhómi ty dựkiến không có khảnăng thu hỏi tại ngày kết thúc ky kếtoán năm. Tăng hoặc giảm s\ndư tài khoản dựphòng được hạch toán vào chỉphí quản lý doanh nghiệp trong báo cáo kết\nquảhoạt động kinh doanh hợp nhất. Khi các khoản nợphải thu khó đòi được xác định là\nkhông thểthu hồi được và kếtoán thực hiện xóa nợ, các khoản chênh lệch phát sinh giữa\nsốdựphòng nợphải thu khó đòi và giá gốc nợphải thu được hạch toán vào báo cáo kết\nquảhoạt động kinh doanh hợp nhát.\n\n3.5 Tai sản có định hữu hình\nTài sản cốđịnh hữu hình được thểhiện theo nguyên giá trừdi giá trịkháu hao lũy ké.\nNguyên giá tài sản cốđịnh hữu hình bao gồm giá mua và những chỉphí có liên quan trực\ntiếp đến việc đưa tài sản vào hoạt động như dựkiến.\nCác chi phí mua sắm, nâng cap và đổi mới tài sản có định hữu hình được ghi tang nguyên\ngiá của tài sản và chỉphí bảo trì, sửa chữa được hạch toán vào kết quảhoạt động kinh\ndoanh hợp nhát khi phát sinh.\nKhi tài sản cốđịnh hữu hình được bán hay thanh lệcác khoản lãi hoặc lỗphát sinh do\nthanh lý tài sản (là phần chênh lệch giữa tiền thu thuận từviệc bán tài sản với n5 trịcòn lại của tài sản) được hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\n\n3.6 Thuê tài sản\nViệc xác định một thỏa thuận có phải là thỏa thuận thuê tài sản hay không dựa trên bản\nchất của thỏa thuận đó tại thời điểm khởi đầu: liệu việc thực hiện thỏa thuận này có phụ\nthuộc vào việc sửdụng một tài sản nhất định và thỏa thuận có bao gồm điều khoản về\nquyền sửdụng tài sản hay không.\nThỏa thuận thuê tài sản được phân loại là thuê tài chính nếu theo hợp đồng thuê tài sản\nbên cho thuê chuyển giao phần lớn rủi ro và lợi ích gắn liền với quyền sởhữu tài sản cho\nbên đi thuê. Tất cảcác thỏa thuận thuê tài sản khác được phân loại là thuê hoạt động.\n\nTrong trường hợp Nhóm Công ty là bên đi thuê\nCác khoản tiền thuê theo hợp đồng thuê hoạt động được hạch toán vào báo cáo kết quả\nhoạt động kinh doanh hợp nhát theo phương pháp đường thẳng trong thời hạn của hợp\nđồng thuê.\n\n\n\n\n\n14"
+        },
+        {
+          "page": 17,
+          "excerpt": "Công ty Cổphần Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYET MINH BAO CÁO TÀI CHÍNH HỢP NHAT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3. TÓM TÁT CÁC CHÍNH SÁCH KÉ TOÁN CHỦYÉU (tiếp theo)\n\n3.7 Tài sản cốđịnh vô hình\nTài sản cốđịnh vô hình được ghi nhận theo nguyên giá trừđi giá trịhao mòn lũy kế.\nđếnIieviệc giáđưatàitàisảnsảncốđịnhvào sửdụngvô hìnhnhưbaodựkiến.gồm giá mua va những chỉphi có liên quan trực tiếp\nCác chi phí nâng cap và đổi mới tài sản cốđịnh vô hình được ghi tăng nguyên giá của tai\nsản và các chi phí khác được hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp\nnhất khi phát sinh.\nKhi tài sản cốđịnh vô hình được bán hay thanh lý, các khoản lãi hoặc lỗphát sinh do thanh\nlý tài sản (là phan chênh lệch giữa tiền thu thuần từviệc bán tài sản với giá trịcòn lại của tài\nsản) được hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\nQuyền sửdụng đắt\nQuyền sửdụng đất được ghi nhận như một tài sản cốđịnh vô hình khi Công y được cap Giấy chứng nhận quyền sửdụng dat. Nguyên giá quyền sửdụng đất bao gồm tat cảnhững\nchỉphí có liên quan trực tiếp đến việc đưa đất vào trạng thái sẵn sàng đểsửdụng. Quyền\nsửdụng đất có thời gian sửdụng vô thời hạn thì không tính khấu hao.\n\n3.8 Khấu hao và hao mòn\nKhấu hao tài sản cốđịnh hữu hình và hao mòn tài sản cốđịnh vô hình được trích theo\nphương pháp khấu hao đường thẳng trong suốt thời gian hữu dụng ước tính của các tài\nsản như sau:\n\nNhà cửa, vật kiến trúc 5 năm\nPhần mềm máy tính 4 năm\nThương hiệu 10 năm\nPhương tiện vận tải 6 năm\nThiết bịvăn phòng 3-8 năm\n\n3.9 Chi phí di vay\nChi phi đi vay bao gồm lãi tiền vay và các chi phí khác phat sinh liên quan trực tiếp đến các\nkhoản vay của Nhóm Công ty. Chỉphí đi vay được ghi nhận vào báo cáo kết quảhoạt động\nkinh doanh hợp nhát trong năm khi phát sinh.\n\n3.10 — Chi phí trảtrước\nChi phí trảtrước bao gồm các chỉphi trảtrước ngắn hạn hoặc chỉphí trảtrước dài hạn trên\nbảng cân đối kếtoán hợp nhát và được phân bé trong khoảng thời gian trảtrước hoặc thời\ngian các lợi ích kinh tếtương ứng được tạo ra từcác chỉphí này.\nCác loại chi phí sau đây được hạch toán vào chỉphí trảtrước dài hạn dé phân bổdan vào\nbáo cáo kết quảhoạt động kinh doanh hợp nhát:\n\n> Chí phí tiền thuê trảtrước;\n> Chỉphí thiết kếcửa hang; và\n> Công cụdụng cụxuất dùng.\n\n\n\n\n\n15"
+        }
+      ],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-depreciation",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích phương pháp khấu hao tài sản cố định hữu hình được áp dụng theo báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Phương pháp đường thẳng theo thời gian hữu ích ước tính; không tự đưa tỷ lệ hoặc số năm ngoài nguồn.",
+      "reference_evidence": [
+        {
+          "page": 16,
+          "excerpt": "Công ty Cổphần Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3. TÓM TÁT CÁC CHÍNH SÁCH KÉ TOÁN CHỦYÉU (tiếp theo)\n\n3.3 Hàng tồn kho (tiếp theo)\nDựphòng giảm giá hàng tồn kho\nDựphòng giảm giá hàng tồn kho được trích lập cho phan giá trịdựkiến bịtổn that do các\nkhoản suy giảm trong giá trị(do giảm giá, hư hỏng, kém phẩm chát, lỗi thời v.v.) có thểxảy\nra đối với hàng hoá tồn kho thuộc quyền sởhữu của Nhóm Công ty dựa trên bang chứng\nhợp lý vềsựsuy giảm giá trịtại ngày kết thúc năm tài chính.\nSốtăng hoặc giảm khoản dựphòng giảm giá hàng tồn kho được hạch toán vào giá vốn\nhàng bán trên báo cáo kết quảhoạt động kinh doanh hợp nhát. Khi hàng tồn kho bịhủy bỏ\ndo hết hạn sửdụng, mat phẩm chat, hư hỏng, không còn giá trịsửdụng, các khoản chênh\nlệch phát sinh giữa sốdựphòng giảm giá hàng tồn kho đã trích lập và giá gốc hàng tồn kho\nđược hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhát.\n\n3.4 Các khoản phải thu\nCác khoản phải thu được trình bày trên báo cáo tài chính hợp nhất theo giá trịghi sé các\nkhoản phải thu từkhách hàng và phải thu khác sau khi cấn trừcác khoản dựphòng được\nlập cho các khoản phải thu khó đòi.\nDựphòng nợphải thu khó đòi thểhiện phần giá trịcủa các khoản phải thu mà Nhómi ty dựkiến không có khảnăng thu hỏi tại ngày kết thúc ky kếtoán năm. Tăng hoặc giảm s\ndư tài khoản dựphòng được hạch toán vào chỉphí quản lý doanh nghiệp trong báo cáo kết\nquảhoạt động kinh doanh hợp nhất. Khi các khoản nợphải thu khó đòi được xác định là\nkhông thểthu hồi được và kếtoán thực hiện xóa nợ, các khoản chênh lệch phát sinh giữa\nsốdựphòng nợphải thu khó đòi và giá gốc nợphải thu được hạch toán vào báo cáo kết\nquảhoạt động kinh doanh hợp nhát.\n\n3.5 Tai sản có định hữu hình\nTài sản cốđịnh hữu hình được thểhiện theo nguyên giá trừdi giá trịkháu hao lũy ké.\nNguyên giá tài sản cốđịnh hữu hình bao gồm giá mua và những chỉphí có liên quan trực\ntiếp đến việc đưa tài sản vào hoạt động như dựkiến.\nCác chi phí mua sắm, nâng cap và đổi mới tài sản có định hữu hình được ghi tang nguyên\ngiá của tài sản và chỉphí bảo trì, sửa chữa được hạch toán vào kết quảhoạt động kinh\ndoanh hợp nhát khi phát sinh.\nKhi tài sản cốđịnh hữu hình được bán hay thanh lệcác khoản lãi hoặc lỗphát sinh do\nthanh lý tài sản (là phần chênh lệch giữa tiền thu thuận từviệc bán tài sản với n5 trịcòn lại của tài sản) được hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\n\n3.6 Thuê tài sản\nViệc xác định một thỏa thuận có phải là thỏa thuận thuê tài sản hay không dựa trên bản\nchất của thỏa thuận đó tại thời điểm khởi đầu: liệu việc thực hiện thỏa thuận này có phụ\nthuộc vào việc sửdụng một tài sản nhất định và thỏa thuận có bao gồm điều khoản về\nquyền sửdụng tài sản hay không.\nThỏa thuận thuê tài sản được phân loại là thuê tài chính nếu theo hợp đồng thuê tài sản\nbên cho thuê chuyển giao phần lớn rủi ro và lợi ích gắn liền với quyền sởhữu tài sản cho\nbên đi thuê. Tất cảcác thỏa thuận thuê tài sản khác được phân loại là thuê hoạt động.\n\nTrong trường hợp Nhóm Công ty là bên đi thuê\nCác khoản tiền thuê theo hợp đồng thuê hoạt động được hạch toán vào báo cáo kết quả\nhoạt động kinh doanh hợp nhát theo phương pháp đường thẳng trong thời hạn của hợp\nđồng thuê.\n\n\n\n\n\n14"
+        },
+        {
+          "page": 17,
+          "excerpt": "Công ty Cổphần Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYET MINH BAO CÁO TÀI CHÍNH HỢP NHAT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3. TÓM TÁT CÁC CHÍNH SÁCH KÉ TOÁN CHỦYÉU (tiếp theo)\n\n3.7 Tài sản cốđịnh vô hình\nTài sản cốđịnh vô hình được ghi nhận theo nguyên giá trừđi giá trịhao mòn lũy kế.\nđếnIieviệc giáđưatàitàisảnsảncốđịnhvào sửdụngvô hìnhnhưbaodựkiến.gồm giá mua va những chỉphi có liên quan trực tiếp\nCác chi phí nâng cap và đổi mới tài sản cốđịnh vô hình được ghi tăng nguyên giá của tai\nsản và các chi phí khác được hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp\nnhất khi phát sinh.\nKhi tài sản cốđịnh vô hình được bán hay thanh lý, các khoản lãi hoặc lỗphát sinh do thanh\nlý tài sản (là phan chênh lệch giữa tiền thu thuần từviệc bán tài sản với giá trịcòn lại của tài\nsản) được hạch toán vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\nQuyền sửdụng đắt\nQuyền sửdụng đất được ghi nhận như một tài sản cốđịnh vô hình khi Công y được cap Giấy chứng nhận quyền sửdụng dat. Nguyên giá quyền sửdụng đất bao gồm tat cảnhững\nchỉphí có liên quan trực tiếp đến việc đưa đất vào trạng thái sẵn sàng đểsửdụng. Quyền\nsửdụng đất có thời gian sửdụng vô thời hạn thì không tính khấu hao.\n\n3.8 Khấu hao và hao mòn\nKhấu hao tài sản cốđịnh hữu hình và hao mòn tài sản cốđịnh vô hình được trích theo\nphương pháp khấu hao đường thẳng trong suốt thời gian hữu dụng ước tính của các tài\nsản như sau:\n\nNhà cửa, vật kiến trúc 5 năm\nPhần mềm máy tính 4 năm\nThương hiệu 10 năm\nPhương tiện vận tải 6 năm\nThiết bịvăn phòng 3-8 năm\n\n3.9 Chi phí di vay\nChi phi đi vay bao gồm lãi tiền vay và các chi phí khác phat sinh liên quan trực tiếp đến các\nkhoản vay của Nhóm Công ty. Chỉphí đi vay được ghi nhận vào báo cáo kết quảhoạt động\nkinh doanh hợp nhát trong năm khi phát sinh.\n\n3.10 — Chi phí trảtrước\nChi phí trảtrước bao gồm các chỉphi trảtrước ngắn hạn hoặc chỉphí trảtrước dài hạn trên\nbảng cân đối kếtoán hợp nhát và được phân bé trong khoảng thời gian trảtrước hoặc thời\ngian các lợi ích kinh tếtương ứng được tạo ra từcác chỉphí này.\nCác loại chi phí sau đây được hạch toán vào chỉphí trảtrước dài hạn dé phân bổdan vào\nbáo cáo kết quảhoạt động kinh doanh hợp nhát:\n\n> Chí phí tiền thuê trảtrước;\n> Chỉphí thiết kếcửa hang; và\n> Công cụdụng cụxuất dùng.\n\n\n\n\n\n15"
+        }
+      ],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-fx-initial",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích cách quy đổi các giao dịch ngoại tệ tại thời điểm phát sinh.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Dùng tỷ giá giao dịch thực tế ở ngày phát sinh; nếu nguồn phân biệt mua/bán theo phải thu, phải trả thì trình bày sự phân biệt đó.",
+      "reference_evidence": [
+        {
+          "page": 19,
+          "excerpt": "Công ty Cổphan Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3; TOM TAT CAC CHÍNH SÁCH KE TOÁN CHU YEU (tiếp theo)\n\n3.13 Các khoản phải trảvà chi phí trích trước\nCác khoản phải trảvà chi phí trích trước được ghi nhận cho sốtiền phải trảtrong tương lai\nliên quan đến hàng hóa và dịch vụđã nhận được không phụthuộc vào việc Nhóm công ty\nđã nhận được hóa đơn của nhà cung cắp hay chưa.\n\n3.14 Các khoản dựphòng\n\nNhóm Công ty ghi nhận dựphòng khi có nghĩa vụnợhiện tại (nghĩa vụpháp lý hoặc nghĩa\nvụliên đới) là kết quảcủa một sựkiện đã xảy ra trong quá khứ. Việc thanh toán nghĩa vụ\nnợnày có thé sẽdẫn đến sựgiảm sút vềnhững lợi ích kinh tếvà Nhóm Công ty có thé đưa\nra được một ước tính đáng tin cậy vềgiá trịcủa nghĩa vụnợđó.\nKhi Nhóm Công ty cho rằng một phần hoặc toàn bộchỉphí đểthanh toán một khoản dự\nphòng sẽđược hoàn lại bởi một bên thứba, ví dụnhư thông qua hợp đồng bảo hiểm,\nkhoản bồi hoàn này chỉđược ghi nhận là một tài sản riêng biệt khi việc nhận được bồi hoàn\nlà gần như chắc chắn. Chỉphí liên quan đến các khoản dựphòng được hạch toán vào báo\ncáo kết quảhoạt động kinh doanh hợp nhất sau khi đã trừđi các khoản bồi hoàn.\n\n3.15 Cae nghiệp vụbằng ngoại tệ\nCác nghiệp vụphát sinh bằng các đơn vịtiền tệkhác với đơn vịtiền tệkếtoán của Nhóm\ncông ty (VND) được hạch toán theo tỷgiá giao dịch thực tếvào ngày phát sinh nghiệp vụ\ntheo nguyên tac sau:\n» _ Nghiệp vụlàm phát sinh các khoản phải thu được hạch toán theo ty giá mua của ngân\nhàng thương mại nơi Nhóm Công ty chỉđịnh khách hàng thanh toán;\n» _ Nghiệp vụlàm phát sinh các khoản phải trảđược hạch toán theo tỷgiá bán của ngân\nhàng thương mại nơi Nhóm Công ty dựkiến giao dịch; và\n» Giao dịch mua sắm tài sản hoặc các khoản chi phí được thanh toán ngay bằng ngoại\ntệ(không qua các tài khoản phải trả) được hạch toán theo tỷgiá mua của ngân hàng\nthương mại nơi doanh nghiệp thực hiện thanh toán.\nTại ngày kết thúc kỳkếtoán năm, các khoản mục tiền tệcó gốc ngoại tệđược đánh giá lại\ntheo tỷgiá giao dịch thực tếtại ngày của bảng cân đối kếtoán hợp nhất theo nguyên tắc\n\nsau.\n\n» Cac khoản mục tiền tệđược phân loại là tài sản được đánh giá lại theo ty giá mua của\nngân hàng thương mại nơi Nhóm Công ty thường xuyên có giao dịch; và\n» Các khoản mục tiền tệđược phân loại là nợphải trảđược đánh giá lại theo tỷgiá ban\ncủa ngân hàng thương mại nơi Nhóm Công ty thường xuyên có giao dịch.\nTắt cảcác khoản chênh lệch tỷgiá phát sinh được hạch toán vào báo cáo kết quảhoạt\nđộng kinh doanh hợp nhát.\n\n\n\n\n\n17"
+        }
+      ],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-fx-closing",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích cách đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ ở thời điểm lập báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Theo tỷ giá cuối kỳ/tỷ giá mua hoặc bán phù hợp từng nhóm tài sản và nợ phải trả được nguồn mô tả; không tự suy diễn tỷ giá cụ thể.",
+      "reference_evidence": [
+        {
+          "page": 19,
+          "excerpt": "Công ty Cổphan Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3; TOM TAT CAC CHÍNH SÁCH KE TOÁN CHU YEU (tiếp theo)\n\n3.13 Các khoản phải trảvà chi phí trích trước\nCác khoản phải trảvà chi phí trích trước được ghi nhận cho sốtiền phải trảtrong tương lai\nliên quan đến hàng hóa và dịch vụđã nhận được không phụthuộc vào việc Nhóm công ty\nđã nhận được hóa đơn của nhà cung cắp hay chưa.\n\n3.14 Các khoản dựphòng\n\nNhóm Công ty ghi nhận dựphòng khi có nghĩa vụnợhiện tại (nghĩa vụpháp lý hoặc nghĩa\nvụliên đới) là kết quảcủa một sựkiện đã xảy ra trong quá khứ. Việc thanh toán nghĩa vụ\nnợnày có thé sẽdẫn đến sựgiảm sút vềnhững lợi ích kinh tếvà Nhóm Công ty có thé đưa\nra được một ước tính đáng tin cậy vềgiá trịcủa nghĩa vụnợđó.\nKhi Nhóm Công ty cho rằng một phần hoặc toàn bộchỉphí đểthanh toán một khoản dự\nphòng sẽđược hoàn lại bởi một bên thứba, ví dụnhư thông qua hợp đồng bảo hiểm,\nkhoản bồi hoàn này chỉđược ghi nhận là một tài sản riêng biệt khi việc nhận được bồi hoàn\nlà gần như chắc chắn. Chỉphí liên quan đến các khoản dựphòng được hạch toán vào báo\ncáo kết quảhoạt động kinh doanh hợp nhất sau khi đã trừđi các khoản bồi hoàn.\n\n3.15 Cae nghiệp vụbằng ngoại tệ\nCác nghiệp vụphát sinh bằng các đơn vịtiền tệkhác với đơn vịtiền tệkếtoán của Nhóm\ncông ty (VND) được hạch toán theo tỷgiá giao dịch thực tếvào ngày phát sinh nghiệp vụ\ntheo nguyên tac sau:\n» _ Nghiệp vụlàm phát sinh các khoản phải thu được hạch toán theo ty giá mua của ngân\nhàng thương mại nơi Nhóm Công ty chỉđịnh khách hàng thanh toán;\n» _ Nghiệp vụlàm phát sinh các khoản phải trảđược hạch toán theo tỷgiá bán của ngân\nhàng thương mại nơi Nhóm Công ty dựkiến giao dịch; và\n» Giao dịch mua sắm tài sản hoặc các khoản chi phí được thanh toán ngay bằng ngoại\ntệ(không qua các tài khoản phải trả) được hạch toán theo tỷgiá mua của ngân hàng\nthương mại nơi doanh nghiệp thực hiện thanh toán.\nTại ngày kết thúc kỳkếtoán năm, các khoản mục tiền tệcó gốc ngoại tệđược đánh giá lại\ntheo tỷgiá giao dịch thực tếtại ngày của bảng cân đối kếtoán hợp nhất theo nguyên tắc\n\nsau.\n\n» Cac khoản mục tiền tệđược phân loại là tài sản được đánh giá lại theo ty giá mua của\nngân hàng thương mại nơi Nhóm Công ty thường xuyên có giao dịch; và\n» Các khoản mục tiền tệđược phân loại là nợphải trảđược đánh giá lại theo tỷgiá ban\ncủa ngân hàng thương mại nơi Nhóm Công ty thường xuyên có giao dịch.\nTắt cảcác khoản chênh lệch tỷgiá phát sinh được hạch toán vào báo cáo kết quảhoạt\nđộng kinh doanh hợp nhát.\n\n\n\n\n\n17"
+        }
+      ],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-sales-recognition",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích điều kiện ghi nhận doanh thu bán hàng theo chính sách kế toán trong báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Chuyển giao phần lớn rủi ro và lợi ích; các điều kiện đo lường/thu hồi và quyền quản lý theo nguồn. Không bịa nguyên nhân tăng doanh thu.",
+      "reference_evidence": [
+        {
+          "page": 20,
+          "excerpt": "Công ty Cé phan Đầu tư ThếGiới Di Động B09-DN/HN\n\nTHUYÉT MINH BÁO CÁO TÀI CHÍNH HỢP NHÁT (tiếp theo)\nvào ngày 31 tháng 12 năm 2024 và cho năm tài chính kết thúc cùng ngày\n\n\n3. TÓM TÁT CÁC CHÍNH SÁCH KÉ TOÁN CHỦYÉU (tiếp theo)\n\n3.15 Các nghiệp vụbằng ngoại tệ(tiếp theo)\n\nChuyên đổi báo cáo tài chính của cơ sởhoạt động ởnước ngoài\nViệc chuyển đổi báo cáo tài chính của công ty con mà việc ghi chép sổsách được thực\nhiện bằng đơn vịtiền tệkhác với đơn vịtiền tệkếtoán của Nhóm Công ty là VND, cho mục\nđích hợp nhất báo cáo tài chính, được thực hiện như sau:\n» Tài sản và nợphải trảđược quy đổi tương ứng theo ty giá mua và bán của ngân hang\nthương mại nơi Nhóm Công ty thường xuyên có giao dịch vào ngày kết thúc kỳkếtoán\nnăm;\n> Doanh thu, thu nhập khác và các khoản chi phi được quy đổi theo tỷgiá tại ngày giao\ndịch, hoặc tỷgiá bình quân nếu tỷgiá bình quân chênh lệch không quá 2% so với tỷgiá\ntại thời điểm phát sinh giao dịch.\n» Tất cảcác khoản chênh lệch tỷgiá hối đoái khi chuyển đổi báo cáo tài chính của công ty\ncon cho mục đích hợp nhát được ghi nhận vào khoản mục “Chénh lệch tỷgiá hối đoái”\nthuộc nguồn vốn chủsởhữu trên bảng cân đối kếtoán hợp nhất và được hạch toán vào\nbáo cáo kết quảhoạt động kinh doanh hợp nhát khi khoản dau tư được thanh lý.\n\n3.16 Cổphiếu quỹ\nCác công cụvốn chủsởhữu được Nhóm Công ty mua lại (cỗphiếu quỹ) được ghi nhận\ntheo nguyên giá và trừvào vốn chủsởhữu. Nhóm Công ty không ghi nhận các khoản lãi\n(lỗ) khi mua, bán, phát hành hoặc hủy các công cụvốn chủsởhữu của mình.\n\n3.17 Phân phối lợi nhuận\nLợi nhuận thuần sau thuếthu nhập doanh nghiệp (không bao gồm các khoản lãi từgiao\ndịch mua giá rẻ) có thểđược chia cho các cổđông sau khi được Dai hội đồng Cổđông phê\nduyệt, và sau khi đã trích lập các quỹdựphòng theo Điều lệcủa Công ty và các quy định\ncủa pháp luật Việt Nam.\nNhóm Công ty trích lập các quỹdựphòng sau đây từlợi nhuận thuần sau thuếthu nhập\ndoanh nghiệp của Nhóm Công ty theo đềnghịcủa Hội đồng Quản trịvà được các cổđông\nphê duyệt tại Đại hội đồng Cổđông thường niên.\n\nQuỹkhen thưởng, phúc lợi\nQuỹnày được trích lập đểkhen thưởng, khuyến khích vật chat, đem lại lợi ích chung và\nnâng cao phúc lợi cho công nhân viên, và được trình bày như một khoản phải trảtrên bảng\ncân đối ké toán hợp nhát.\n\n3.18 Ghi nhận doanh thu\nDoanh thu được ghỉnhận khi Nhóm Công ty có khảnăng nhận được các lợi ích kinh tếcó\nthé xác định được một cách chắc chắn. Doanh thu được xác định theo giá trịhợp lý của các\nkhoản đã thu hoặc sẽthu được sau khi trừđi các khoản chiết kháu thương mại, giảm giá\nhàng bán và hàng bán bịtrảlại. Các điều kiện ghi nhận cụthểsau đây cũng phải được đáp\nứng trước khi ghi nhận doanh thu:\n\nDoanh thu bán hàng\nDoanh thu bán hàng được ghi nhận khi các rủi ro trọng yếu và các quyền sởhữu hàng hóa\nđã được chuyén sang người mua, thường là trùng với thời điểm chuyển giao hàng hóa.\n\nDoanh thu cung cấp dịch vụ\nDoanh thu cung cấp dịch vụđược ghi nhận khi dịch vụđã được cung cấp và hoàn thành, và\nđược xác nhận từngười mua.\n\nTiên lãi\nDoanh thu được ghi nhận khi tiền lãi phát sinh trên cơ sởdồn tích (có tính đến lợi tức mà tài\nsản đem lại) trừkhi khảnăng thu hỏi tiền lãi không chắc chắn.\n\n18"
+        }
+      ],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-unknown-ai",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích thuật toán AI cụ thể được dùng để dự đoán tỷ giá hằng ngày của doanh nghiệp theo tài liệu này.",
+      "expected_status": "insufficient_evidence",
+      "requires_model": true,
+      "reference": "Tài liệu tài chính được cung cấp không có bằng chứng cho chi tiết được hỏi. Phải từ chối cụ thể; không viện kiến thức ngoài nguồn hoặc bịa sự cố/thuật toán.",
+      "reference_evidence": [],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "mwg-unknown-breach",
+      "company": "MWG",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "MWG: Giải thích nguyên nhân sự cố rò rỉ dữ liệu khách hàng và số hồ sơ bị lộ theo tài liệu này.",
+      "expected_status": "insufficient_evidence",
+      "requires_model": true,
+      "reference": "Tài liệu tài chính được cung cấp không có bằng chứng cho chi tiết được hỏi. Phải từ chối cụ thể; không viện kiến thức ngoài nguồn hoặc bịa sự cố/thuật toán.",
+      "reference_evidence": [],
+      "source_sha256": "29751b094d640f2685a01e1080b73b9239227b9d0ed559c26323bce8d79a1331"
+    },
+    {
+      "id": "bcm-inventory-value",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích nguyên tắc xác định giá trị hàng tồn kho được nêu trong chính sách kế toán.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Đối chiếu giá gốc với giá trị thuần có thể thực hiện được; dùng mức thấp hơn.",
+      "reference_evidence": [
+        {
+          "page": 25,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9 Floor, WTC Tower, No.   | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\n\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n\n7.    Inventories\n      Inventories are recognized at the lower ofcost or net realizable value,\n\n\n      Cost of inventories is determined as follows:\n\n       ¢   For materials and merchandise: Costs comprise costs of purchases and other directly relevant costs\n           incurred in bringing the inventories to their present location and conditions.\n        ¢   For finished goods: Costs comprise costs of materials, direct labor and directly relevant general\n         manufacturing expenses allocated on the basis of normal operations.\n        e   Work-in-process: Costs comprise costs of main materials, labor and other directly relevant costs.\n\n      Costs of inventories are determined in accordance with the weighted average method for materials and\n       specific identification method for real estate and recorded in line with the perpetual method.\n\n     Net realizable value  is the estimated selling price of inventories in the ordinary course of business less\n      the estimated costs of completion and the estimated costs necessary to make the sale.\n\n     Allowance for devaluation of inventories  is recognized for each type of inventories when their costs\n      are higher than  their net  realizable  values.  Increases/(decreases)  in  the obligatory  allowance  for\n      devaluation ofinventories as of the balance sheet date are recorded into costs of sales.\n\n8.     Prepaid expenses\n      Prepaid expenses comprise actual expenses incurred and relevant to financial performance in several\n       fiscal years. Prepaid expenses of the Group mainly include expenses of tools, repair expenses, land\n       rental, brand value and value of goodwill. These prepaid expenses are allocated over the prepayment\n      period or period in which corresponding benefits are realized.\n\n\n      Tools\n     Expenses of tools being put  into use are allocated  into costs  in accordance with the  straight-line    a\n     method for the maximum period of3 years.                          =\n                                                                                                                                                        iG\n\n     Repair expenses                                                                                                         ‡M\n      Repair expenses incurred once with high value are allocated into costs in accordance with the straight-         ‘VA\n       line method for the maximumof  2 years.                                   &\n\n     Land rental                               e\n      Prepaid land rental reflects the rental prepaid for the land being used by the Group and  is allocated into   =\n      costs in accordance with the straight-line method over the lease term.\n\n\n     Brand value\n     The brand value shall be determined according to the Decision of the People’s Committee of Binh\n     Duong Province, approving the business value  for equitization. Such brand  value  is allocated  in\n      accordance with the straight-line method in 10 years.\n\n\n      Value ofgoodwill\n     The value of goodwill shall be determined according to the Decision of the People’s Committee of\n     Binh Duong Province, approving the goodwill for equitization. Such value of goodwill  is allocated  in\n      accordance with the straight-line method in 10 years.\n\n9.    Operating leased assets\n     A  lease  is classified as an operating lease if it transfers substantially  all the risks and rewards incident\n       to ownership belonging  to the  lessor. The  lease expenses are  allocated  in  the operation  costs  in\n      accordance with the straight-line method over the lease term and do not depend on the method of lease\n      payment.\n\n\nThese notesform an integral part ofand should be read in conjunction with the Consolidated Financial Statements\n                                            23"
+        }
+      ],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-inventory-cost",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích phương pháp tính giá gốc hàng tồn kho mà doanh nghiệp áp dụng.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "SAB/VNM dùng bình quân gia quyền; BCM bình quân gia quyền cho nguyên vật liệu và đích danh cho bất động sản; MWG đối chiếu đoạn phương pháp chi tiết trong nguồn. Không đồng nhất giá gốc với giá bán.",
+      "reference_evidence": [
+        {
+          "page": 25,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9 Floor, WTC Tower, No.   | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\n\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n\n7.    Inventories\n      Inventories are recognized at the lower ofcost or net realizable value,\n\n\n      Cost of inventories is determined as follows:\n\n       ¢   For materials and merchandise: Costs comprise costs of purchases and other directly relevant costs\n           incurred in bringing the inventories to their present location and conditions.\n        ¢   For finished goods: Costs comprise costs of materials, direct labor and directly relevant general\n         manufacturing expenses allocated on the basis of normal operations.\n        e   Work-in-process: Costs comprise costs of main materials, labor and other directly relevant costs.\n\n      Costs of inventories are determined in accordance with the weighted average method for materials and\n       specific identification method for real estate and recorded in line with the perpetual method.\n\n     Net realizable value  is the estimated selling price of inventories in the ordinary course of business less\n      the estimated costs of completion and the estimated costs necessary to make the sale.\n\n     Allowance for devaluation of inventories  is recognized for each type of inventories when their costs\n      are higher than  their net  realizable  values.  Increases/(decreases)  in  the obligatory  allowance  for\n      devaluation ofinventories as of the balance sheet date are recorded into costs of sales.\n\n8.     Prepaid expenses\n      Prepaid expenses comprise actual expenses incurred and relevant to financial performance in several\n       fiscal years. Prepaid expenses of the Group mainly include expenses of tools, repair expenses, land\n       rental, brand value and value of goodwill. These prepaid expenses are allocated over the prepayment\n      period or period in which corresponding benefits are realized.\n\n\n      Tools\n     Expenses of tools being put  into use are allocated  into costs  in accordance with the  straight-line    a\n     method for the maximum period of3 years.                          =\n                                                                                                                                                        iG\n\n     Repair expenses                                                                                                         ‡M\n      Repair expenses incurred once with high value are allocated into costs in accordance with the straight-         ‘VA\n       line method for the maximumof  2 years.                                   &\n\n     Land rental                               e\n      Prepaid land rental reflects the rental prepaid for the land being used by the Group and  is allocated into   =\n      costs in accordance with the straight-line method over the lease term.\n\n\n     Brand value\n     The brand value shall be determined according to the Decision of the People’s Committee of Binh\n     Duong Province, approving the business value  for equitization. Such brand  value  is allocated  in\n      accordance with the straight-line method in 10 years.\n\n\n      Value ofgoodwill\n     The value of goodwill shall be determined according to the Decision of the People’s Committee of\n     Binh Duong Province, approving the goodwill for equitization. Such value of goodwill  is allocated  in\n      accordance with the straight-line method in 10 years.\n\n9.    Operating leased assets\n     A  lease  is classified as an operating lease if it transfers substantially  all the risks and rewards incident\n       to ownership belonging  to the  lessor. The  lease expenses are  allocated  in  the operation  costs  in\n      accordance with the straight-line method over the lease term and do not depend on the method of lease\n      payment.\n\n\nThese notesform an integral part ofand should be read in conjunction with the Consolidated Financial Statements\n                                            23"
+        }
+      ],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-cash-definition",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích điều kiện để một khoản đầu tư được phân loại là tương đương tiền theo báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Thanh khoản cao, chuyển đổi được thành lượng tiền xác định và ít rủi ro thay đổi giá trị; chỉ nêu thời hạn gốc ba tháng nếu nguồn của đúng doanh nghiệp có ghi.",
+      "reference_evidence": [
+        {
+          "page": 22,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9 Floor, WTC Tower, No.   | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n\n       «   For payables:  the selling  rate of foreign currency  ruling as  at the time of transaction of the\n         commercial bank where the Group supposes to make payments.\n        e   For acquisition of assets or immediate payments  in foreign currency (not included into payable\n           accounts): the buying rate of the commercial bank where the Group makes payments.\n\n     The exchange rate used to re-evaluate ending balances of monetary items  in  foreign currencies  is\n      determined in accordance with following principles:\n       e   For foreign currency deposits: the buying rate of the bank where the Group opens  its foreign\n          currency account.\n       e   For monetary items in foreign currencies classified as other assets: the buying rate of Joint Stock\n         Commercial Bank  for  Investment  and Development  of Vietnam (BIDV) where  the Group\n           frequently makes transactions.\n       e   For monetary items  in foreign currencies classified as  liabilities: the selling rate of Joint Stock\n         Commercial Bank  for  Investment and  Development of Vietnam (BIDV) where  the Group\n           frequently makes transactions).\n\n4.    Cash and cash equivalents\n     Cash includes cash on hand and demand deposits. Cash equivalents are short-term investments of\n     which the due dates do not exceed  3 months from  the dates of the investments  that are readily\n      convertible into known amounts of cash and that are subject to an insignificant risk of change in value\n       as ofthe balance sheet date.\n\n\n5.    Financial investments\n\n      Held-to-maturity investments\n      Investments are classified as held-to-maturity investments that the Group intends and is able to hold to\n       maturity.  Held-to-maturity  investments  include term  deposits and  held-to-maturity  bonds  for the\n      purpose ofreceiving periodical interest.                                                                                                                                                                                                  \\\n\n                                                                                                         ,\n      Held-to-maturity investments are initially recognized  at cost including the acquisition cost and other  \\=\n       transaction  costs.  After  initial  recognition,  these  investments  are recorded  at recoverable  value.   .|“\n       Interest from these held-to-maturity investments after acquisition date  is recognized  in the profit or    Wea!\n       loss on  the  basis of the  interest income  to  be  received.  Interest  incurred  prior  to  the Group’s    “sy\n       acquisition of held-to-maturity investments is deducted to the costs as at the acquisition time.                                                                                :\n\n     When there  is reliable evidence proving that a part or the whole investment cannot be recovered and\n       the loss is reliably measured, the loss  is recognized as financial expenses during the year and directly\n      deducted into the investment costs.\n\n\n     Loans\n\n      Loans are measured at costs less allowance for doubtful debts. Allowance for doubtful debts of loans\n\n         is made on the basis of estimated losses.\n\n\n      Investments in joint ventures and associates\n      Joint ventures\n      A  joint venture is an entity which  is established by a contractual arrangement whereby the Group and\n       the involved parties undertake an economic activity that is subject to joint control. Joint control  is the\n       contractually agreed sharing of control over an economic activity, and exists only when the strategic\n       financial  and  operating  decisions  relating  to  the  activity  require  the unanimous consent of the\n\n       venturers.\n\n\n\n\n\n                                         20"
+        }
+      ],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-asset-cost",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích tài sản cố định hữu hình được trình bày theo giá trị nào và chi phí nào được tính vào nguyên giá.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Nguyên giá trừ khấu hao/hao mòn lũy kế; giá mua và chi phí trực tiếp để đưa tài sản vào trạng thái sử dụng; bám đúng phạm vi nguồn.",
+      "reference_evidence": [
+        {
+          "page": 26,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9 Floor, WTC Tower, No.   | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n10.   Tangible fixed assets\n      Tangible fixed assets are determined by their historical costs less accumulated depreciation. Historical\n      costs of tangible fixed assets include  all the expenses paid by the Group to bring the asset to  its\n     working condition  for  its intended use. Other expenses arising subsequent to  initial recognition are\n      included into historical costs of fixed assets only  if  it can be clearly demonstrated that the expenditure\n      has resulted  in future economic benefits expected to be obtained from the use ofthese assets, Those\n     which do not meet the above conditions will be recorded into operation costs during the year.\n\n    Whena  tangible fixed asset  is sold or disposed,  its historical cost and accumulated depreciation are\n      written off, then any gain or loss arising from such disposal  is included in the income or the expenses\n      during the year.\n\n      Tangible fixed assets are depreciated  in accordance with the straight-line method over their estimated\n      useful lives. The depreciation years applied are as follows:\n      Fixed assets                                    Years\n      Buildings and structures                   05-25\n      Machinery and equipment                 05-10\n      Vehicles                             03—10\n      Office equipment                       03—08\n      Other tangible fixed assets                                10\n11.   Intangible fixed assets\n       Intangible fixed assets are determined by their initial costs less accumulated amortization.\n\n        Initial costs of intangible fixed assets include all the costs paid by the Group to bring the asset to  its\n     working  condition  for  its  intended  use.  Other  costs  relevant  to  intangible  fixed  assets  arising\n      subsequent to initial recognition are included into operation costs during the year only  if these costs\n       are associated with a specific intangible fixed asset and result in future economic benefits expected to\n      be obtained from the use ofthese assets.                                 >N\n\n     When an intangible fixed asset  is sold or disposed,  its initial costs and accumulated amortization are        i\n       written off, then any gain or loss arising from such disposal  is included in the income or the expenses        WUHAY\n      during the year.                                                                                                                            TU VẢ:\n                                                                                     3\n     The Group’s intangible fixed assets include:                             WA\n\n\n     Land use right\n     Land use right includes  all the actual expenses paid by the Group directly related to the land being\n      used such as expenses to obtain the land use right, expenses for house removal, land clearance and\n      ground leveling, registration fees, etc. Land use right  is amortized  in accordance with the straight-line\n     method in 49 years.\n\n\n     Computer software\n     Expenses attributable to computer software, which  is not a part associated with the relevant hardware,\n       will be capitalized. Costs of computer software include all the expenses paid by the Group until the\n      date the software  is put into use. Computer software  is amortized in accordance with the straight-line\n     method from 3 years to 8 years.\n\n     Other intangiblefixed assets\n      Other intangible fixed assets include expenses on website design, survey expenses, exploration of\n      reserves qualified for technical drainage. These costs are amortized  in accordance with the straight-\n       line method from 3 years to 10 years.\n\n\n\n\nThese notes form an integral part ofand should be read in conjunction with the Consolidated Financial Statements\n                                           24"
+        }
+      ],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-depreciation",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích phương pháp khấu hao tài sản cố định hữu hình được áp dụng theo báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Phương pháp đường thẳng theo thời gian hữu ích ước tính; không tự đưa tỷ lệ hoặc số năm ngoài nguồn.",
+      "reference_evidence": [
+        {
+          "page": 26,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9 Floor, WTC Tower, No.   | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n10.   Tangible fixed assets\n      Tangible fixed assets are determined by their historical costs less accumulated depreciation. Historical\n      costs of tangible fixed assets include  all the expenses paid by the Group to bring the asset to  its\n     working condition  for  its intended use. Other expenses arising subsequent to  initial recognition are\n      included into historical costs of fixed assets only  if  it can be clearly demonstrated that the expenditure\n      has resulted  in future economic benefits expected to be obtained from the use ofthese assets, Those\n     which do not meet the above conditions will be recorded into operation costs during the year.\n\n    Whena  tangible fixed asset  is sold or disposed,  its historical cost and accumulated depreciation are\n      written off, then any gain or loss arising from such disposal  is included in the income or the expenses\n      during the year.\n\n      Tangible fixed assets are depreciated  in accordance with the straight-line method over their estimated\n      useful lives. The depreciation years applied are as follows:\n      Fixed assets                                    Years\n      Buildings and structures                   05-25\n      Machinery and equipment                 05-10\n      Vehicles                             03—10\n      Office equipment                       03—08\n      Other tangible fixed assets                                10\n11.   Intangible fixed assets\n       Intangible fixed assets are determined by their initial costs less accumulated amortization.\n\n        Initial costs of intangible fixed assets include all the costs paid by the Group to bring the asset to  its\n     working  condition  for  its  intended  use.  Other  costs  relevant  to  intangible  fixed  assets  arising\n      subsequent to initial recognition are included into operation costs during the year only  if these costs\n       are associated with a specific intangible fixed asset and result in future economic benefits expected to\n      be obtained from the use ofthese assets.                                 >N\n\n     When an intangible fixed asset  is sold or disposed,  its initial costs and accumulated amortization are        i\n       written off, then any gain or loss arising from such disposal  is included in the income or the expenses        WUHAY\n      during the year.                                                                                                                            TU VẢ:\n                                                                                     3\n     The Group’s intangible fixed assets include:                             WA\n\n\n     Land use right\n     Land use right includes  all the actual expenses paid by the Group directly related to the land being\n      used such as expenses to obtain the land use right, expenses for house removal, land clearance and\n      ground leveling, registration fees, etc. Land use right  is amortized  in accordance with the straight-line\n     method in 49 years.\n\n\n     Computer software\n     Expenses attributable to computer software, which  is not a part associated with the relevant hardware,\n       will be capitalized. Costs of computer software include all the expenses paid by the Group until the\n      date the software  is put into use. Computer software  is amortized in accordance with the straight-line\n     method from 3 years to 8 years.\n\n     Other intangiblefixed assets\n      Other intangible fixed assets include expenses on website design, survey expenses, exploration of\n      reserves qualified for technical drainage. These costs are amortized  in accordance with the straight-\n       line method from 3 years to 10 years.\n\n\n\n\nThese notes form an integral part ofand should be read in conjunction with the Consolidated Financial Statements\n                                           24"
+        }
+      ],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-fx-initial",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích cách quy đổi các giao dịch ngoại tệ tại thời điểm phát sinh.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Dùng tỷ giá giao dịch thực tế ở ngày phát sinh; nếu nguồn phân biệt mua/bán theo phải thu, phải trả thì trình bày sự phân biệt đó.",
+      "reference_evidence": [
+        {
+          "page": 21,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9° Floor, WTC Tower, No.    | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n     The Combined  Financial  Statements  of the  Parent Company  and  the  Financial  Statements  of\n      subsidiaries used  for consolidation  are prepared  in  the same  fiscal  year and  apply  consistently\n      accounting policies to the same types of transactions and events in similar circumstances. In the case\n       that the accounting policy ofa subsidiary  is different from the accounting policy applied consistently\n        in the Group, the Financial Statements of that subsidiary will be properly adjusted before being used\n       for the preparation of the Consolidated Financial Statements.\n\n      Intra-group balances in the Balance Sheet and intra-group transactions and unrealized profits resulting\n     from these transactions must be completely eliminated, Unrealized losses resulting from intra-group\n      transactions are also eliminated unless costs cannot be recovered.\n\n\n      Benefits of non-controlling shareholders reflect profit or loss and net assets of the subsidiaries, which\n      are not hold by the Group and presented  in a separate item of the Consolidated Income Statement and\n      Consolidated  Balance  Sheet  (classified  under  owner’s   equity).  Benefits  of  non-controlling\n      shareholders  include  the values of their  non-controlling  benefits  at  the  initial  date of business\n      combination and those arise within the ranges of changes in owner’s equity from the date of business\n      combination. The losses arising in the subsidiaries are attributed equally to the ownership rate of non-\n      controlling shareholders, even  if such losses are higher than the interest owned by these shareholders\n        in net assets ofthe subsidiaries.\n\n       In case the Group invests to raise  its benefit rate held in the subsidiaries, the difference between the\n      additional investment cost and the carrying value ofthe subsidiaries’ net assets additionally purchased\n      as at the acquisition date is directly recorded in item “Retained earnings” on the Consolidated Balance\n      Sheet.\n\n       In case where subsidiaries raise capital from the owners, if the additional capital contribution rate of  =\n       the involved parties  is not in correspondence with the current capital ownership  rate, the difference      iss\n     between the additional capital contribution rate of the Group and the increase of the ownership share    „`\n        in the subsidiaries’ net assets  is recorded into item “Retained earnings” on the Consolidated Balance      yun\n      Sheet.                                                                                                        wy,\n3.    Foreign currency transactions                                                  có.\n      Transactions  in  foreign  currencies  are converted  at  the  actual exchange  rates  ruling  as of the    BS\n      transaction dates. The ending balances of monetary items  in foreign currencies are converted  at the  <\n       actual exchange rates ruling as ofthe balance sheet date.\n\n      Foreign exchange differences  arisen from  foreign currency  transactions during the year  shall  be\n      included  into  financial  income  or  financial  expenses.  Foreign exchange  differences  due  to  the\n      revaluation of ending balances of the monetary  items  in  foreign  currencies  after  offsetting  their\n      positive differences against negative differences shall be included into financial income or financial\n\n      expenses.\n\n     The exchange rate used to convert foreign currency transactions  is the actual exchange rate ruling as at\n      the time of these transactions. The actual exchange rates applied to foreign currency transactions are as\n      follows:\n        e   For  the  foreign  currency  trading  contract  (including  spot  contract,  forward  contract,  future\n           contract, option contract, currency swap): the exchange rate stipulated  in the contracts of trading\n           foreign currency between the Group and the Bank.\n        e   For capital contribution made or received: the buying rate of the bank where the Group opens  its\n          account to receive capital contributed from investors as ofthe date of capital contribution.\n        e   For receivables: the buying rate of foreign currency ruling as  at the time of transaction of the\n         commercial bank where the Group designates the customers to make payments.\n\n\n\nThese notesform an integral part ofand should be read in conjunction with the Consolidated Financial Statements\n                                                 19"
+        },
+        {
+          "page": 22,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9 Floor, WTC Tower, No.   | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n\n       «   For payables:  the selling  rate of foreign currency  ruling as  at the time of transaction of the\n         commercial bank where the Group supposes to make payments.\n        e   For acquisition of assets or immediate payments  in foreign currency (not included into payable\n           accounts): the buying rate of the commercial bank where the Group makes payments.\n\n     The exchange rate used to re-evaluate ending balances of monetary items  in  foreign currencies  is\n      determined in accordance with following principles:\n       e   For foreign currency deposits: the buying rate of the bank where the Group opens  its foreign\n          currency account.\n       e   For monetary items in foreign currencies classified as other assets: the buying rate of Joint Stock\n         Commercial Bank  for  Investment  and Development  of Vietnam (BIDV) where  the Group\n           frequently makes transactions.\n       e   For monetary items  in foreign currencies classified as  liabilities: the selling rate of Joint Stock\n         Commercial Bank  for  Investment and  Development of Vietnam (BIDV) where  the Group\n           frequently makes transactions).\n\n4.    Cash and cash equivalents\n     Cash includes cash on hand and demand deposits. Cash equivalents are short-term investments of\n     which the due dates do not exceed  3 months from  the dates of the investments  that are readily\n      convertible into known amounts of cash and that are subject to an insignificant risk of change in value\n       as ofthe balance sheet date.\n\n\n5.    Financial investments\n\n      Held-to-maturity investments\n      Investments are classified as held-to-maturity investments that the Group intends and is able to hold to\n       maturity.  Held-to-maturity  investments  include term  deposits and  held-to-maturity  bonds  for the\n      purpose ofreceiving periodical interest.                                                                                                                                                                                                  \\\n\n                                                                                                         ,\n      Held-to-maturity investments are initially recognized  at cost including the acquisition cost and other  \\=\n       transaction  costs.  After  initial  recognition,  these  investments  are recorded  at recoverable  value.   .|“\n       Interest from these held-to-maturity investments after acquisition date  is recognized  in the profit or    Wea!\n       loss on  the  basis of the  interest income  to  be  received.  Interest  incurred  prior  to  the Group’s    “sy\n       acquisition of held-to-maturity investments is deducted to the costs as at the acquisition time.                                                                                :\n\n     When there  is reliable evidence proving that a part or the whole investment cannot be recovered and\n       the loss is reliably measured, the loss  is recognized as financial expenses during the year and directly\n      deducted into the investment costs.\n\n\n     Loans\n\n      Loans are measured at costs less allowance for doubtful debts. Allowance for doubtful debts of loans\n\n         is made on the basis of estimated losses.\n\n\n      Investments in joint ventures and associates\n      Joint ventures\n      A  joint venture is an entity which  is established by a contractual arrangement whereby the Group and\n       the involved parties undertake an economic activity that is subject to joint control. Joint control  is the\n       contractually agreed sharing of control over an economic activity, and exists only when the strategic\n       financial  and  operating  decisions  relating  to  the  activity  require  the unanimous consent of the\n\n       venturers.\n\n\n\n\n\n                                         20"
+        }
+      ],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-fx-closing",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích cách đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ ở thời điểm lập báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Theo tỷ giá cuối kỳ/tỷ giá mua hoặc bán phù hợp từng nhóm tài sản và nợ phải trả được nguồn mô tả; không tự suy diễn tỷ giá cụ thể.",
+      "reference_evidence": [
+        {
+          "page": 22,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9 Floor, WTC Tower, No.   | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n\n       «   For payables:  the selling  rate of foreign currency  ruling as  at the time of transaction of the\n         commercial bank where the Group supposes to make payments.\n        e   For acquisition of assets or immediate payments  in foreign currency (not included into payable\n           accounts): the buying rate of the commercial bank where the Group makes payments.\n\n     The exchange rate used to re-evaluate ending balances of monetary items  in  foreign currencies  is\n      determined in accordance with following principles:\n       e   For foreign currency deposits: the buying rate of the bank where the Group opens  its foreign\n          currency account.\n       e   For monetary items in foreign currencies classified as other assets: the buying rate of Joint Stock\n         Commercial Bank  for  Investment  and Development  of Vietnam (BIDV) where  the Group\n           frequently makes transactions.\n       e   For monetary items  in foreign currencies classified as  liabilities: the selling rate of Joint Stock\n         Commercial Bank  for  Investment and  Development of Vietnam (BIDV) where  the Group\n           frequently makes transactions).\n\n4.    Cash and cash equivalents\n     Cash includes cash on hand and demand deposits. Cash equivalents are short-term investments of\n     which the due dates do not exceed  3 months from  the dates of the investments  that are readily\n      convertible into known amounts of cash and that are subject to an insignificant risk of change in value\n       as ofthe balance sheet date.\n\n\n5.    Financial investments\n\n      Held-to-maturity investments\n      Investments are classified as held-to-maturity investments that the Group intends and is able to hold to\n       maturity.  Held-to-maturity  investments  include term  deposits and  held-to-maturity  bonds  for the\n      purpose ofreceiving periodical interest.                                                                                                                                                                                                  \\\n\n                                                                                                         ,\n      Held-to-maturity investments are initially recognized  at cost including the acquisition cost and other  \\=\n       transaction  costs.  After  initial  recognition,  these  investments  are recorded  at recoverable  value.   .|“\n       Interest from these held-to-maturity investments after acquisition date  is recognized  in the profit or    Wea!\n       loss on  the  basis of the  interest income  to  be  received.  Interest  incurred  prior  to  the Group’s    “sy\n       acquisition of held-to-maturity investments is deducted to the costs as at the acquisition time.                                                                                :\n\n     When there  is reliable evidence proving that a part or the whole investment cannot be recovered and\n       the loss is reliably measured, the loss  is recognized as financial expenses during the year and directly\n      deducted into the investment costs.\n\n\n     Loans\n\n      Loans are measured at costs less allowance for doubtful debts. Allowance for doubtful debts of loans\n\n         is made on the basis of estimated losses.\n\n\n      Investments in joint ventures and associates\n      Joint ventures\n      A  joint venture is an entity which  is established by a contractual arrangement whereby the Group and\n       the involved parties undertake an economic activity that is subject to joint control. Joint control  is the\n       contractually agreed sharing of control over an economic activity, and exists only when the strategic\n       financial  and  operating  decisions  relating  to  the  activity  require  the unanimous consent of the\n\n       venturers.\n\n\n\n\n\n                                         20"
+        }
+      ],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-sales-recognition",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích điều kiện ghi nhận doanh thu bán hàng theo chính sách kế toán trong báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Chuyển giao phần lớn rủi ro và lợi ích; các điều kiện đo lường/thu hồi và quyền quản lý theo nguồn. Không bịa nguyên nhân tăng doanh thu.",
+      "reference_evidence": [
+        {
+          "page": 31,
+          "excerpt": "INVESTMENT AND INDUSTRIAL DEVELOPMENT JOINT STOCK CORPORATION\nAddress: 9\" Floor, WTC Tower, No.        | Hung Vuong Street, Hoa Phu Ward, Thu Dau Mot City, Binh Duong Province\nCONSOLIDATED FINANCIAL STATEMENTS\nFor the fiscal year ended 31 December 2024\nNotes to the Consolidated Financial Statements (cont.)\n\n\n22.   Recognition of revenue and income\n     Revenuefrom sales ofmerchandise, finished goods\n     Revenue from sales of merchandise,  finished goods shall be recognized when  all of the following\n      conditions are satisfied:\n       e   The Group transfers most of risks and  benefits  incident  to the ownership of merchandise  or\n          products to customers.\n        e   The Group  retains neither continuing managerial involvement  to the degree usually associated\n          with ownership nor effective control over the merchandise, products sold.\n        e   The amount of revenue can be measured reliably. When the contracts stipulate that buyers have\n           the  right to return merchandise,  products purchased under specific conditions,  the revenue  is\n          recorded only when those specific conditions are no longer exist and buyers retains no right to\n           return merchandise, products (except for the case that such returns are in exchange for other goods\n           or services).\n       e   The Group  received  or  shall  probably  receive  the economic  benefits  associated  with  sale\n           transactions.\n        e   The cost incurred or to be incurred in respect ofthe sale transaction can be measured reliably.\n\n     Revenuefrom provisions ofservices\n     Revenue from provisions of services  shall be recognized when  all of the following conditions are\n       satisfied:\n\n        ¢   The amount of revenue can be measured reliably. When the contract stipulates that the buyer  is\n            entitled to return the services provided under specific conditions, the revenue  is recognized only\n        when these specific conditions are no longer existed and the buyer  is not entitled to return the\n           services provided,\n        ¢   The Group received or shall probably receive the economic benefits associated with the provision  SS\n        ¢   of services.                  a         The stage of completion ofthe transaction at the end ofreporting period can be measured reliably.       TY\n        ¢   The costs incurred for the transaction and the costs to complete the transaction can be measured                   † HỮU HẠ\n            reliably.                                                                                           ATU VA\n                                                                       C\n       In the case that the services are provided in several accounting periods, the determination of revenue  is  Ee\n      done on the basis of the volume of work done as ofthe balance sheet date.            oF\n\n     Revenuefrom sales ofreal estate\n     Revenue from sales of real estate that invested by the Group shall be recognized when  all of the\n      following conditions are satisfied:\n       œ   The real estate  is fully completed and handed over to the buyers, and the Group transfers most of\n            risks and benefits incident to the ownership of real estate to the buyer.\n       e   The Group retains neither continuing managerial involvement to the degree usually associated\n          with ownership nor effective control over the real estate sold.\n       e  The amount of revenue can be measured reliably.\n        e   The Group  received  or  shall  probably  receive  the economic  benefits  associated  with  the\n           transaction.\n\n       e  The costs incurred or to be incurred in respect of the transaction can be measured reliably.\n\n       In case the customer has the right to complete the interior of the real estate and the Group completes\n       the interiors according to the designs, models as requested by customer under a separate contract on\n       interior  completion,  revenues  are  recognized  upon  the  completion  and  handover of the  main\n      construction works to customers.\n\n\n\n\n\n                                         29"
+        }
+      ],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-unknown-ai",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích thuật toán AI cụ thể được dùng để dự đoán tỷ giá hằng ngày của doanh nghiệp theo tài liệu này.",
+      "expected_status": "insufficient_evidence",
+      "requires_model": true,
+      "reference": "Tài liệu tài chính được cung cấp không có bằng chứng cho chi tiết được hỏi. Phải từ chối cụ thể; không viện kiến thức ngoài nguồn hoặc bịa sự cố/thuật toán.",
+      "reference_evidence": [],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "bcm-unknown-breach",
+      "company": "BCM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "BCM: Giải thích nguyên nhân sự cố rò rỉ dữ liệu khách hàng và số hồ sơ bị lộ theo tài liệu này.",
+      "expected_status": "insufficient_evidence",
+      "requires_model": true,
+      "reference": "Tài liệu tài chính được cung cấp không có bằng chứng cho chi tiết được hỏi. Phải từ chối cụ thể; không viện kiến thức ngoài nguồn hoặc bịa sự cố/thuật toán.",
+      "reference_evidence": [],
+      "source_sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4"
+    },
+    {
+      "id": "vnm-inventory-value",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích nguyên tắc xác định giá trị hàng tồn kho được nêu trong chính sách kế toán.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Đối chiếu giá gốc với giá trị thuần có thể thực hiện được; dùng mức thấp hơn.",
+      "reference_evidence": [
+        {
+          "page": 26,
+          "excerpt": "Công ty Cô phan Sữa Việt Nam và các công ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiếp theo)\n\n(Ban Mẫu B09—-DN/HN hành theo Thông tư số202/2014/TT-BTC\nngày 22 tháng 12 năm 2014 của BộTài chính)\n\n3. Cac khoản phải thu\n\nCác khoản phải thu được theo dõi chỉtiết theo kỳhạn phải thu, đối tượng phải thu, loại nguyên tệphải\nthu và các yêu tô khác theo nhu câu quản lý của Tập đoàn. Phải thu của khách hàng gom các khoản\nphải thu mang tính chât thương mại phát sinh từgiao dịch có tính chất mua - bán. Phải thu khác gồm\ncác khoản phải thu không có tính thương mại, không liên quan đến giao dịch mua - bán. Các khoản\nphải thu được phân loại là ngăn hạn và dài hạn trên báo cáo tình hình tài chính hợp nhat căn cứtheo kỳ\nhạn còn lại của các khoản phải thu tại ngày báo cáo.\n\nPhải thu khách hàng và các khoản phải thu khác được phản ánh theo giá gốc trừđi dựphòng phải thu\nkhó đòi. Dựphòng phải thu khó đòi được lập cho từng khoản nợphải thu khó đòi căn cứvào thời gian\nquá hạn trảnợgôc theo cam kết nợban đầu (không tính dén việc gia hạn nợgiữa các bên), hoặc dự\nkiên mức tôn thât có thê phát sinh.\n\nPhải thu khách hàng và các khoản phải thu khác được phân loại là các khoản mục tiền tệcó gốc ngoại\ntệđược đánh giá lại theo ty giá mua chuyển khoản tại ngày báo cáo.\n\n\n6. Hàng tồn kho\nHàng tồn kho được phản ánh theo giá thấp hơn giữa giá gốc và giá trịthuần có thểthực hiện được. Giá\ngôc được tính theo phương pháp bình quân gia quyên và bao gom tat cảcác chi phí phát sinh de có\nđược hàng tôn kho ởđịa diém và trang thái hiện tại. Đôi với thành phâm và sản phâm do dang, giá gốc\nbaotrịthuângôm cónguyênthê thựcvật hiệnliệu, đượcchi phíướcnhântínhcôngdựa trựcvào giátiếpbánvà cáccủa chihàngphítônsankhoxuâttrừđichungcácđượckhoảnphânchỉphíbo. ướcGiá\ntính đê hoàn thành sản phẩm và các chi phí ước tính dé bán sản phâm.\n\nTập đoàn áp dụng phương pháp kê khai thường xuyên dé hạch toán hàng tồn kho.\n\n\n7. Tài sản cốđịnh hữu hình\n\n(a) Nguyên giá\nTài sản cốđịnh hữu hình được thê hiện theo nguyên giá trừđi giá trịhao mồn lũy kế. Nguyên giá tài\nsản cô định hữu hình bao gôm giá mua, thuê nhập khâu, các loại thuê mua hàng không hoàn lại và chi\nphí liên quan trực tiếp dé đưa tài sản đến trang thái hoạt động cho mục đích sửdụng đã dựkiên, và chi\nphí đểtháo đỡ, di dời tài sản và khôi phục hiện trường tại địa điểm đặt tài sản. Các chi phí phát sinh\nsau khi tài sản cỗđịnh hữu hình đã đưa vào hoạt động như chỉphí sửa chữa, bảo dưỡng và đại tu được\nghi nhận vào báo cáo két quảhoạt động kinh doanh hợp nhat trong năm mà chi phí phát sinh. Trong\ncác trường hợp có thê chứng minh một cách rõ ràng rằng các khoản chi phí này làm tăng lợi ích kinh tế\ntrong tương lai dựtính thu được từviệc sửdụng tài sản cô định hữu hình vượt trên mức hoạt động tiêu\nchuân theo như đánh giá ban dau, thì các chi phí này được vốn hóa như một khoản nguyên giá tăng\nthêm của tài sản cô định hữu hình,\n\n\n\n\n\na\nx\n\nCH\n25 ON\nK\n\na\nxế"
+        }
+      ],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-inventory-cost",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích phương pháp tính giá gốc hàng tồn kho mà doanh nghiệp áp dụng.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "SAB/VNM dùng bình quân gia quyền; BCM bình quân gia quyền cho nguyên vật liệu và đích danh cho bất động sản; MWG đối chiếu đoạn phương pháp chi tiết trong nguồn. Không đồng nhất giá gốc với giá bán.",
+      "reference_evidence": [
+        {
+          "page": 26,
+          "excerpt": "Công ty Cô phan Sữa Việt Nam và các công ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiếp theo)\n\n(Ban Mẫu B09—-DN/HN hành theo Thông tư số202/2014/TT-BTC\nngày 22 tháng 12 năm 2014 của BộTài chính)\n\n3. Cac khoản phải thu\n\nCác khoản phải thu được theo dõi chỉtiết theo kỳhạn phải thu, đối tượng phải thu, loại nguyên tệphải\nthu và các yêu tô khác theo nhu câu quản lý của Tập đoàn. Phải thu của khách hàng gom các khoản\nphải thu mang tính chât thương mại phát sinh từgiao dịch có tính chất mua - bán. Phải thu khác gồm\ncác khoản phải thu không có tính thương mại, không liên quan đến giao dịch mua - bán. Các khoản\nphải thu được phân loại là ngăn hạn và dài hạn trên báo cáo tình hình tài chính hợp nhat căn cứtheo kỳ\nhạn còn lại của các khoản phải thu tại ngày báo cáo.\n\nPhải thu khách hàng và các khoản phải thu khác được phản ánh theo giá gốc trừđi dựphòng phải thu\nkhó đòi. Dựphòng phải thu khó đòi được lập cho từng khoản nợphải thu khó đòi căn cứvào thời gian\nquá hạn trảnợgôc theo cam kết nợban đầu (không tính dén việc gia hạn nợgiữa các bên), hoặc dự\nkiên mức tôn thât có thê phát sinh.\n\nPhải thu khách hàng và các khoản phải thu khác được phân loại là các khoản mục tiền tệcó gốc ngoại\ntệđược đánh giá lại theo ty giá mua chuyển khoản tại ngày báo cáo.\n\n\n6. Hàng tồn kho\nHàng tồn kho được phản ánh theo giá thấp hơn giữa giá gốc và giá trịthuần có thểthực hiện được. Giá\ngôc được tính theo phương pháp bình quân gia quyên và bao gom tat cảcác chi phí phát sinh de có\nđược hàng tôn kho ởđịa diém và trang thái hiện tại. Đôi với thành phâm và sản phâm do dang, giá gốc\nbaotrịthuângôm cónguyênthê thựcvật hiệnliệu, đượcchi phíướcnhântínhcôngdựa trựcvào giátiếpbánvà cáccủa chihàngphítônsankhoxuâttrừđichungcácđượckhoảnphânchỉphíbo. ướcGiá\ntính đê hoàn thành sản phẩm và các chi phí ước tính dé bán sản phâm.\n\nTập đoàn áp dụng phương pháp kê khai thường xuyên dé hạch toán hàng tồn kho.\n\n\n7. Tài sản cốđịnh hữu hình\n\n(a) Nguyên giá\nTài sản cốđịnh hữu hình được thê hiện theo nguyên giá trừđi giá trịhao mồn lũy kế. Nguyên giá tài\nsản cô định hữu hình bao gôm giá mua, thuê nhập khâu, các loại thuê mua hàng không hoàn lại và chi\nphí liên quan trực tiếp dé đưa tài sản đến trang thái hoạt động cho mục đích sửdụng đã dựkiên, và chi\nphí đểtháo đỡ, di dời tài sản và khôi phục hiện trường tại địa điểm đặt tài sản. Các chi phí phát sinh\nsau khi tài sản cỗđịnh hữu hình đã đưa vào hoạt động như chỉphí sửa chữa, bảo dưỡng và đại tu được\nghi nhận vào báo cáo két quảhoạt động kinh doanh hợp nhat trong năm mà chi phí phát sinh. Trong\ncác trường hợp có thê chứng minh một cách rõ ràng rằng các khoản chi phí này làm tăng lợi ích kinh tế\ntrong tương lai dựtính thu được từviệc sửdụng tài sản cô định hữu hình vượt trên mức hoạt động tiêu\nchuân theo như đánh giá ban dau, thì các chi phí này được vốn hóa như một khoản nguyên giá tăng\nthêm của tài sản cô định hữu hình,\n\n\n\n\n\na\nx\n\nCH\n25 ON\nK\n\na\nxế"
+        }
+      ],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-cash-definition",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích điều kiện để một khoản đầu tư được phân loại là tương đương tiền theo báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Thanh khoản cao, chuyển đổi được thành lượng tiền xác định và ít rủi ro thay đổi giá trị; chỉ nêu thời hạn gốc ba tháng nếu nguồn của đúng doanh nghiệp có ghi.",
+      "reference_evidence": [
+        {
+          "page": 24,
+          "excerpt": "Công ty Cổphần Sữa Việt Nam và các công ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiép theo)\n\n(Ban Mẫu B 09 - DN/HN hành theo Thông tư sô 202/2014/TT-BTC\nngày 22 tháng 12 ndm 2014 của BộTài chính)\n\n(e) Các giao dịch được loại trừkhi hợp nhất\nCác sốdư, giao dịch trong nội bộTập đoàn và các khoản thu nhập và chi phíchưa thực hiện từcác giao\ndịch nội bộđược loại trừkhi lập báo cáo tài chính hợp nhất. Khoản lãi và lỗchưa thực hiện phát sinh\ntừcác giao dịch với các công ty liên doanh, liên kết được trừvào khoản đầu tư trong phạm vi lợi ích\ncủa Tập đoàn tại công ty liên doanh, liên kết.\n\n\n(f) Hợp nhất kinh doanh\nHợp nhất kinh doanh được hạch toán theo phương pháp mua tại ngày mua, là ngày mà quyền kiểm soát\nđược chuyền giao cho Tập đoàn. Quyên kiêm soát tôn tại khi Tập đoàn có quyên chi phối các chính\nsách tat chính và hoạt động của đơn vịnhắm thu được lợi ích kinh tê từcác hoạt động của đơn vịđó.\nViệc đánh giá quyên kiêm soát có xét đến quyền bỏphiếu tiềm năng có thê thực hiện được tại thời điểm\nhiện tại.\n\n\n2. Ngoại tệ\n\n(a) _ Các giao dịch bằng ngoại tệ\nCác giao dịch bằng các đơn vịtiền tệkhác VND trong năm được quy đổi sang VND theo tỷgiá thực tế\ntại ngày giao dịch.\n\nCác khoản mục tài sản và nợphải trảcó gốc bằng đơn vịtiền tệkhác VND được quy đổi sang VND lần\nlượt theo tỷgiá mua chuyên khoản và bán chuyên khoản của ngân hàng thương mại nơi Công ty và các\ncông ty con thường xuyên có giao dịch và có sốdư ngoại tệlớn nhất tại ngày kết thúc kỳkếtoán năm.\n\nTắt cảcác khoản chênh lệch tỷgiá được ghi nhận vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\n\n\n(b) Cơ sởhoạt động ởnước ngoài\nCác tài sản và nợphải trảcủa cơ sởhoạt động ởnước ngoài, bao gồm lợi thếthương mại và các điều\nchỉnh giá tri hợp lý phát sinh trong quá trình mua, được quy đổi sang VND theo tỷgiá hôi đoái tại ngày\nkêt thúc kỳke toán năm. Thu nhập và chi phí của cơ sởhoạt động ởnước ngoài được quy đôi sang\nVND theo tỷgiá hôi đoái bình quân trong năm.\n\n\nJ\nCác chênh lệch quy đôi tiên tệphát sinh do quy đôi cởsởhoạt động ởnước ngoài được ghi nhận vào\nkhoản mục “Chênh lệch quy đôi tiên tệ” thuộc vốn chủsởhữu trên báo cáo tình hình tài chính hợp nhat. te\n\nn\n3. Tiền và các khoản tương đương tiền N\nđầuTién bao gồm tiền mặt và tiền gửi ngân hàng khôngkỳhạn. Các khoản tương đương tiền là các khoản dễ\ntư ngăn hạn cốtính thanh khoản cao, có thê dé dang chuyên đôi thành một lượng tiên xác định,\nkhông có nhiêu rủi ro vềthay đôi giá trịvà được sửdụng cho mục đích đáp ứng các cam kết chi tiền\nngăn hạn hơn là cho mục đích đâu tư hay là các mục đích khác.\n\n\n\n\n\n23"
+        }
+      ],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-asset-cost",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích tài sản cố định hữu hình được trình bày theo giá trị nào và chi phí nào được tính vào nguyên giá.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Nguyên giá trừ khấu hao/hao mòn lũy kế; giá mua và chi phí trực tiếp để đưa tài sản vào trạng thái sử dụng; bám đúng phạm vi nguồn.",
+      "reference_evidence": [
+        {
+          "page": 26,
+          "excerpt": "Công ty Cô phan Sữa Việt Nam và các công ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiếp theo)\n\n(Ban Mẫu B09—-DN/HN hành theo Thông tư số202/2014/TT-BTC\nngày 22 tháng 12 năm 2014 của BộTài chính)\n\n3. Cac khoản phải thu\n\nCác khoản phải thu được theo dõi chỉtiết theo kỳhạn phải thu, đối tượng phải thu, loại nguyên tệphải\nthu và các yêu tô khác theo nhu câu quản lý của Tập đoàn. Phải thu của khách hàng gom các khoản\nphải thu mang tính chât thương mại phát sinh từgiao dịch có tính chất mua - bán. Phải thu khác gồm\ncác khoản phải thu không có tính thương mại, không liên quan đến giao dịch mua - bán. Các khoản\nphải thu được phân loại là ngăn hạn và dài hạn trên báo cáo tình hình tài chính hợp nhat căn cứtheo kỳ\nhạn còn lại của các khoản phải thu tại ngày báo cáo.\n\nPhải thu khách hàng và các khoản phải thu khác được phản ánh theo giá gốc trừđi dựphòng phải thu\nkhó đòi. Dựphòng phải thu khó đòi được lập cho từng khoản nợphải thu khó đòi căn cứvào thời gian\nquá hạn trảnợgôc theo cam kết nợban đầu (không tính dén việc gia hạn nợgiữa các bên), hoặc dự\nkiên mức tôn thât có thê phát sinh.\n\nPhải thu khách hàng và các khoản phải thu khác được phân loại là các khoản mục tiền tệcó gốc ngoại\ntệđược đánh giá lại theo ty giá mua chuyển khoản tại ngày báo cáo.\n\n\n6. Hàng tồn kho\nHàng tồn kho được phản ánh theo giá thấp hơn giữa giá gốc và giá trịthuần có thểthực hiện được. Giá\ngôc được tính theo phương pháp bình quân gia quyên và bao gom tat cảcác chi phí phát sinh de có\nđược hàng tôn kho ởđịa diém và trang thái hiện tại. Đôi với thành phâm và sản phâm do dang, giá gốc\nbaotrịthuângôm cónguyênthê thựcvật hiệnliệu, đượcchi phíướcnhântínhcôngdựa trựcvào giátiếpbánvà cáccủa chihàngphítônsankhoxuâttrừđichungcácđượckhoảnphânchỉphíbo. ướcGiá\ntính đê hoàn thành sản phẩm và các chi phí ước tính dé bán sản phâm.\n\nTập đoàn áp dụng phương pháp kê khai thường xuyên dé hạch toán hàng tồn kho.\n\n\n7. Tài sản cốđịnh hữu hình\n\n(a) Nguyên giá\nTài sản cốđịnh hữu hình được thê hiện theo nguyên giá trừđi giá trịhao mồn lũy kế. Nguyên giá tài\nsản cô định hữu hình bao gôm giá mua, thuê nhập khâu, các loại thuê mua hàng không hoàn lại và chi\nphí liên quan trực tiếp dé đưa tài sản đến trang thái hoạt động cho mục đích sửdụng đã dựkiên, và chi\nphí đểtháo đỡ, di dời tài sản và khôi phục hiện trường tại địa điểm đặt tài sản. Các chi phí phát sinh\nsau khi tài sản cỗđịnh hữu hình đã đưa vào hoạt động như chỉphí sửa chữa, bảo dưỡng và đại tu được\nghi nhận vào báo cáo két quảhoạt động kinh doanh hợp nhat trong năm mà chi phí phát sinh. Trong\ncác trường hợp có thê chứng minh một cách rõ ràng rằng các khoản chi phí này làm tăng lợi ích kinh tế\ntrong tương lai dựtính thu được từviệc sửdụng tài sản cô định hữu hình vượt trên mức hoạt động tiêu\nchuân theo như đánh giá ban dau, thì các chi phí này được vốn hóa như một khoản nguyên giá tăng\nthêm của tài sản cô định hữu hình,\n\n\n\n\n\na\nx\n\nCH\n25 ON\nK\n\na\nxế"
+        },
+        {
+          "page": 27,
+          "excerpt": "Công ty Cô phan Sữa Việt Nam và cáccông ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiêp theo)\n(Ban MẫuB 09 - DN/HN hành theo Thông tư số202/2014/TT-BTC\nngày 22 tháng 12 năm 2014 của BộTài chính)\n\n(b) Khấu hao\n\nKhấu hao được tính theo phương pháp đường thẳng dựa trên thời gian hữu dụng ước tính của tài sản cố\nđịnh hữu hình. Thời gian hữu dụng ước tính như sau:\n\n= nhà cửa va vật kiến trúc 5 - 50 năm\n\"máy móc va thiet bi - 2- 20 năm\n\".. phương tiện vận chuyên 4— 10 năm\n\" thiet bịvăn phòng 2-12 nam\n= gia stic 6 nam\n= tài san khác 3-20 năm\n\n\n§. Tai sản cé định vô hình\n\n(a) Quyền sửdụng đất\nQuyền sửdụng đất có thời hạn được thé hiện theo nguyên giá trừgiá trịhao mòn lũy kế. Nguyên giá\nban đâu của quyên sửdung dat bao gom giá mua và các chi phí liên quan trực tiếp tới việc có được\nquyên sửdụng dat. Khâu hao được tính theo phương pháp đường thang dựa trên thời gian hiệu lực của\ngiây chứng nhận quyên sửdụng đất.\n\nQuyên sửdụng đất lâu dài được thểhiện theo nguyên giá và không tính khấu hao.\nQuyền thuê đất có được thông qua hợp nhất kinh doanh được ghi nhận ban đầu theo giá trịhợp lý và\nđược khâu hao theo phương pháp đường thắng dựa trên thời hạn của hợp đông thuê dat.\n\n\n(b) Thương hiệu\n\nThương hiệu có được thông qua hợp nhất kinh doanh được ghi nhận ban đầu theo giá trịhợp lý và được\nkhâu hao theo phương pháp đường thang trong 20 năm.\n\n\n(c) Ving nguyên liệu\n\nVùng nguyên liệu có được thông qua hợp nhất kinh doanh được ghi nhận ban đầu theo giá trịhợp lý và\nđược khâu hao theo phương pháp đường thắng trong 18 năm.\n\n\n(d) Phan mềm máy vi tính\nGiá mua của phần mềm máy vi tính mới mà phần mềm này không phải là một bộphận gắn kết với phần\ncứng có liên quan thì được vôn hóa và hạch toán như tài sản cô định vô hình. Phân mêm máy vi tính\nđược tính khâu hao theo phương pháp đường thang trong thời gian từ2 — 8 năm.\n\n\n(e) Tài sản cốđịnh vô hình khác\nTài sản cốđịnh vô hình khác được tính khấu hao theo phương pháp đường thẳng trong thời gian từ4 - 20 10 năm.\n\n\nN\n26 3]\n\nP|\n\na"
+        }
+      ],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-depreciation",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích phương pháp khấu hao tài sản cố định hữu hình được áp dụng theo báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Phương pháp đường thẳng theo thời gian hữu ích ước tính; không tự đưa tỷ lệ hoặc số năm ngoài nguồn.",
+      "reference_evidence": [
+        {
+          "page": 26,
+          "excerpt": "Công ty Cô phan Sữa Việt Nam và các công ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiếp theo)\n\n(Ban Mẫu B09—-DN/HN hành theo Thông tư số202/2014/TT-BTC\nngày 22 tháng 12 năm 2014 của BộTài chính)\n\n3. Cac khoản phải thu\n\nCác khoản phải thu được theo dõi chỉtiết theo kỳhạn phải thu, đối tượng phải thu, loại nguyên tệphải\nthu và các yêu tô khác theo nhu câu quản lý của Tập đoàn. Phải thu của khách hàng gom các khoản\nphải thu mang tính chât thương mại phát sinh từgiao dịch có tính chất mua - bán. Phải thu khác gồm\ncác khoản phải thu không có tính thương mại, không liên quan đến giao dịch mua - bán. Các khoản\nphải thu được phân loại là ngăn hạn và dài hạn trên báo cáo tình hình tài chính hợp nhat căn cứtheo kỳ\nhạn còn lại của các khoản phải thu tại ngày báo cáo.\n\nPhải thu khách hàng và các khoản phải thu khác được phản ánh theo giá gốc trừđi dựphòng phải thu\nkhó đòi. Dựphòng phải thu khó đòi được lập cho từng khoản nợphải thu khó đòi căn cứvào thời gian\nquá hạn trảnợgôc theo cam kết nợban đầu (không tính dén việc gia hạn nợgiữa các bên), hoặc dự\nkiên mức tôn thât có thê phát sinh.\n\nPhải thu khách hàng và các khoản phải thu khác được phân loại là các khoản mục tiền tệcó gốc ngoại\ntệđược đánh giá lại theo ty giá mua chuyển khoản tại ngày báo cáo.\n\n\n6. Hàng tồn kho\nHàng tồn kho được phản ánh theo giá thấp hơn giữa giá gốc và giá trịthuần có thểthực hiện được. Giá\ngôc được tính theo phương pháp bình quân gia quyên và bao gom tat cảcác chi phí phát sinh de có\nđược hàng tôn kho ởđịa diém và trang thái hiện tại. Đôi với thành phâm và sản phâm do dang, giá gốc\nbaotrịthuângôm cónguyênthê thựcvật hiệnliệu, đượcchi phíướcnhântínhcôngdựa trựcvào giátiếpbánvà cáccủa chihàngphítônsankhoxuâttrừđichungcácđượckhoảnphânchỉphíbo. ướcGiá\ntính đê hoàn thành sản phẩm và các chi phí ước tính dé bán sản phâm.\n\nTập đoàn áp dụng phương pháp kê khai thường xuyên dé hạch toán hàng tồn kho.\n\n\n7. Tài sản cốđịnh hữu hình\n\n(a) Nguyên giá\nTài sản cốđịnh hữu hình được thê hiện theo nguyên giá trừđi giá trịhao mồn lũy kế. Nguyên giá tài\nsản cô định hữu hình bao gôm giá mua, thuê nhập khâu, các loại thuê mua hàng không hoàn lại và chi\nphí liên quan trực tiếp dé đưa tài sản đến trang thái hoạt động cho mục đích sửdụng đã dựkiên, và chi\nphí đểtháo đỡ, di dời tài sản và khôi phục hiện trường tại địa điểm đặt tài sản. Các chi phí phát sinh\nsau khi tài sản cỗđịnh hữu hình đã đưa vào hoạt động như chỉphí sửa chữa, bảo dưỡng và đại tu được\nghi nhận vào báo cáo két quảhoạt động kinh doanh hợp nhat trong năm mà chi phí phát sinh. Trong\ncác trường hợp có thê chứng minh một cách rõ ràng rằng các khoản chi phí này làm tăng lợi ích kinh tế\ntrong tương lai dựtính thu được từviệc sửdụng tài sản cô định hữu hình vượt trên mức hoạt động tiêu\nchuân theo như đánh giá ban dau, thì các chi phí này được vốn hóa như một khoản nguyên giá tăng\nthêm của tài sản cô định hữu hình,\n\n\n\n\n\na\nx\n\nCH\n25 ON\nK\n\na\nxế"
+        },
+        {
+          "page": 27,
+          "excerpt": "Công ty Cô phan Sữa Việt Nam và cáccông ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiêp theo)\n(Ban MẫuB 09 - DN/HN hành theo Thông tư số202/2014/TT-BTC\nngày 22 tháng 12 năm 2014 của BộTài chính)\n\n(b) Khấu hao\n\nKhấu hao được tính theo phương pháp đường thẳng dựa trên thời gian hữu dụng ước tính của tài sản cố\nđịnh hữu hình. Thời gian hữu dụng ước tính như sau:\n\n= nhà cửa va vật kiến trúc 5 - 50 năm\n\"máy móc va thiet bi - 2- 20 năm\n\".. phương tiện vận chuyên 4— 10 năm\n\" thiet bịvăn phòng 2-12 nam\n= gia stic 6 nam\n= tài san khác 3-20 năm\n\n\n§. Tai sản cé định vô hình\n\n(a) Quyền sửdụng đất\nQuyền sửdụng đất có thời hạn được thé hiện theo nguyên giá trừgiá trịhao mòn lũy kế. Nguyên giá\nban đâu của quyên sửdung dat bao gom giá mua và các chi phí liên quan trực tiếp tới việc có được\nquyên sửdụng dat. Khâu hao được tính theo phương pháp đường thang dựa trên thời gian hiệu lực của\ngiây chứng nhận quyên sửdụng đất.\n\nQuyên sửdụng đất lâu dài được thểhiện theo nguyên giá và không tính khấu hao.\nQuyền thuê đất có được thông qua hợp nhất kinh doanh được ghi nhận ban đầu theo giá trịhợp lý và\nđược khâu hao theo phương pháp đường thắng dựa trên thời hạn của hợp đông thuê dat.\n\n\n(b) Thương hiệu\n\nThương hiệu có được thông qua hợp nhất kinh doanh được ghi nhận ban đầu theo giá trịhợp lý và được\nkhâu hao theo phương pháp đường thang trong 20 năm.\n\n\n(c) Ving nguyên liệu\n\nVùng nguyên liệu có được thông qua hợp nhất kinh doanh được ghi nhận ban đầu theo giá trịhợp lý và\nđược khâu hao theo phương pháp đường thắng trong 18 năm.\n\n\n(d) Phan mềm máy vi tính\nGiá mua của phần mềm máy vi tính mới mà phần mềm này không phải là một bộphận gắn kết với phần\ncứng có liên quan thì được vôn hóa và hạch toán như tài sản cô định vô hình. Phân mêm máy vi tính\nđược tính khâu hao theo phương pháp đường thang trong thời gian từ2 — 8 năm.\n\n\n(e) Tài sản cốđịnh vô hình khác\nTài sản cốđịnh vô hình khác được tính khấu hao theo phương pháp đường thẳng trong thời gian từ4 - 20 10 năm.\n\n\nN\n26 3]\n\nP|\n\na"
+        }
+      ],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-fx-initial",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích cách quy đổi các giao dịch ngoại tệ tại thời điểm phát sinh.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Dùng tỷ giá giao dịch thực tế ở ngày phát sinh; nếu nguồn phân biệt mua/bán theo phải thu, phải trả thì trình bày sự phân biệt đó.",
+      "reference_evidence": [
+        {
+          "page": 24,
+          "excerpt": "Công ty Cổphần Sữa Việt Nam và các công ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiép theo)\n\n(Ban Mẫu B 09 - DN/HN hành theo Thông tư sô 202/2014/TT-BTC\nngày 22 tháng 12 ndm 2014 của BộTài chính)\n\n(e) Các giao dịch được loại trừkhi hợp nhất\nCác sốdư, giao dịch trong nội bộTập đoàn và các khoản thu nhập và chi phíchưa thực hiện từcác giao\ndịch nội bộđược loại trừkhi lập báo cáo tài chính hợp nhất. Khoản lãi và lỗchưa thực hiện phát sinh\ntừcác giao dịch với các công ty liên doanh, liên kết được trừvào khoản đầu tư trong phạm vi lợi ích\ncủa Tập đoàn tại công ty liên doanh, liên kết.\n\n\n(f) Hợp nhất kinh doanh\nHợp nhất kinh doanh được hạch toán theo phương pháp mua tại ngày mua, là ngày mà quyền kiểm soát\nđược chuyền giao cho Tập đoàn. Quyên kiêm soát tôn tại khi Tập đoàn có quyên chi phối các chính\nsách tat chính và hoạt động của đơn vịnhắm thu được lợi ích kinh tê từcác hoạt động của đơn vịđó.\nViệc đánh giá quyên kiêm soát có xét đến quyền bỏphiếu tiềm năng có thê thực hiện được tại thời điểm\nhiện tại.\n\n\n2. Ngoại tệ\n\n(a) _ Các giao dịch bằng ngoại tệ\nCác giao dịch bằng các đơn vịtiền tệkhác VND trong năm được quy đổi sang VND theo tỷgiá thực tế\ntại ngày giao dịch.\n\nCác khoản mục tài sản và nợphải trảcó gốc bằng đơn vịtiền tệkhác VND được quy đổi sang VND lần\nlượt theo tỷgiá mua chuyên khoản và bán chuyên khoản của ngân hàng thương mại nơi Công ty và các\ncông ty con thường xuyên có giao dịch và có sốdư ngoại tệlớn nhất tại ngày kết thúc kỳkếtoán năm.\n\nTắt cảcác khoản chênh lệch tỷgiá được ghi nhận vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\n\n\n(b) Cơ sởhoạt động ởnước ngoài\nCác tài sản và nợphải trảcủa cơ sởhoạt động ởnước ngoài, bao gồm lợi thếthương mại và các điều\nchỉnh giá tri hợp lý phát sinh trong quá trình mua, được quy đổi sang VND theo tỷgiá hôi đoái tại ngày\nkêt thúc kỳke toán năm. Thu nhập và chi phí của cơ sởhoạt động ởnước ngoài được quy đôi sang\nVND theo tỷgiá hôi đoái bình quân trong năm.\n\n\nJ\nCác chênh lệch quy đôi tiên tệphát sinh do quy đôi cởsởhoạt động ởnước ngoài được ghi nhận vào\nkhoản mục “Chênh lệch quy đôi tiên tệ” thuộc vốn chủsởhữu trên báo cáo tình hình tài chính hợp nhat. te\n\nn\n3. Tiền và các khoản tương đương tiền N\nđầuTién bao gồm tiền mặt và tiền gửi ngân hàng khôngkỳhạn. Các khoản tương đương tiền là các khoản dễ\ntư ngăn hạn cốtính thanh khoản cao, có thê dé dang chuyên đôi thành một lượng tiên xác định,\nkhông có nhiêu rủi ro vềthay đôi giá trịvà được sửdụng cho mục đích đáp ứng các cam kết chi tiền\nngăn hạn hơn là cho mục đích đâu tư hay là các mục đích khác.\n\n\n\n\n\n23"
+        }
+      ],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-fx-closing",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích cách đánh giá lại các khoản mục tiền tệ có gốc ngoại tệ ở thời điểm lập báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Theo tỷ giá cuối kỳ/tỷ giá mua hoặc bán phù hợp từng nhóm tài sản và nợ phải trả được nguồn mô tả; không tự suy diễn tỷ giá cụ thể.",
+      "reference_evidence": [
+        {
+          "page": 24,
+          "excerpt": "Công ty Cổphần Sữa Việt Nam và các công ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiép theo)\n\n(Ban Mẫu B 09 - DN/HN hành theo Thông tư sô 202/2014/TT-BTC\nngày 22 tháng 12 ndm 2014 của BộTài chính)\n\n(e) Các giao dịch được loại trừkhi hợp nhất\nCác sốdư, giao dịch trong nội bộTập đoàn và các khoản thu nhập và chi phíchưa thực hiện từcác giao\ndịch nội bộđược loại trừkhi lập báo cáo tài chính hợp nhất. Khoản lãi và lỗchưa thực hiện phát sinh\ntừcác giao dịch với các công ty liên doanh, liên kết được trừvào khoản đầu tư trong phạm vi lợi ích\ncủa Tập đoàn tại công ty liên doanh, liên kết.\n\n\n(f) Hợp nhất kinh doanh\nHợp nhất kinh doanh được hạch toán theo phương pháp mua tại ngày mua, là ngày mà quyền kiểm soát\nđược chuyền giao cho Tập đoàn. Quyên kiêm soát tôn tại khi Tập đoàn có quyên chi phối các chính\nsách tat chính và hoạt động của đơn vịnhắm thu được lợi ích kinh tê từcác hoạt động của đơn vịđó.\nViệc đánh giá quyên kiêm soát có xét đến quyền bỏphiếu tiềm năng có thê thực hiện được tại thời điểm\nhiện tại.\n\n\n2. Ngoại tệ\n\n(a) _ Các giao dịch bằng ngoại tệ\nCác giao dịch bằng các đơn vịtiền tệkhác VND trong năm được quy đổi sang VND theo tỷgiá thực tế\ntại ngày giao dịch.\n\nCác khoản mục tài sản và nợphải trảcó gốc bằng đơn vịtiền tệkhác VND được quy đổi sang VND lần\nlượt theo tỷgiá mua chuyên khoản và bán chuyên khoản của ngân hàng thương mại nơi Công ty và các\ncông ty con thường xuyên có giao dịch và có sốdư ngoại tệlớn nhất tại ngày kết thúc kỳkếtoán năm.\n\nTắt cảcác khoản chênh lệch tỷgiá được ghi nhận vào báo cáo kết quảhoạt động kinh doanh hợp nhất.\n\n\n(b) Cơ sởhoạt động ởnước ngoài\nCác tài sản và nợphải trảcủa cơ sởhoạt động ởnước ngoài, bao gồm lợi thếthương mại và các điều\nchỉnh giá tri hợp lý phát sinh trong quá trình mua, được quy đổi sang VND theo tỷgiá hôi đoái tại ngày\nkêt thúc kỳke toán năm. Thu nhập và chi phí của cơ sởhoạt động ởnước ngoài được quy đôi sang\nVND theo tỷgiá hôi đoái bình quân trong năm.\n\n\nJ\nCác chênh lệch quy đôi tiên tệphát sinh do quy đôi cởsởhoạt động ởnước ngoài được ghi nhận vào\nkhoản mục “Chênh lệch quy đôi tiên tệ” thuộc vốn chủsởhữu trên báo cáo tình hình tài chính hợp nhat. te\n\nn\n3. Tiền và các khoản tương đương tiền N\nđầuTién bao gồm tiền mặt và tiền gửi ngân hàng khôngkỳhạn. Các khoản tương đương tiền là các khoản dễ\ntư ngăn hạn cốtính thanh khoản cao, có thê dé dang chuyên đôi thành một lượng tiên xác định,\nkhông có nhiêu rủi ro vềthay đôi giá trịvà được sửdụng cho mục đích đáp ứng các cam kết chi tiền\nngăn hạn hơn là cho mục đích đâu tư hay là các mục đích khác.\n\n\n\n\n\n23"
+        }
+      ],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-sales-recognition",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích điều kiện ghi nhận doanh thu bán hàng theo chính sách kế toán trong báo cáo.",
+      "expected_status": "answered",
+      "expected_mode": "generated",
+      "requires_model": true,
+      "reference": "Chuyển giao phần lớn rủi ro và lợi ích; các điều kiện đo lường/thu hồi và quyền quản lý theo nguồn. Không bịa nguyên nhân tăng doanh thu.",
+      "reference_evidence": [
+        {
+          "page": 31,
+          "excerpt": "Công ty Cốphần Sữa Việt Nam va các công ty con\nThuyết minh báo cáo tài chính hợp nhất cho năm kết thúc ngày 31 tháng 12 năm 2024\n(tiếp theo)\n\n(Ban Mẫu B 09—DN/HN hành theo Thông tư số202/2014/TT-BTC\nngày 22 tháng 12 năm 2014 của BộTài chính)\n\nThuếthu nhập hiện hành là khoản thuếdựkiến phải nộp dựa trên thu nhập chịu thuếtrong năm, sử\ndụng các mức thuê suat có hiệu lực tại ngày kết thúc kỳkếtoán năm, và các khoản điều chỉnh thuếphải\nnộp liên quan đên những năm trước.\n\nThuếthu nhập hoãn lại được tính theo phương pháp bảng cân đối kếtoán cho các chênh lệch tạm thời\ngiữa giá tri ghi sô cho mục đích báo cáo tài chính và giá trịsửdụng cho mục đích tính thuếcủa các\nkhoản mục tài sản và nợphải trả. Giá trịcủa thuê thu nhập hoãn lại được ghi nhận dựa trên cách thức\ndựkiên thu hồi hoặc thanh toán giá trịghi sốcủa các khoản mục tai san và nợphải tra sửdung các mức\nthuếsuất có hiệu lực hoặc cơ bản có hiệu lực tại ngày kết thúc kỳkê toán năm.\n\nTài sản thuếthu nhập hoãn lại chỉđược ghi nhận trong phạm vi chắc chắn có đủlợi nhuận tính thuế\ntrong tương lai đê chênh lệch tạm thời này có thê sửdụng được. ‘Tai sản thuê thu nhập hoãn lại được\nghi giảm trong phạm vi không còn chắc chăn là các lợi ích vềthuếliên quan này sẽsửdụng được.\n\n\n18. Doanh thu và thu nhập khác\n\n(a) Doanh thu bán hàng\n\nDoanh thu bán hàng được ghi nhận trong báo cáokết quảhoạt động kinh doanh hợp nhất khi phần lớn\nrủi ro và lợi ích gan liên với quyền sởhữu sản phầm hoặc hàng hoá được chuyên giao cho người mua.\nDoanh thu không được ghi nhận nêu như có những yếu tốkhông chắc chăn trọng yếu liên quan tới khả\nnăng thu hôi các khoản phải thu hoặc liên quan tới khảnăng hàng bán bịtrảlại. Doanh thu bán hàng\nđược ghi nhận theo sô thuân sau khi đã trừđi sốchiết khấu giảm giá ghi trên hóa đơn bán hàng.\n\n\n(b) Doanh thu cung cấp dịch vụ\nDoanh thu cung cấp dịch vụđược ghi nhận trong báo cáo kết quảhoạt động kinh doanh hợp nhất theo\ntỷlệhoàn thành giao dịch tại ngày kết thúc kỳkếtoán năm. Tỷlệhoàn thành giao dịch được đánh giá\ndựa trên khảo sat các công việc đã được thực hiện. Doanh thu không được ghi nhận nêu như có những\nyêu tô không chắc chăn trọng yếu liên quan tới khảnăng thu hồi các khoản phải thu.\n\n\n\n(c) Doanh thu cho thuê\n\n.\nDoanhđộng thu cho thué tai san theo hợp dong7 thuê hoạt động được ghi nhận trong báo cáo ket£ quảhoạt 120: kinh doanh hợp nhật theo phương pháp đường thăng dựa vào thời hạn của hợp đồng thuê. Các NI\nkhoản hoa hong cho thuê được ghi nhận như là một bộphận hợp thành của tông doanh thu cho thuê 4\ntrong suôt thời han thuê. DỊ\n\n(d) Thu nhập từtiền lãi ï\nThu nhập từtiền lãi được ghi nhận theo tỷlệtương ứng với thời gian dựa trên sốdư gốc và lãi suất áp\ndụng.\n\n\n(e) Thu nhập từcốtức\nThu nhập từcô tức được ghi nhận khi quyền nhận cổtức được xác lập.\n\n30"
+        }
+      ],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-unknown-ai",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích thuật toán AI cụ thể được dùng để dự đoán tỷ giá hằng ngày của doanh nghiệp theo tài liệu này.",
+      "expected_status": "insufficient_evidence",
+      "requires_model": true,
+      "reference": "Tài liệu tài chính được cung cấp không có bằng chứng cho chi tiết được hỏi. Phải từ chối cụ thể; không viện kiến thức ngoài nguồn hoặc bịa sự cố/thuật toán.",
+      "reference_evidence": [],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    },
+    {
+      "id": "vnm-unknown-breach",
+      "company": "VNM",
+      "years": [
+        2024
+      ],
+      "scope": "consolidated",
+      "question": "VNM: Giải thích nguyên nhân sự cố rò rỉ dữ liệu khách hàng và số hồ sơ bị lộ theo tài liệu này.",
+      "expected_status": "insufficient_evidence",
+      "requires_model": true,
+      "reference": "Tài liệu tài chính được cung cấp không có bằng chứng cho chi tiết được hỏi. Phải từ chối cụ thể; không viện kiến thức ngoài nguồn hoặc bịa sự cố/thuật toán.",
+      "reference_evidence": [],
+      "source_sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450"
+    }
+  ]
+}

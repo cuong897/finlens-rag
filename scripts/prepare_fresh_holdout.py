@@ -41,7 +41,8 @@ def main():
         print('Ingesting '+report['company'],flush=True);started=time.perf_counter()
         context={k:report[k] for k in ['period_start','period_end','period_label']}
         result=ingest_pdf(store,content,report['filename'],report['company'],report['year'],report['scope'],context=context)
-        if result['document']['page_count']!=report['pages']:raise ValueError('Page count mismatch')
+        document=next(d for d in store.documents() if d['id']==result['document']['id'])
+        if document['page_count']!=report['pages']:raise ValueError('Page count mismatch')
         store.record_source(result['document']['id'],report['url'],report['publisher'])
         results.append({'company':report['company'],'created':result['created'],'document_id':result['document']['id'],'seconds':round(time.perf_counter()-started,2)})
         print('Imported '+report['company']+' '+str(round(time.perf_counter()-started,1))+'s',flush=True)
