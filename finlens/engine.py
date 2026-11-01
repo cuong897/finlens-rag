@@ -79,6 +79,36 @@ class Engine:
         except ProviderError as exc:
             return contextual_fusion(request.question, sparse, [], self.store.page, request.top_k), "bm25", [str(exc) + " Đã dùng tìm kiếm từ khóa."]
 
+    def prepare_retrieval(self, *, timeout=8):
+        """Prime this engine's immutable vectors and local embedder, never chat.
+
+        Preparation moves cold work to startup; it does not eliminate that work
+        or guarantee the model remains resident after a long idle period.
+        """
+        started = time.perf_counter()
+        result = {"status": "disabled", "model": self.config.embed_model or None,
+                  "eligible_chunks": 0, "cached_vectors": 0, "warnings": []}
+        try:
+            if not self.config.embed_model:
+                return result
+            chunks, vectors = self.store.retrieval_inputs(model=self.config.embed_model)
+            result.update(eligible_chunks=len(chunks), cached_vectors=len(vectors))
+            if not chunks:
+                result["status"] = "empty"
+                return result
+            if any(c["id"] not in vectors for c in chunks):
+                result.update(status="degraded", warnings=["Chỉ mục embedding chưa đủ. Hãy lập chỉ mục lại để dùng hybrid."])
+                return result
+            vector = self.provider.embed(["FinLens: tìm bằng chứng trong báo cáo tài chính."], timeout=timeout)[0]
+            if any(len(vectors[c["id"]]) != len(vector) for c in chunks):
+                raise ProviderError("Chiều embedding đã thay đổi; cần lập lại chỉ mục với tên mô hình mới.")
+            result["status"] = "ready"
+        except ProviderError as exc:
+            result.update(status="degraded", warnings=[str(exc) + " Vẫn có thể dùng tìm kiếm từ khóa."])
+        finally:
+            result["latency_ms"] = round((time.perf_counter() - started) * 1000, 2)
+        return result
+
     def answer(self, request: AskRequest):
         started = time.perf_counter()
         result = {"status": "insufficient_evidence", "mode": "extractive", "retrieval": "bm25",

@@ -12,6 +12,8 @@ def main():
     parser.add_argument("--env-file", default=None, help="Explicit local configuration file; never prints values")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--warm-retrieval", action=argparse.BooleanOptionalAction, default=True,
+                        help="Prepare vectors and local embeddings before serving (no chat API call)")
     parser.add_argument("--output-dir", default="artifacts")
     parser.add_argument("--rebuild", action="store_true", help="Rebuild embeddings for the configured model")
     parser.add_argument("--with-reviewed-facts", action="store_true", help="Include pilot facts already visually checked against source PDFs")
@@ -48,18 +50,20 @@ def main():
         config = replace(config, chat_provider="gemini", chat_model=config.chat_model or "gemini-3.8-flash",
                          embed_model=config.embed_model or "bge-m3:latest")
         from finlens.local import prepare_embeddings
-        from finlens.engine import Engine
-        from finlens.store import Store
+        from finlens.api import create_app
         from finlens.providers import ProviderError
         try:
             config = prepare_embeddings(args.data_dir, config)
-            print(json.dumps(Engine(Store(args.data_dir), config).index_embeddings(), ensure_ascii=True))
         except ProviderError as exc:
             # Gemini also works with keyword retrieval if local embeddings are unavailable.
             print(str(exc) + " Using BM25 until the embedding service is ready.")
+        app = create_app(args.data_dir, config, warm_retrieval=args.warm_retrieval)
+        try:
+            print(json.dumps(app.state.engine.index_embeddings(), ensure_ascii=True))
+        except ProviderError as exc:
+            print(str(exc) + " Using BM25 until the embedding service is ready.")
         import uvicorn
-        from finlens.api import create_app
-        uvicorn.run(create_app(args.data_dir, config), host=args.host, port=args.port)
+        uvicorn.run(app, host=args.host, port=args.port)
         return
     if args.command == "prepare-embeddings":
         from finlens.local import prepare_embeddings
@@ -73,7 +77,7 @@ def main():
     if args.command == "serve":
         import uvicorn
         from finlens.api import create_app
-        uvicorn.run(create_app(args.data_dir), host=args.host, port=args.port)
+        uvicorn.run(create_app(args.data_dir, warm_retrieval=args.warm_retrieval), host=args.host, port=args.port)
         return
     if args.command == "evaluate":
         from finlens.evaluate import evaluate

@@ -1,0 +1,190 @@
+{
+  "kind": "retrieval_startup_development_profile",
+  "limitation": "8 known development queries, sequential phases; model residency uncontrolled. Preparation shifts cost to startup. No generation, no quality/SLA claim.",
+  "profile": {
+    "kind": "retrieval_startup_development_profile",
+    "limitation": "8 known development queries, sequential phases; model residency uncontrolled. Preparation shifts cost to startup. No generation, no quality/SLA claim.",
+    "phases": {
+      "unprepared": {
+        "preparation": null,
+        "rows": [
+          {
+            "id": "dpm-v3-current_assets",
+            "total_ms": 6160.3,
+            "snapshot_ms": 520.99,
+            "local_embedding_ms": 5353.3,
+            "ranking_and_other_ms": 286.02,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "dpm-v3-admin",
+            "total_ms": 622.99,
+            "snapshot_ms": 11.04,
+            "local_embedding_ms": 280.77,
+            "ranking_and_other_ms": 331.19,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "bmp-v3-current_assets",
+            "total_ms": 621.35,
+            "snapshot_ms": 11.29,
+            "local_embedding_ms": 274.15,
+            "ranking_and_other_ms": 335.92,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "bmp-v3-wip",
+            "total_ms": 652.32,
+            "snapshot_ms": 11.76,
+            "local_embedding_ms": 295.75,
+            "ranking_and_other_ms": 344.81,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "ree-v3-current_assets",
+            "total_ms": 623.14,
+            "snapshot_ms": 10.54,
+            "local_embedding_ms": 277.31,
+            "ranking_and_other_ms": 335.29,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "ree-v3-multi-operating_costs",
+            "total_ms": 669.52,
+            "snapshot_ms": 10.0,
+            "local_embedding_ms": 271.69,
+            "ranking_and_other_ms": 387.83,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "gmd-v3-current_assets",
+            "total_ms": 502.67,
+            "snapshot_ms": 9.97,
+            "local_embedding_ms": 287.32,
+            "ranking_and_other_ms": 205.37,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "gmd-v3-admin",
+            "total_ms": 477.25,
+            "snapshot_ms": 9.74,
+            "local_embedding_ms": 281.1,
+            "ranking_and_other_ms": 186.41,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          }
+        ]
+      },
+      "prepared": {
+        "preparation": {
+          "status": "ready",
+          "model": "bge-m3:latest",
+          "eligible_chunks": 3594,
+          "cached_vectors": 3594,
+          "warnings": [],
+          "latency_ms": 1056.56
+        },
+        "rows": [
+          {
+            "id": "dpm-v3-current_assets",
+            "total_ms": 509.43,
+            "snapshot_ms": 10.56,
+            "local_embedding_ms": 269.39,
+            "ranking_and_other_ms": 229.48,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "dpm-v3-admin",
+            "total_ms": 615.04,
+            "snapshot_ms": 10.21,
+            "local_embedding_ms": 280.95,
+            "ranking_and_other_ms": 323.87,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "bmp-v3-current_assets",
+            "total_ms": 607.52,
+            "snapshot_ms": 11.57,
+            "local_embedding_ms": 300.39,
+            "ranking_and_other_ms": 295.56,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "bmp-v3-wip",
+            "total_ms": 588.93,
+            "snapshot_ms": 11.29,
+            "local_embedding_ms": 269.23,
+            "ranking_and_other_ms": 308.41,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "ree-v3-current_assets",
+            "total_ms": 628.23,
+            "snapshot_ms": 7.75,
+            "local_embedding_ms": 346.0,
+            "ranking_and_other_ms": 274.49,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "ree-v3-multi-operating_costs",
+            "total_ms": 681.39,
+            "snapshot_ms": 11.63,
+            "local_embedding_ms": 315.86,
+            "ranking_and_other_ms": 353.89,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "gmd-v3-current_assets",
+            "total_ms": 506.06,
+            "snapshot_ms": 10.11,
+            "local_embedding_ms": 318.43,
+            "ranking_and_other_ms": 177.53,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          },
+          {
+            "id": "gmd-v3-admin",
+            "total_ms": 545.26,
+            "snapshot_ms": 8.42,
+            "local_embedding_ms": 351.04,
+            "ranking_and_other_ms": 185.79,
+            "mode": "hybrid_rrf",
+            "warnings": []
+          }
+        ]
+      }
+    },
+    "identical_rankings": true,
+    "facts_unchanged": true,
+    "facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774"
+  },
+  "runtime_preparation": {
+    "status": "ready",
+    "model": "bge-m3:latest",
+    "eligible_chunks": 3594,
+    "cached_vectors": 3594,
+    "warnings": [],
+    "latency_ms": 4528.79
+  },
+  "runtime_first_retrieval_ms": [
+    1447.0,
+    576.32
+  ],
+  "generation_calls": 0,
+  "facts_unchanged": true,
+  "facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+  "unit_tests_passed": 232
+}

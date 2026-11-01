@@ -1,6 +1,8 @@
 """Local HTTP API and same-origin web client."""
 
 import os
+import logging
+from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Literal
 
@@ -22,13 +24,21 @@ from finlens.models import FactBatchRequest
 from finlens.suggestions import suggest_page
 
 
-def create_app(data_dir=None, config=None):
-    app = FastAPI(title="FinLens", version=__version__, docs_url=None, redoc_url=None)
+def create_app(data_dir=None, config=None, *, warm_retrieval=False):
+    @asynccontextmanager
+    async def lifespan(app):
+        if warm_retrieval:
+            app.state.retrieval_preparation = await run_in_threadpool(engine.prepare_retrieval)
+            logging.getLogger(__name__).info("Retrieval preparation: %s", app.state.retrieval_preparation)
+        yield
+
+    app = FastAPI(title="FinLens", version=__version__, docs_url=None, redoc_url=None, lifespan=lifespan)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "[::1]", "testserver"])
     store = Store(data_dir or os.environ.get("FINLENS_DATA_DIR", "data"))
     engine = Engine(store, config or ModelConfig.from_env())
     app.state.store = store
     app.state.engine = engine
+    app.state.retrieval_preparation = {"status": "pending" if warm_retrieval else "not_requested"}
 
     @app.middleware("http")
     async def local_safety(request: Request, call_next):
@@ -52,7 +62,8 @@ def create_app(data_dir=None, config=None):
                 "chat_provider": engine.config.chat_provider, "chat_ready": ready,
                 "fallback_models": list(getattr(engine.provider, "models", ()))[1:],
                 "setup_required": ["GEMINI_API_KEY"] if engine.config.chat_provider == "gemini" and not ready else [],
-                "answer_mode": "generated" if ready else "extractive"}
+                "answer_mode": "generated" if ready else "extractive",
+                "retrieval_preparation": app.state.retrieval_preparation}
 
     @app.get("/api/catalog")
     def catalog():

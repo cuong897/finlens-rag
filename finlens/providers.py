@@ -127,22 +127,22 @@ class Ollama:
         self.config = config
         self.client = client
 
-    def _post(self, endpoint, payload):
+    def _post(self, endpoint, payload, *, timeout=90):
         try:
             if self.client:
-                response = self.client.post(self.config.base_url + endpoint, json=payload, timeout=90)
+                response = self.client.post(self.config.base_url + endpoint, json=payload, timeout=timeout)
             else:
-                with httpx.Client(timeout=90, trust_env=False) as client:
+                with httpx.Client(timeout=timeout, trust_env=False) as client:
                     response = client.post(self.config.base_url + endpoint, json=payload)
             response.raise_for_status()
             return response.json()
         except (httpx.HTTPError, ValueError) as exc:
             raise ProviderError("Không kết nối được mô hình đã cấu hình hoặc phản hồi không hợp lệ.") from exc
 
-    def embed(self, texts: list[str]):
+    def embed(self, texts: list[str], *, timeout=90):
         if not self.config.embed_model:
             raise ProviderError("Chưa cấu hình mô hình embedding.")
-        data = self._post("/api/embed", {"model": self.config.embed_model, "input": texts, "truncate": False})
+        data = self._post("/api/embed", {"model": self.config.embed_model, "input": texts, "truncate": False}, timeout=timeout)
         vectors = data.get("embeddings") if isinstance(data, dict) else None
         if not isinstance(vectors, list) or len(vectors) != len(texts):
             raise ProviderError("Mô hình trả về sai số lượng embedding.")
@@ -177,8 +177,8 @@ class Gemini:
         if config.chat_model not in self.FREE_TIER_MODELS:
             raise ValueError("Hãy dùng model Gemini có Free tier được cấu hình trong FinLens; không tự chuyển sang model trả phí.")
 
-    def embed(self, texts):
-        return self.embedder.embed(texts)
+    def embed(self, texts, *, timeout=None):
+        return self.embedder.embed(texts) if timeout is None else self.embedder.embed(texts, timeout=timeout)
 
     def generate(self, question: str, evidence: list[dict], *, timeout=60):
         return self.generate_with_metadata(question, evidence, timeout=timeout).text
