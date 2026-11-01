@@ -1,0 +1,24 @@
+{
+  "kind": "paired_cache_performance_development",
+  "warning": "8 known queries repeated 3 times, fixed identical query vectors; excludes local query embedding inference, cloud generation and HTTP. Not production load/SLA or independent quality benchmark.",
+  "cold_cached_retrieval_ms": 2049.59,
+  "summary": {
+    "reload_every_request": {
+      "samples": 24,
+      "p50_ms": 900.635,
+      "p95_ms": 970.89
+    },
+    "warm_cache": {
+      "samples": 24,
+      "p50_ms": 265.405,
+      "p95_ms": 362.13
+    }
+  },
+  "all_24_paired_rankings_identical": true,
+  "cached_vectors": 3594,
+  "estimated_retained_vector_bytes": 118059496,
+  "version": 1,
+  "date": "2026-11-01",
+  "unit_tests_passed": 212,
+  "report": "artifacts/vector-cache-performance-v1/REPORT.md"
+}

@@ -61,11 +61,11 @@ class Engine:
         return {"model": model, "indexed": len(missing), "total": len(chunks)}
 
     def retrieve(self, request: AskRequest):
-        chunks = self.store.chunks(request.company, request.years, request.scope, request.dataset)
+        chunks, cached = self.store.retrieval_inputs(request.company, request.years, request.scope, request.dataset,
+                                                     model=self.config.embed_model)
         sparse = bm25(financial_query(request.question), chunks, max(request.top_k, 60))
         if not self.config.embed_model:
             return contextual_fusion(request.question, sparse, [], self.store.page, request.top_k), "bm25", []
-        cached = self.store.embeddings(self.config.embed_model)
         if not chunks or any(c["id"] not in cached for c in chunks):
             return contextual_fusion(request.question, sparse, [], self.store.page, request.top_k), "bm25", ["Chỉ mục embedding chưa đủ. Hãy lập chỉ mục lại để dùng hybrid."]
         try:

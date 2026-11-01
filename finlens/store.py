@@ -5,6 +5,8 @@ from datetime import date, datetime, timezone
 import json
 from pathlib import Path
 import sqlite3
+import threading
+from types import MappingProxyType
 
 from finlens.text import chunk_page
 
@@ -21,6 +23,8 @@ class Store:
         self.root.mkdir(parents=True, exist_ok=True)
         (self.root / "uploads").mkdir(exist_ok=True)
         self.db_path = self.root / "finlens.sqlite3"
+        self._vector_cache = None
+        self._vector_cache_lock = threading.Lock()
         with self.connection() as db:
             db.executescript("""
                 PRAGMA journal_mode=WAL;
@@ -58,6 +62,17 @@ class Store:
                     model TEXT NOT NULL, vector TEXT NOT NULL,
                     PRIMARY KEY(chunk_id, model)
                 );
+                CREATE TABLE IF NOT EXISTS embedding_revision (
+                    singleton INTEGER PRIMARY KEY CHECK(singleton=1),
+                    revision INTEGER NOT NULL
+                );
+                INSERT OR IGNORE INTO embedding_revision VALUES (1,0);
+                CREATE TRIGGER IF NOT EXISTS embeddings_changed_insert AFTER INSERT ON embeddings
+                    BEGIN UPDATE embedding_revision SET revision=revision+1 WHERE singleton=1; END;
+                CREATE TRIGGER IF NOT EXISTS embeddings_changed_update AFTER UPDATE ON embeddings
+                    BEGIN UPDATE embedding_revision SET revision=revision+1 WHERE singleton=1; END;
+                CREATE TRIGGER IF NOT EXISTS embeddings_changed_delete AFTER DELETE ON embeddings
+                    BEGIN UPDATE embedding_revision SET revision=revision+1 WHERE singleton=1; END;
                 CREATE TABLE IF NOT EXISTS document_sources (
                     document_id TEXT PRIMARY KEY REFERENCES documents(id) ON DELETE CASCADE,
                     url TEXT NOT NULL, publisher TEXT NOT NULL, retrieved_at TEXT NOT NULL
@@ -285,14 +300,38 @@ class Store:
         return (" WHERE " + " AND ".join(clauses) if clauses else ""), args
 
     def chunks(self, company=None, years=None, scope=None, dataset="all"):
-        where, args = self.filters(company, years, scope, dataset)
         with self.connection() as db:
-            rows = db.execute("""SELECT c.*,d.company,d.report_year,d.scope,d.filename,d.is_demo,
+            return self._chunks_in_connection(db, company, years, scope, dataset)
+
+    def _chunks_in_connection(self, db, company=None, years=None, scope=None, dataset="all"):
+        where, args = self.filters(company, years, scope, dataset)
+        rows = db.execute("""SELECT c.*,d.company,d.report_year,d.scope,d.filename,d.is_demo,
                                   x.allowed_pages AS _allowed_pages,x.period_label,r.sheet AS _sheet,r.cell_range AS _cell_range
                                   FROM chunks c JOIN documents d ON c.document_id=d.id
                                   LEFT JOIN document_context x ON x.document_id=d.id
                                   LEFT JOIN table_rows r ON r.document_id=c.document_id AND r.page=c.page""" + where, args)
-            return self._eligible(rows)
+        return self._eligible(rows)
+
+    def retrieval_inputs(self, company=None, years=None, scope=None, dataset="all", *, model=None):
+        """Read scoped chunks and matching immutable vectors from one DB snapshot.
+
+        The revision is transactional and changes for writes from other processes
+        too. One model snapshot is retained per Store to bound cache growth.
+        """
+        with self.connection() as db:
+            db.execute("BEGIN")
+            chunks = self._chunks_in_connection(db, company, years, scope, dataset)
+            if not model or not chunks:
+                return chunks, MappingProxyType({})
+            revision = db.execute("SELECT revision FROM embedding_revision WHERE singleton=1").fetchone()[0]
+            with self._vector_cache_lock:
+                cached = self._vector_cache
+                if cached is None or cached[:2] != (model, revision):
+                    vectors = MappingProxyType({r[0]: tuple(json.loads(r[1])) for r in db.execute(
+                        "SELECT chunk_id,vector FROM embeddings WHERE model=?", (model,))})
+                    cached = (model, revision, vectors)
+                    self._vector_cache = cached
+                return chunks, cached[2]
 
     def add_fact(self, fact: dict):
         if not self.page_allowed(fact["document_id"], fact["page"]):
