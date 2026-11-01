@@ -26,6 +26,7 @@ jobs:
       - run: node --check finlens/static/app.js
       - run: node --check finlens/static/imports.js
       - run: node --check finlens/static/tables.js
+      - run: node --check finlens/static/export.js
       - run: python -m finlens evaluate
       - uses: actions/upload-artifact@v6
         with:

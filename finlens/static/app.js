@@ -6,6 +6,7 @@ const statusLabels = { answered: 'Kết quả có nguồn dẫn', evidence_found
 state.suggestionSelection = new Set();
 state.batchBusy = false;
 const modeLabels = { calculated: 'Tính từ chỉ tiêu xác nhận', extractive: 'Trích xuất nguồn', generated: 'Diễn giải bằng AI' };
+state.analysis = null;
 let toastTimer;
 
 function node(tag, className, text) {
@@ -57,6 +58,8 @@ function option(value, label) {
 
 function resetAnalysis() {
   state.revision += 1;
+  state.analysis = null;
+  updateExportButtons();
   state.source = null;
   $('#result-empty').hidden = false;
   $('#result-content').hidden = true;
@@ -64,6 +67,19 @@ function resetAnalysis() {
   $('#result-meta').textContent = '';
   $('#source-empty').hidden = false;
   $('#source-content').hidden = true;
+}
+
+function updateExportButtons() {
+  for (const id of ['#export-md', '#export-json']) $(id).disabled = state.busy || !state.analysis;
+}
+
+function downloadAnalysis(format) {
+  if (state.busy || !state.analysis) return;
+  const file = FinLensExport.file(state.analysis, format);
+  const url = URL.createObjectURL(new Blob([file.text], { type: file.type }));
+  const anchor = node('a'); anchor.href = url; anchor.download = file.name;
+  document.body.append(anchor); anchor.click(); anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 function updateFilters(preserve = true, selectedCompany = null) {
@@ -428,14 +444,19 @@ $('#ask-form').addEventListener('submit', async event => {
   const years = [...document.querySelectorAll('#year-options input:checked')].map(el => Number(el.value));
   if (!years.length) { toast('Hãy chọn ít nhất một năm báo cáo.', true); return; }
   state.busy = true; $('#ask-button').disabled = true; $('#ask-button').textContent = 'Đang phân tích…'; $('#result-panel').setAttribute('aria-busy', 'true');
+  state.analysis = null; updateExportButtons();
   const revision = state.revision;
+  const request = { question: $('#question').value, company: $('#company').value, years, dataset: $('#dataset').value, scope: $('#scope').value };
   try {
-    const result = await post('/api/ask', { question: $('#question').value, company: $('#company').value, years, dataset: $('#dataset').value, scope: $('#scope').value });
-    if (state.revision === revision) renderAnswer(result);
+    const result = await post('/api/ask', request);
+    if (state.revision === revision) { renderAnswer(result); state.analysis = FinLensExport.snapshot(request, result); }
     else toast('Bộ lọc đã thay đổi. Hãy phân tích lại với phạm vi mới.');
   } catch (error) { toast(error.message, true); }
-  finally { state.busy = false; $('#ask-button').disabled = false; $('#ask-button').textContent = 'Phân tích ↗'; $('#result-panel').setAttribute('aria-busy', 'false'); }
+  finally { state.busy = false; updateExportButtons(); $('#ask-button').disabled = false; $('#ask-button').textContent = 'Phân tích ↗'; $('#result-panel').setAttribute('aria-busy', 'false'); }
 });
+
+$('#export-md').addEventListener('click', () => downloadAnalysis('md'));
+$('#export-json').addEventListener('click', () => downloadAnalysis('json'));
 
 $('#seed-button').addEventListener('click', async () => {
   $('#seed-button').disabled = true;

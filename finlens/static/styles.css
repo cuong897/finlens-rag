@@ -683,6 +683,17 @@ tr:last-child td {
   gap:7px;
   padding:0 24px 24px;
 }
+.export-actions {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  padding:16px 24px;
+  border-top:1px solid #e2e8d9;
+  font-size:11px;
+  color:#617054;
+}
+.export-actions span { flex:1 1 200px; }
 .citation-button {
   border:1px solid #e2e8d9;
   background:#fbfcf7;
