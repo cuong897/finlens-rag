@@ -1,0 +1,450 @@
+[
+  {
+    "company": "SAB",
+    "target": "current_assets",
+    "page": 6,
+    "current": "25,066,732,804,106",
+    "prior": "26,553,405,591,714"
+  },
+  {
+    "company": "SAB",
+    "target": "cash",
+    "page": 6,
+    "current": "4,477,501,667,326",
+    "prior": "5,039,908,030,600"
+  },
+  {
+    "company": "SAB",
+    "target": "short_invest",
+    "page": 6,
+    "current": "16,566,239,177,101",
+    "prior": "17,741,052,417,665"
+  },
+  {
+    "company": "SAB",
+    "target": "inventory",
+    "page": 6,
+    "current": "1,978,543,927,286",
+    "prior": "2,317,504,988,808"
+  },
+  {
+    "company": "SAB",
+    "target": "noncurrent_assets",
+    "page": 7,
+    "current": "8,372,673,560,545",
+    "prior": "7,503,219,247,991"
+  },
+  {
+    "company": "SAB",
+    "target": "total_assets",
+    "page": 7,
+    "current": "33,439,406,364,651",
+    "prior": "34,056,624,839,705"
+  },
+  {
+    "company": "SAB",
+    "target": "liabilities",
+    "page": 8,
+    "current": "9,002,313,181,979",
+    "prior": "8,571,466,944,838"
+  },
+  {
+    "company": "SAB",
+    "target": "current_liabilities",
+    "page": 8,
+    "current": "8,657,140,531,800",
+    "prior": "8,224,608,450,196"
+  },
+  {
+    "company": "SAB",
+    "target": "equity",
+    "page": 9,
+    "current": "24,437,093,182,672",
+    "prior": "25,485,157,894,867"
+  },
+  {
+    "company": "SAB",
+    "target": "revenue",
+    "page": 10,
+    "current": "31,872,417,486,656",
+    "prior": "30,461,367,282,215"
+  },
+  {
+    "company": "SAB",
+    "target": "gross_profit",
+    "page": 10,
+    "current": "9,318,196,568,266",
+    "prior": "9,091,362,504,235"
+  },
+  {
+    "company": "SAB",
+    "target": "pretax",
+    "page": 10,
+    "current": "5,647,358,628,166",
+    "prior": "5,370,410,404,295"
+  },
+  {
+    "company": "SAB",
+    "target": "net_income",
+    "page": 11,
+    "current": "4,494,773,426,912",
+    "prior": "4,255,052,995,709"
+  },
+  {
+    "company": "SAB",
+    "target": "cfo",
+    "page": 12,
+    "current": "4,362,509,568,540",
+    "prior": "2,104,718,257,779"
+  },
+  {
+    "company": "SAB",
+    "target": "cfi",
+    "page": 13,
+    "current": "18,884,385,322",
+    "prior": "2,550,929,318,308"
+  },
+  {
+    "company": "SAB",
+    "target": "cff",
+    "page": 13,
+    "current": "(4,943,450,227,964)",
+    "prior": "(3,685,025,044,212)"
+  },
+  {
+    "company": "MWG",
+    "target": "current_assets",
+    "page": 7,
+    "current": "65.836.422.620.040",
+    "prior": "51.950.337.976.047"
+  },
+  {
+    "company": "MWG",
+    "target": "cash",
+    "page": 7,
+    "current": "4.897.331.540.730",
+    "prior": "5.365.704.857.172"
+  },
+  {
+    "company": "MWG",
+    "target": "short_invest",
+    "page": 7,
+    "current": "29.324.441.756.320",
+    "prior": "18.937.008.073.823"
+  },
+  {
+    "company": "MWG",
+    "target": "inventory",
+    "page": 7,
+    "current": "22.244.676.326.705",
+    "prior": "21.824.235.626.176"
+  },
+  {
+    "company": "MWG",
+    "target": "noncurrent_assets",
+    "page": 7,
+    "current": "4.601.353.101.564",
+    "prior": "8.160.899.236.677"
+  },
+  {
+    "company": "MWG",
+    "target": "total_assets",
+    "page": 7,
+    "current": "70.437.775.721.604",
+    "prior": "60.111.237.212.724"
+  },
+  {
+    "company": "MWG",
+    "target": "liabilities",
+    "page": 8,
+    "current": "42.316.198.897.749",
+    "prior": "36.751.679.245.386"
+  },
+  {
+    "company": "MWG",
+    "target": "current_liabilities",
+    "page": 8,
+    "current": "42.316.198.897.749",
+    "prior": "30.765.260.553.972"
+  },
+  {
+    "company": "MWG",
+    "target": "equity",
+    "page": 8,
+    "current": "28.121.576.823.855",
+    "prior": "23.359.557.967.338"
+  },
+  {
+    "company": "MWG",
+    "target": "revenue",
+    "page": 9,
+    "current": "134.341.152.848.802",
+    "prior": "118.279.788.455.442"
+  },
+  {
+    "company": "MWG",
+    "target": "gross_profit",
+    "page": 9,
+    "current": "27.499.210.077.021",
+    "prior": "22.520.613.163.730"
+  },
+  {
+    "company": "MWG",
+    "target": "pretax",
+    "page": 9,
+    "current": "4.825.763.013.078",
+    "prior": "689.692.367.896"
+  },
+  {
+    "company": "MWG",
+    "target": "net_income",
+    "page": 9,
+    "current": "3.733.288.228.720",
+    "prior": "167.829.154.939"
+  },
+  {
+    "company": "MWG",
+    "target": "cfo",
+    "page": 10,
+    "current": "8.517.332.706.742",
+    "prior": "3.435.827.176.070"
+  },
+  {
+    "company": "MWG",
+    "target": "cfi",
+    "page": 10,
+    "current": "(11.743.285.670.418)",
+    "prior": "(10.831.294.696.942)"
+  },
+  {
+    "company": "MWG",
+    "target": "cff",
+    "page": 11,
+    "current": "2.757.475.513.692",
+    "prior": "7.699.783.102.825"
+  },
+  {
+    "company": "BCM",
+    "target": "current_assets",
+    "page": 9,
+    "current": "31.703.966.346.820",
+    "prior": "28.440.868.532.001"
+  },
+  {
+    "company": "BCM",
+    "target": "cash",
+    "page": 9,
+    "current": "2.205.138.245.025",
+    "prior": "1.332.254.152.561"
+  },
+  {
+    "company": "BCM",
+    "target": "short_invest",
+    "page": 9,
+    "current": "299.912.603.095",
+    "prior": "87.314.044.988"
+  },
+  {
+    "company": "BCM",
+    "target": "inventory",
+    "page": 9,
+    "current": "21.054.729.381.948",
+    "prior": "19.833.611.109.149"
+  },
+  {
+    "company": "BCM",
+    "target": "noncurrent_assets",
+    "page": 10,
+    "current": "27.076.791.421.454",
+    "prior": "24.983.033.405.257"
+  },
+  {
+    "company": "BCM",
+    "target": "total_assets",
+    "page": 10,
+    "current": "58.780.757.768.275",
+    "prior": "53.423.901.937.257"
+  },
+  {
+    "company": "BCM",
+    "target": "liabilities",
+    "page": 11,
+    "current": "38.101.557.432.910",
+    "prior": "33.951.011.068.428"
+  },
+  {
+    "company": "BCM",
+    "target": "current_liabilities",
+    "page": 11,
+    "current": "21.929.549.417.474",
+    "prior": "22.997.575.585.298"
+  },
+  {
+    "company": "BCM",
+    "target": "equity",
+    "page": 12,
+    "current": "20.679.200.335.365",
+    "prior": "19.472.890.868.829"
+  },
+  {
+    "company": "BCM",
+    "target": "revenue",
+    "page": 13,
+    "current": "5.239.236.560.627",
+    "prior": "7.882.566.359.226"
+  },
+  {
+    "company": "BCM",
+    "target": "gross_profit",
+    "page": 13,
+    "current": "3.498.372.370.288",
+    "prior": "4.247.833.336.459"
+  },
+  {
+    "company": "BCM",
+    "target": "pretax",
+    "page": 13,
+    "current": "2.559.347.304.331",
+    "prior": "2.697.158.161.525"
+  },
+  {
+    "company": "BCM",
+    "target": "net_income",
+    "page": 13,
+    "current": "2.395.046.491.307",
+    "prior": "2.280.087.767.209"
+  },
+  {
+    "company": "BCM",
+    "target": "cfo",
+    "page": 14,
+    "current": "(645.572.001.259)",
+    "prior": "(3.150.640.566.616)"
+  },
+  {
+    "company": "BCM",
+    "target": "cfi",
+    "page": 14,
+    "current": "(1.289.019.599.291)",
+    "prior": "472.431.552.595"
+  },
+  {
+    "company": "BCM",
+    "target": "cff",
+    "page": 15,
+    "current": "2.807.475.693.014",
+    "prior": "2.939.816.492.742"
+  },
+  {
+    "company": "VNM",
+    "target": "current_assets",
+    "page": 7,
+    "current": "37.553.650.065.098",
+    "prior": "35.935.879.621.477"
+  },
+  {
+    "company": "VNM",
+    "target": "cash",
+    "page": 7,
+    "current": "2.225.943.732.075",
+    "prior": "2.912.027.359.925"
+  },
+  {
+    "company": "VNM",
+    "target": "short_invest",
+    "page": 7,
+    "current": "23.260.088.671.767",
+    "prior": "20.137.243.800.460"
+  },
+  {
+    "company": "VNM",
+    "target": "inventory",
+    "page": 7,
+    "current": "5.686.840.161.996",
+    "prior": "6.128.081.805.088"
+  },
+  {
+    "company": "VNM",
+    "target": "noncurrent_assets",
+    "page": 8,
+    "current": "17.495.411.471.963",
+    "prior": "16.737.491.482.983"
+  },
+  {
+    "company": "VNM",
+    "target": "total_assets",
+    "page": 8,
+    "current": "55.049.061.537.061",
+    "prior": "52.673.371.104.460"
+  },
+  {
+    "company": "VNM",
+    "target": "liabilities",
+    "page": 9,
+    "current": "18.874.658.707.398",
+    "prior": "17.647.627.338.990"
+  },
+  {
+    "company": "VNM",
+    "target": "current_liabilities",
+    "page": 9,
+    "current": "18.459.546.837.640",
+    "prior": "17.138.689.974.862"
+  },
+  {
+    "company": "VNM",
+    "target": "equity",
+    "page": 9,
+    "current": "36.174.402.829.663",
+    "prior": "35.025.743.765.470"
+  },
+  {
+    "company": "VNM",
+    "target": "revenue",
+    "page": 10,
+    "current": "61.782.609.528.445",
+    "prior": "60.368.915.511.505"
+  },
+  {
+    "company": "VNM",
+    "target": "gross_profit",
+    "page": 10,
+    "current": "25.590.176.323.124",
+    "prior": "24.544.731.615.410"
+  },
+  {
+    "company": "VNM",
+    "target": "pretax",
+    "page": 10,
+    "current": "11.599.653.741.335",
+    "prior": "10.967.899.391.486"
+  },
+  {
+    "company": "VNM",
+    "target": "net_income",
+    "page": 10,
+    "current": "9.452.892.989.948",
+    "prior": "9.019.354.165.051"
+  },
+  {
+    "company": "VNM",
+    "target": "cfo",
+    "page": 12,
+    "current": "9.685.937.539.346",
+    "prior": "7.887.423.562.363"
+  },
+  {
+    "company": "VNM",
+    "target": "cfi",
+    "page": 13,
+    "current": "(3.739.092.638.543)",
+    "prior": "(2.988.548.510.501)"
+  },
+  {
+    "company": "VNM",
+    "target": "cff",
+    "page": 13,
+    "current": "(6.641.260.238.228)",
+    "prior": "(4.292.773.661.270)"
+  }
+]
