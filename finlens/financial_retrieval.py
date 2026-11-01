@@ -201,7 +201,7 @@ def label_strength(text, concept):
             # Avoid a broader/sibling row being mistaken for the requested item.
             if concept["key"] == "cash" and ("equivalent" in line or "flows" in line): continue
             if concept["key"] == "current_assets" and ("non current" in line or "other current" in line): continue
-            if concept["key"] == "noncurrent_assets" and any(x in line for x in ("other long term", "other non current", "assets in progress")): continue
+            if concept["key"] == "noncurrent_assets" and any(x in line for x in ("other long term", "other non current", "assets in progress", "assets in process")): continue
             if concept["key"] == "liabilities" and any(x in line for x in ("current liabilities", "term liabilities", "other liabilities", "equity", "resources")): continue
             if concept["key"] == "equity" and any(x in line for x in ("liabilities", "total resources")): continue
             if concept["key"] == "gross_revenue" and ("net revenue" in line or "gross profit" in line): continue
