@@ -5,7 +5,7 @@ import re
 import pymupdf
 from finlens.ocr import needs_ocr, textpage_ocr
 
-VERSION = "financial-layout-v3-ocr"
+VERSION = "financial-layout-v4-ocr-bilingual"
 
 
 def _compact(text):

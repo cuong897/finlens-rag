@@ -1,6 +1,7 @@
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 import pymupdf
@@ -37,6 +38,14 @@ def table_pdf(*, currency="VND", scale="", values=("8,326,486", "5,516,393"),
 
 
 class SuggestionParserTests(unittest.TestCase):
+    def test_ocr_geometry_creates_only_unverified_drafts_with_source_warning(self):
+        with table_pdf() as pdf:
+            page=pdf[0];textpage=page.get_textpage()
+            with patch('finlens.suggestions.needs_ocr',return_value=True), patch('finlens.suggestions.textpage_ocr',return_value=(textpage,'OCR requires source review')):
+                result=extract_page(page,'doc',1,ocr_dir='local-test-models')
+        self.assertEqual(len(result['candidates']),2)
+        self.assertTrue(all(c['method']=='aligned_ocr_columns' and not c['verified'] and c['bbox'] for c in result['candidates']))
+        self.assertIn('OCR requires source review',result['warnings'])
     def test_years_come_from_headers_not_document_year_or_column_order(self):
         with table_pdf(years=(2024, 2023)) as pdf:
             candidates = extract_page(pdf[0], "doc", 1)["candidates"]
@@ -219,6 +228,13 @@ class SuggestionAPITests(unittest.TestCase):
         again = self.client.get(f"/api/documents/{self.document}/suggestions?page=1").json()["candidates"]
         self.assertFalse(again[0]["already_confirmed"])
         self.assertTrue(again[1]["already_confirmed"])
+
+    def test_suggestion_api_uses_its_own_local_ocr_directory(self):
+        with patch('finlens.api.suggest_page',return_value={'candidates':[],'warnings':[],'notice':'review'}) as suggest:
+            result=self.client.get(f'/api/documents/{self.document}/suggestions?page=1')
+        self.assertEqual(result.status_code,200)
+        self.assertEqual(suggest.call_args.kwargs['ocr_dir'],self.app.state.store.root/'ocr/tessdata')
+        self.assertEqual(self.app.state.store.facts(),[])
 
     def test_missing_document_page_and_demo_are_rejected(self):
         self.assertEqual(self.client.get("/api/documents/missing/suggestions?page=1").status_code, 404)

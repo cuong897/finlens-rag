@@ -50,7 +50,7 @@ def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: 
     except Exception as exc:
         raise IngestError("Không đọc được PDF. Hãy kiểm tra tệp gốc.") from exc
     if not any(len(p.strip()) >= 20 for p in pages):
-        raise IngestError("PDF không có đủ văn bản để tìm kiếm. Bản MVP chưa có OCR.")
+        raise IngestError("PDF không có đủ văn bản để tìm kiếm. Hãy chuẩn bị OCR cục bộ hoặc cung cấp PDF có lớp chữ; đối chiếu chất lượng bản scan.")
     document_id = uuid.uuid4().hex
     relative_path = f"uploads/{document_id}.pdf"
     target = store.root / relative_path

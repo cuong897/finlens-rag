@@ -197,7 +197,7 @@ def create_app(data_dir=None, config=None, *, warm_retrieval=False):
                 from finlens.tables import table_suggestions
                 result = table_suggestions(table, document_id, page)
             else:
-                result = suggest_page(path, document_id, page, context=document)
+                result = suggest_page(path, document_id, page, context=document, ocr_dir=store.root / "ocr/tessdata")
         except ValueError as exc:
             raise HTTPException(422, str(exc)) from exc
         existing = {(f["metric"], f["year"], f["value"], f["unit"], f["currency"])

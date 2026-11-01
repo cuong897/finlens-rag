@@ -14,6 +14,36 @@ from finlens.retrieval_check import evaluate_retrieval
 
 
 class LocalOCRTests(unittest.TestCase):
+    def test_native_footer_does_not_hide_a_scanned_body(self):
+        with pymupdf.open() as source, pymupdf.open() as target:
+            table=source.new_page(width=595,height=780)
+            table.insert_text((35,100),'Net revenue 1,234,567')
+            page=target.new_page(width=595,height=842)
+            page.insert_image(pymupdf.Rect(0,0,595,780),stream=table.get_pixmap().tobytes('png'))
+            page.insert_text((35,815),'Electronic copy - consult the original document')
+            self.assertTrue(needs_ocr(page))
+
+    def test_small_logo_on_a_native_page_does_not_trigger_ocr(self):
+        with pymupdf.open() as source, pymupdf.open() as target:
+            logo=source.new_page(width=40,height=40);logo.insert_text((5,20),'L')
+            page=target.new_page();page.insert_text((35,100),'Native financial report text with enough searchable words')
+            page.insert_image(pymupdf.Rect(35,20,75,60),stream=logo.get_pixmap().tobytes('png'))
+            self.assertFalse(needs_ocr(page))
+
+    def test_scan_without_native_text_uses_both_verified_languages_or_warns(self):
+        root=Path(__file__).resolve().parents[1]/'data/test-runs';root.mkdir(parents=True,exist_ok=True)
+        models={lang:hashlib.sha256(lang.encode()).hexdigest() for lang in ['eng','vie']}
+        with tempfile.TemporaryDirectory(dir=root) as tmp, patch('finlens.ocr.MODELS',models):
+            for lang in models:(Path(tmp)/f'{lang}.traineddata').write_bytes(lang.encode())
+            page=Mock();page.rect=pymupdf.Rect(0,0,595,842);page.get_text.return_value=''
+            result,notice=textpage_ocr(page,tmp)
+            self.assertIsNotNone(result)
+            self.assertEqual(page.get_textpage_ocr.call_args.kwargs['language'],'eng+vie')
+            (Path(tmp)/'vie.traineddata').write_bytes(b'corrupted')
+            _,notice=textpage_ocr(page,tmp)
+            self.assertEqual(page.get_textpage_ocr.call_args.kwargs['language'],'eng')
+            self.assertIn('Chưa có bộ tiếng Việt hợp lệ',notice)
+
     def test_outlined_table_characters_also_trigger_ocr_without_an_image(self):
         page = Mock()
         page.get_text.return_value = "CONSOLIDATED INCOME\nSTATEMENT"

@@ -10,6 +10,7 @@ import pymupdf
 
 from finlens.models import METRICS
 from finlens.text import tokens
+from finlens.ocr import needs_ocr, textpage_ocr
 
 
 LABELS = {
@@ -179,19 +180,26 @@ def page_regions(words, width, page_height):
     return [(0, width / 2), (width / 2, width)] if set(pairs[0]) & set(pairs[1]) else [(0, width)]
 
 
-def extract_page(page, document_id, page_number, *, context=None):
+def extract_page(page, document_id, page_number, *, context=None, ocr_dir=None):
     if page.rotation:
         return {"candidates": [], "warnings": ["Trang bị xoay; hãy nhập chỉ tiêu thủ công sau khi kiểm tra PDF."], "notice": NOTICE}
-    words = page.get_text("words")
+    ocr_warnings = []
+    textpage = None
+    if needs_ocr(page):
+        textpage, notice = textpage_ocr(page, ocr_dir)
+        ocr_warnings.append(notice)
+    words = page.get_text("words", textpage=textpage) if textpage is not None else page.get_text("words")
     if len(words) > 12000:
-        return {"candidates": [], "warnings": ["Trang có quá nhiều từ để ghép dòng an toàn; hãy đối chiếu và nhập thủ công."], "notice": NOTICE}
+        return {"candidates": [], "warnings": ocr_warnings + ["Trang có quá nhiều từ để ghép dòng an toàn; hãy đối chiếu và nhập thủ công."], "notice": NOTICE}
     if not words:
-        return {"candidates": [], "warnings": ["Trang chưa có văn bản để đọc số liệu; có thể cần OCR."], "notice": NOTICE}
-    candidates, warnings = [], []
+        return {"candidates": [], "warnings": ocr_warnings + ["Trang chưa có văn bản để đọc số liệu; có thể cần OCR."], "notice": NOTICE}
+    candidates, warnings = [], ocr_warnings
     for start, end in page_regions(words, page.rect.width, page.rect.height):
         region = [(w[0] - start, w[1], w[2] - start, *w[3:]) for w in words if start <= w[0] and w[2] <= end]
         found, notes = extract_region(region, end - start, page.rect.height, document_id, page_number, context or {})
         for candidate in found:
+            if textpage is not None:
+                candidate["method"] = "aligned_ocr_columns"
             candidate["bbox"][0] = round(candidate["bbox"][0] + start, 2)
             candidate["bbox"][2] = round(candidate["bbox"][2] + start, 2)
         candidates.extend(found)
@@ -288,11 +296,11 @@ def extract_region(words, width, page_height, document_id, page_number, context)
     return candidates, warnings
 
 
-def suggest_page(path, document_id, page_number, *, context=None):
+def suggest_page(path, document_id, page_number, *, context=None, ocr_dir=None):
     try:
         with pymupdf.open(path) as pdf:
             if not 1 <= page_number <= len(pdf):
                 raise ValueError("Không tìm thấy trang nguồn.")
-            return extract_page(pdf[page_number - 1], document_id, page_number, context=context)
+            return extract_page(pdf[page_number - 1], document_id, page_number, context=context, ocr_dir=ocr_dir)
     except (pymupdf.FileDataError, RuntimeError) as exc:
         raise ValueError("Không đọc được PDF để đề xuất số liệu. Hãy mở tệp gốc để kiểm tra.") from exc

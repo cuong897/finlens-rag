@@ -34,8 +34,8 @@ def prepare_ocr(data_dir):
 def needs_ocr(page):
     text = page.get_text()
     financial = re.search(r"consolidated (?:balance|income|cash|statement)|balance sheet|income statement|cash flow statement|notes to|form b\s*0[1239]|báo cáo tài chính", " ".join(text[:1500].split()), re.I)
-    if not financial and len(text.strip()) >= 20:
-        return False
+    # A native footer/watermark does not make the scanned body searchable.
+    # Large images still need inspection even if a few native words exist.
     # Some publishers turn table characters into vector outlines, not images.
     # Filled path segments distinguish outlined glyphs from ordinary table borders.
     if financial and sum(len(path["items"]) for path in page.get_drawings() if path.get("fill") is not None) > 3000:
@@ -59,10 +59,15 @@ def textpage_ocr(page, data_dir):
     if dpi < 100:
         return None, "Trang quá lớn cho OCR tự động; hãy cung cấp PDF có văn bản."
     try:
-        vietnamese = re.search(r"[ăâđêôơưĂÂĐÊÔƠƯ]", page.get_text())
         vie = Path(data_dir) / "vie.traineddata"
-        language = "eng+vie" if vietnamese and vie.is_file() and hashlib.sha256(vie.read_bytes()).hexdigest() == MODELS["vie"] else "eng"
+        # A scan has no native text from which its language can be inferred.
+        # Use both pinned language packs when available, including pure scans.
+        bilingual = vie.is_file() and hashlib.sha256(vie.read_bytes()).hexdigest() == MODELS["vie"]
+        language = "eng+vie" if bilingual else "eng"
         textpage = page.get_textpage_ocr(language=language, dpi=dpi, full=False, tessdata=str(Path(data_dir).resolve()))
-        return textpage, "OCR cục bộ từ vùng ảnh; cần kiểm tra dấu, chữ số, cột năm và đơn vị với PDF gốc."
+        notice = f"OCR cục bộ ({language}); cần kiểm tra dấu, chữ số, cột năm và đơn vị với PDF gốc."
+        if not bilingual:
+            notice += " Chưa có bộ tiếng Việt hợp lệ; chạy prepare-ocr nếu tài liệu dùng tiếng Việt."
+        return textpage, notice
     except Exception:
         return None, "OCR cục bộ chưa đọc được vùng ảnh; cần kiểm tra tệp hoặc chuẩn bị lại dữ liệu OCR."

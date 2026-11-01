@@ -52,6 +52,8 @@ def score_fields(fields, text, candidates):
         'exact_drafts':len(expected & actual.keys()), 'proposals':len(candidates),
         'wrong_drafts':sum(count for key,count in actual.items() if key not in expected),
         'duplicates':sum(max(0,n-1) for n in actual.values()),
+        'missing_fields':[f for f in fields if (f['metric'],f['year'],f['value'],f['unit'],f['currency']) not in actual],
+        'unexpected_drafts':[c for c in candidates if (c['metric'],c['year'],c['value'],c['unit'],c['currency']) not in expected],
         'all_drafts_unverified':all(not c['verified'] for c in candidates)}
 
 
@@ -70,7 +72,7 @@ def evaluate(source, output, ocr_dir):
             try:
                 detected = needs_ocr(page)
                 text, warnings = read_page(page, ocr_dir=ocr_dir)
-                candidates = extract_page(page, 'synthetic-corpus', item['page'])['candidates']
+                candidates = extract_page(page, 'synthetic-corpus', item['page'], ocr_dir=ocr_dir)['candidates']
             except Exception as exc:
                 error = type(exc).__name__
             row = {'id': item['id'], 'page': item['page'], 'mode': item['mode'], 'language': item['language'],
