@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "created_at": "2026-11-01T13:44:55.643930+00:00",
+  "frozen_product_commit": "0dd791caeaf404310aba10c27933eb8d2b91fc11",
+  "frozen_product_files": {
+    "finlens/answer_check.py": "d73e47264f299759236ca4619d340d06449e8c5bd8a8b62cc6f0f8fba1a31952",
+    "finlens/api.py": "337f5cec2fec684f4143c180a129a0571c343e642c28f62adbb1ee6ab56bda0e",
+    "finlens/backup.py": "24787417c943180e7ebd22e71f6fd693cda0e75b64885b4e311d48927971b56b",
+    "finlens/benchmark.py": "c3bb4b0ceca3921f3d2e6cadfdd17d97ab2af186fc9ad527f8c713ed19ea140a",
+    "finlens/cli.py": "3ac1544c8fe05bdca06ad54ba2c6580a10fb65e34ef9389e19e6deb5bd32facd",
+    "finlens/engine.py": "32f5650650c440125065f034c636cabd67a4ffffef2efaf4c174caffa1ff15bd",
+    "finlens/environment.py": "3f0bfe8ad8cea5758426491aa994b50a2a52dd08bcd25b388075ad9a9483957a",
+    "finlens/evaluate.py": "f87924385ce4e1e720c3ff73a261860c5672cff5763bca2091c61389bfe0a724",
+    "finlens/finance.py": "ed45e382c968ca127b255b024a67807ab9c148f507861fd01aac6f8e2201173d",
+    "finlens/financial_retrieval.py": "d6e102a5f98681759c656a4f3281c97f473cc8b4581e890d21832cc197935793",
+    "finlens/ingest.py": "e0b0266355a104ffae2031dee86a985457d72f132442ec5658b1608bfdbdc016",
+    "finlens/local.py": "9e60314a2428819948f377c97977446d6c18647b840de810fb105cf5b19eb4f1",
+    "finlens/models.py": "90ca5682ad542ea385d10666838907d478f49cbd7f3f90d93788144e2cf3dd84",
+    "finlens/ocr.py": "04c74bf94b7aa4319ddf49a3426bbd143d6970efab370d9e2e530cd04abb5868",
+    "finlens/pdf_text.py": "014e60f2743393067e0cf74885cdef811445a9542343c6bbb222c2c62c355bda",
+    "finlens/pilot_check.py": "05675fa9c3daf497f66d6abc4a4cf5f06d80b5831a70f41d623215669c379b2e",
+    "finlens/providers.py": "b195c456a3c60b0840fcb1bae94c0d286098155a7dc8ea863c337400b0ca622b",
+    "finlens/public_pilot.py": "99345340338f1c9c23276a792dae854e095edabddf976cef6daafb273bc0c90e",
+    "finlens/query_language.py": "dfa74e90e635ac6a26aaeb0b996ec0212a99a051e46ca1d407e8cca87ecfa9cd",
+    "finlens/report_url.py": "28ba9f76dd8b6925f114ae00a69f23ac5bb7564b49e5997eb378c8851dee4600",
+    "finlens/retrieval.py": "bdebca4d2e2d2e233757680fc8abb74ecb3f1d68dd0467e93d93f95f11ff799c",
+    "finlens/retrieval_check.py": "09ca2e256f297186d241934bd10f1e575472a41a80cbc6e8a3c96cd6304b6555",
+    "finlens/retrieval_dataset.py": "cba4712ef771f9f407c7df9c1ae87f8a34126d286667a71d1ab487d8a85f78ea",
+    "finlens/retrieval_diagnostics.py": "140cbe0e0112f33b62e19a8afe5fa245a8473b18a81f8853d539489bd26d064d",
+    "finlens/retrieval_reporting.py": "e21b75acff9a799e391c9a5dd5d11961019232101f982a7a0056b81f79bfda01",
+    "finlens/review_page.py": "2edb7529b44c31a1865b20f81b9ffec3c1cc4c7d270830af0ea6daf72ba7402d",
+    "finlens/review_scores.py": "2a4456a897a1782492eb1da8ed7126b89c42915b05724fbd9a1e86e248b41177",
+    "finlens/store.py": "ef8f2a95da87bcfab14b1f82a5946636d10c14551c1460394bacbf67d30c5685",
+    "finlens/suggestions.py": "edc472ac2e2a4957497485bf69656bf95f57559ebd927fcad3b8803d26b92dc4",
+    "finlens/tables.py": "a6999c97a8c872886b7dd1b5e33bafbe7950ac9161e886027e238394e1322a3f",
+    "finlens/text.py": "764ee81283ec42ccf00e0ec4e6ee65c67d063abfb652379a1180269c1b210cfd",
+    "finlens/__init__.py": "574fcfa51558d8569b8d929a0e4e6b70295a1461a588e9b917471edecf44685e",
+    "finlens/__main__.py": "875e93e088c9332b0276bbfcd2ad4899ad5c587f51581d30a9352e1bf08b773d"
+  },
+  "frozen_product_sha256": "464403e093c5955dfcdf9288d2f07adf8ad7b71adeb7048fe4adda208b09caa5",
+  "planned_candidates": [
+    "VNM",
+    "SAB",
+    "MSN",
+    "MWG"
+  ],
+  "source_policy": "Four new issuers absent from the existing corpus/exposed_sources. Complete 2024 audited consolidated reports or annual reports including statements and notes; <=250 PDF pages/32 MiB. Replace inaccessible/incomplete sources only before retrieval scoring, record reason. Import full documents, no gold-page filtering.",
+  "retrieval_plan": {
+    "cases": 200,
+    "companies": 4,
+    "per_company": 50,
+    "per_company_design": "16 distinct rows x 2 years, 8 multi-target, 4 comparisons, 6 policy/narrative; correlated questions disclosed.",
+    "top_k": 5,
+    "no_tuning_until_final_report": true
+  },
+  "answer_plan": {
+    "unique_cases": 40,
+    "per_company": 10,
+    "design": "8 evidence-answerable policy/narrative questions plus 2 negative/unsupported cases per issuer; assistant reviews every claim and cited source.",
+    "reviewer": "same assistant, not independent human review"
+  },
+  "stability_plan": {
+    "planned_chain_requests": 100,
+    "max_provider_attempts": 300,
+    "waves": 3,
+    "interval_seconds": 6,
+    "stop_conditions": [
+      "3 consecutive chain failures",
+      "access denied/missing key/invalid request",
+      "rate limited without useful fallback: stop remaining wave"
+    ],
+    "warning": "Repeated cases and short observation window are not long-term availability or SLA. Failed requests retained; skipped requests not successes. Provider token usage incomplete if timeout."
+  },
+  "main_store_facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+  "generation_source_policy": "Only newly downloaded public issuer report excerpts; no private user documents. No paid-model additions; existing configured profile only after pricing/account preflight.",
+  "independent_human_annotation": false,
+  "product_changes_allowed": false
+}
