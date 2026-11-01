@@ -1,0 +1,164 @@
+{
+  "kind": "reviewer_supplied_answer_scores",
+  "completed_answers": 15,
+  "scored_answers": 15,
+  "pending_answers": 0,
+  "unexecuted_cases": 0,
+  "review_coverage": 1.0,
+  "all_completed_answers_reviewed": true,
+  "quality_metrics": {
+    "fully_correct_rate": 1.0,
+    "fully_complete_rate": 0.8,
+    "fully_supported_rate": 0.9,
+    "source_support_denominator": 10,
+    "abstention_judged_count": 6,
+    "correct_abstention_rate": 1.0
+  },
+  "independent_review_verified": false,
+  "warning": "Reviewer identities and judgments are supplied, not independently verified by this importer. No quality aggregate is published while completed answers remain unreviewed. These scores inherit the dataset scope and do not establish generalization.",
+  "dataset_sha256": "05fa789b300be84e623dcde2b15644a01a4c58798f50bf010441341694979220",
+  "scores": [
+    {
+      "id": "growth-revenue",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "Đối chiếu trang gốc demo 2023/2024: 1000 và 1250 tỷ VND; chênh 250, tăng 25%; F1/F2 đúng năm."
+    },
+    {
+      "id": "growth-profit",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "Nguồn cho LNST 100 → 90 tỷ VND; giảm 10 tỷ và -10%; không nhầm dấu."
+    },
+    {
+      "id": "growth-two-metrics",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "Doanh thu Bình Minh 800 → 960: +160/+20%; LNST 64 → 96: +32/+50%; đủ bốn nguồn đúng năm/chỉ tiêu."
+    },
+    {
+      "id": "lookup-revenue",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "1250 tỷ VND đúng doanh thu 2024 An Phát, đúng nguồn và đơn vị."
+    },
+    {
+      "id": "lookup-cashflow",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "180 tỷ VND đúng dòng tiền kinh doanh 2025, không nhầm với 70 tỷ của 2024."
+    },
+    {
+      "id": "wrong-premise",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "Phát hiện đúng giả định tăng là sai; trình bày giảm 100 → 90 và không bịa nguyên nhân tăng."
+    },
+    {
+      "id": "missing-year",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": null,
+      "abstention_correct": "yes",
+      "notes": "Kho demo chỉ có 2023–2025; từ chối 2022 đúng, không gán số từ năm khác."
+    },
+    {
+      "id": "wrong-scope",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": null,
+      "abstention_correct": "yes",
+      "notes": "Yêu cầu riêng lẻ trong khi nguồn demo chỉ hợp nhất; từ chối đúng phạm vi."
+    },
+    {
+      "id": "year-filter-conflict",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": null,
+      "abstention_correct": "yes",
+      "notes": "Câu hỏi 2024 xung đột bộ lọc 2023; chỉ ra lỗi và yêu cầu đổi năm phù hợp."
+    },
+    {
+      "id": "unreviewed-inventory",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 1,
+      "source_support": 1,
+      "abstention_correct": "yes",
+      "notes": "Không bịa tồn kho và không tính từ số chưa duyệt. Tuy nhiên hai đoạn gợi ý chỉ chứa chỉ tiêu khác, không có tồn kho; lời hướng dẫn còn dễ làm người dùng tưởng đã tìm được dòng phù hợp. Nên nói rõ chưa tìm thấy đoạn chứa chỉ tiêu."
+    },
+    {
+      "id": "explain-margin",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "Hai nguyên nhân logistics và tồn kho đều có trong S1; không thêm tác động lãi suất hoặc thị trường ngoài nguồn."
+    },
+    {
+      "id": "explain-working-capital",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "S1 có cả 180 tỷ và thu hồi khoản phải thu khách hàng; câu trả lời đủ cơ chế được nêu, đúng 2025."
+    },
+    {
+      "id": "explain-cost",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "abstention_correct": "n/a",
+      "notes": "Nguyên vật liệu và lãi vay tăng làm hẹp biên được nêu trực tiếp trong S1; diễn giải đúng và đủ."
+    },
+    {
+      "id": "unknown-ceo-salary",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 1,
+      "source_support": null,
+      "abstention_correct": "yes",
+      "notes": "Từ chối đúng vì không có lương CEO. Cụm “phần giải thích” không phù hợp câu hỏi về số lương và chưa nói rõ dữ liệu nào thiếu; cần diễn đạt từ chối cụ thể hơn."
+    },
+    {
+      "id": "unknown-emissions",
+      "reviewer": "Codex — cùng trợ lý xây hệ thống; chấm sơ bộ, không độc lập",
+      "correctness": 2,
+      "completeness": 1,
+      "source_support": null,
+      "abstention_correct": "yes",
+      "notes": "Không bịa số tấn carbon; từ chối đúng. Nguồn 2023 nói rõ chưa cung cấp dữ liệu phát thải nhưng phản hồi chung chung “phần giải thích”, bỏ mất thông tin hữu ích đó."
+    }
+  ],
+  "version": 1,
+  "date": "2026-11-01",
+  "review_type": "assistant_provisional_self_review",
+  "reviewer": "Codex; same assistant that authored the fixture and implementation",
+  "original_answer_run": "d9f9e12 synthetic answer-check-v1",
+  "not_independent": true,
+  "report": "artifacts/answer-check-v1/ASSISTANT_REVIEW.md"
+}
