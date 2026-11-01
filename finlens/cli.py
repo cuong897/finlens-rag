@@ -5,8 +5,10 @@ import os
 
 def main():
     parser = argparse.ArgumentParser(description="FinLens local financial document assistant")
-    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "reprocess", "prepare-ocr", "prepare-embeddings", "gemini", "public-pilot", "benchmark-import", "benchmark-holdout-import", "check-pilot", "evaluate-retrieval"], nargs="?", default="serve")
+    parser.add_argument("command", choices=["serve", "seed", "evaluate", "index", "reprocess", "prepare-ocr", "prepare-embeddings", "gemini", "public-pilot", "benchmark-import", "benchmark-holdout-import", "check-pilot", "evaluate-retrieval", "backup", "restore"], nargs="?", default="serve")
     parser.add_argument("--data-dir", default=None)
+    parser.add_argument("--destination", help="New backup or restore directory; existing data is never overwritten")
+    parser.add_argument("--backup-dir", help="Verified backup directory to restore")
     parser.add_argument("--env-file", default=None, help="Explicit local configuration file; never prints values")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
@@ -16,6 +18,8 @@ def main():
     parser.add_argument("--cases-file", help="Versioned JSON evaluation set with source checksums and evidence quotes; evaluate-retrieval only")
     parser.add_argument("--reports-file", help="JSON list of public source reports with checksums; benchmark-import only")
     args = parser.parse_args()
+    if args.destination and args.command not in {'backup','restore'}:parser.error('--destination chỉ dùng với backup/restore.')
+    if args.backup_dir and args.command!='restore':parser.error('--backup-dir chỉ dùng với restore.')
     if args.cases_file and args.command != "evaluate-retrieval":
         parser.error("--cases-file chỉ dùng với evaluate-retrieval")
     if args.reports_file and args.command != "benchmark-import":
@@ -27,6 +31,16 @@ def main():
         except ValueError as exc:
             parser.error(str(exc))
     args.data_dir = args.data_dir or os.environ.get("FINLENS_DATA_DIR", "data")
+    if args.command in {"backup","restore"}:
+        import sqlite3
+        from finlens.backup import BackupError,create_backup,restore_backup
+        if not args.destination:parser.error('Cần --destination trỏ tới thư mục mới.')
+        if args.command=='restore' and not args.backup_dir:parser.error('Cần --backup-dir để khôi phục.')
+        try:
+            result=create_backup(args.data_dir,args.destination) if args.command=='backup' else restore_backup(args.backup_dir,args.destination)
+        except (BackupError,OSError,sqlite3.Error) as exc:parser.error(str(exc))
+        print(json.dumps(result,ensure_ascii=True,indent=2))
+        return
     if args.command == "gemini":
         from dataclasses import replace
         from finlens.providers import ModelConfig

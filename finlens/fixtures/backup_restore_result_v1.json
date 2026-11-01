@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-01",
+  "documents": 18,
+  "facts": 59,
+  "pages": 1541,
+  "chunks": 3594,
+  "embeddings": 3594,
+  "facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+  "metadata_facts_pages_chunks_vectors_equal": true,
+  "verification_ms": 2267.43,
+  "backup": "artifacts/backups/finlens-20261101",
+  "restored_separate_store": "artifacts/restore-drill-20261101",
+  "secret_env_excluded": true,
+  "version": 1,
+  "unit_tests_passed": 217,
+  "report": "artifacts/backup-restore-report.md",
+  "scheduled_backup": false
+}
