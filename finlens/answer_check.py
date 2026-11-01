@@ -13,7 +13,7 @@ import time
 
 from finlens.engine import valid_citations
 from finlens.models import AskRequest
-from finlens.providers import ProviderError
+from finlens.providers import ProviderError, token_usage
 from finlens.retrieval_dataset import fingerprint
 from finlens.text import normalize
 
@@ -82,6 +82,11 @@ def run_answer_checks(engine, dataset, output_dir, *, live=False, max_model_ques
         if answer.get('generation_error'):outage=True
     executed=[r for r in results if r['execution']=='completed']
     attempted=[r for r in executed if r['response'].get('generation_attempted')]
+    provider_attempts=[a for r in attempted for a in r['response'].get('generation_attempts',[]) if a.get('status') in {'failed','succeeded'}]
+    reported_usage={}
+    for attempt in provider_attempts:
+        for key,value in (token_usage(attempt.get('usage')) or {}).items():
+            reported_usage[key]=reported_usage.get(key,0)+value
     correct_abstain=sum(r['response']['status']=='insufficient_evidence' and r['checks']['provider_ok']
         for r in executed if next(c for c in dataset['cases'] if c['id']==r['id'])['expected_status']=='insufficient_evidence')
     report={'kind':'synthetic_answer_integration_development','generated_at':datetime.now(timezone.utc).isoformat(),
@@ -91,6 +96,10 @@ def run_answer_checks(engine, dataset, output_dir, *, live=False, max_model_ques
         'generation_questions_attempted':len(attempted),'provider_attempts_recorded':sum(a.get('status') in {'failed','succeeded'} for r in attempted for a in r['response'].get('generation_attempts',[])),
         'generation_questions_succeeded':sum(bool(r['response'].get('generation_model')) and r['checks']['provider_ok'] for r in attempted),
         'provider_error_stop':outage,'correct_abstentions_contract_only':correct_abstain,
+        'reported_usage_totals':reported_usage or None,
+        'provider_attempts_with_total_tokens':sum('totalTokenCount' in (a.get('usage') or {}) for a in provider_attempts),
+        'provider_attempts_without_total_tokens':sum('totalTokenCount' not in (a.get('usage') or {}) for a in provider_attempts),
+        'cost_estimate':None,
         'semantic_accuracy':None,'source_entailment_accuracy':None,'human_review_status':'pending',
         'latency_p50_ms':statistics.median(r['latency_ms'] for r in executed) if executed else None,
         'generation_latency_p50_ms':statistics.median(r['latency_ms'] for r in attempted) if attempted else None,
@@ -107,12 +116,13 @@ def run_answer_checks(engine, dataset, output_dir, *, live=False, max_model_ques
         'Keep failed answers in the denominator of any declared end-to-end metric. '
         'Report sample size, provider failures, skipped cases and adjudication separately.\n',encoding='utf-8')
     with (output/'human-review.csv').open('w',encoding='utf-8-sig',newline='') as handle:
-        writer=csv.DictWriter(handle,fieldnames=['id','execution','question','reference','answer','sources','model','provider_error','correctness','completeness','source_support','abstention_correct','reviewer','notes'])
+        writer=csv.DictWriter(handle,fieldnames=['id','execution','question','reference','answer','sources','model','provider_error','generation_usage','timings_ms','correctness','completeness','source_support','abstention_correct','reviewer','notes'])
         writer.writeheader()
         for row in results:
             response=row.get('response',{})
             writer.writerow({'id':row['id'],'execution':row['execution'],'question':row.get('question',''),
                 'reference':row.get('reference',''),'answer':response.get('answer',''),
                 'sources':json.dumps(response.get('citations',[]),ensure_ascii=False),
-                'model':response.get('generation_model'),'provider_error':json.dumps(response.get('generation_error'))})
+                'model':response.get('generation_model'),'provider_error':json.dumps(response.get('generation_error')),
+                'generation_usage':json.dumps(response.get('generation_usage')),'timings_ms':json.dumps(response.get('timings_ms'))})
     return report

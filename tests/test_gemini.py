@@ -9,7 +9,7 @@ import httpx
 
 from finlens.api import create_app
 from finlens.environment import load_env_file
-from finlens.providers import Gemini, ModelConfig, ProviderError, make_provider
+from finlens.providers import Gemini, ModelConfig, ProviderError, make_provider, token_usage
 
 EVIDENCE = [{"id": "S1", "excerpt": "Biên lợi nhuận cải thiện nhờ giảm chi phí logistics."}]
 
@@ -20,6 +20,25 @@ def candidate(statement=None, finish="STOP"):
 
 
 class GeminiTests(unittest.TestCase):
+    def test_usage_metadata_filters_unknown_private_and_invalid_fields(self):
+        self.assertIsNone(token_usage(None))
+        self.assertIsNone(token_usage({'promptTokenCount': True, 'totalTokenCount': -1}))
+        self.assertEqual(token_usage({'promptTokenCount': 42, 'candidatesTokenCount': 8,
+            'totalTokenCount': 60, 'thoughtsTokenCount': 10, 'cachedContentTokenCount': 0,
+            'secret': 'never export', 'toolUsePromptTokenCount': 'bad'}),
+            {'promptTokenCount':42,'candidatesTokenCount':8,'totalTokenCount':60,'thoughtsTokenCount':10,'cachedContentTokenCount':0})
+
+    def test_usage_survives_a_rejected_response_and_missing_usage_is_unknown(self):
+        with patch.dict('os.environ', {'GEMINI_API_KEY':'unit-secret'}):
+            body=candidate({'text':'Unsupported','sources':['S99']})
+            body['usageMetadata']={'promptTokenCount':40,'totalTokenCount':50}
+            with httpx.Client(transport=httpx.MockTransport(lambda _:httpx.Response(200,json=body))) as client:
+                with self.assertRaises(ProviderError) as caught:
+                    Gemini(self.config,client).generate_with_metadata('Why?',EVIDENCE)
+                self.assertEqual(caught.exception.usage['totalTokenCount'],50)
+            with httpx.Client(transport=httpx.MockTransport(lambda _:httpx.Response(200,json=candidate()))) as client:
+                self.assertIsNone(Gemini(self.config,client).generate_with_metadata('Why?',EVIDENCE).usage)
+
     def setUp(self):
         self.config = ModelConfig(chat_model="gemini-3.8-flash", embed_model="bge-m3:latest", chat_provider="gemini")
 

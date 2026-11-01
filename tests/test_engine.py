@@ -14,11 +14,24 @@ from finlens.engine import Engine, valid_citations
 from finlens.finance import EvidenceError, compare
 from finlens.ingest import seed_demo
 from finlens.models import AskRequest
-from finlens.providers import GeminiFallback, ModelConfig, Ollama, ProviderError
+from finlens.providers import GeminiFallback, Generation, ModelConfig, Ollama, ProviderError
 from finlens.store import Store
 
 
 class EngineTests(unittest.TestCase):
+    def test_usage_and_network_attempt_survive_answer_validation_failure(self):
+        class InvalidReply:
+            def generate_with_report(self, question, evidence):
+                return Generation('Unsupported claim [S99]', 'test',
+                    [{'model':'test','status':'succeeded','latency_ms':1,'usage':{'totalTokenCount':20}}],
+                    {'totalTokenCount':20})
+        engine=Engine(self.store,ModelConfig(chat_model='test'),InvalidReply())
+        result=engine.answer(self.request('Nguyên nhân tăng khoản phải thu khách hàng?',years=[2024]))
+        self.assertIsNotNone(result['generation_error'])
+        self.assertEqual(result['generation_usage'],{'totalTokenCount':20})
+        self.assertEqual(len(result['generation_attempts']),1)
+        self.assertGreaterEqual(result['timings_ms']['generation'],0)
+
     def setUp(self):
         self.test_root = Path(__file__).resolve().parents[1] / "data" / "test-runs"
         self.test_root.mkdir(parents=True, exist_ok=True)
@@ -54,6 +67,8 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(result["mode"], "calculated")
         self.assertEqual(result["comparisons"][0]["growth_percent"], "25.00")
         self.assertFalse(result["generation_attempted"])
+        self.assertIsNone(result['generation_usage'])
+        self.assertEqual(result['timings_ms'],{'retrieval':0.0,'generation':0.0})
 
     def test_missing_fact_offers_review_sources_without_generation_or_fact_writes(self):
         with self.store.connection() as db:

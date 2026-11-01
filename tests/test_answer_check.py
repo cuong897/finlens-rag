@@ -31,6 +31,8 @@ class AnswerCheckTests(unittest.TestCase):
         r=run_answer_checks(Engine(self.store,ModelConfig(chat_model='test'),Broken()),{'cases':cases,'label_origin':'synthetic'},Path(self.tmp.name)/'out',live=True,pause=lambda _:None)
         self.assertEqual(r['contract_passed'],0)
         self.assertEqual(r['correct_abstentions_contract_only'],0)
+        self.assertIsNone(r['reported_usage_totals'])
+        self.assertEqual(r['provider_attempts_without_total_tokens'],1)
         self.assertTrue(r['provider_error_stop']);self.assertEqual(r['completed'],1)
         self.assertEqual(r['results'][1]['reason'],'provider_error_stop')
 

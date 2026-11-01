@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "unit_tests_passed": 208,
+  "live_cases": 1,
+  "corpus": "synthetic demo only",
+  "contract_passed": 1,
+  "model": "gemini-3.6-flash",
+  "attempts": [
+    {
+      "model": "gemini-3.8-flash",
+      "status": "failed",
+      "code": "timeout",
+      "latency_ms": 10356.61,
+      "usage": null
+    },
+    {
+      "model": "gemini-3.6-flash",
+      "status": "succeeded",
+      "latency_ms": 1492.0,
+      "usage": {
+        "promptTokenCount": 494,
+        "candidatesTokenCount": 65,
+        "totalTokenCount": 559
+      }
+    }
+  ],
+  "successful_response_usage": {
+    "promptTokenCount": 494,
+    "candidatesTokenCount": 65,
+    "totalTokenCount": 559
+  },
+  "timings_ms": {
+    "retrieval": 245.18,
+    "generation": 11848.66
+  },
+  "latency_ms": 12094.5,
+  "reported_usage_totals": {
+    "promptTokenCount": 494,
+    "candidatesTokenCount": 65,
+    "totalTokenCount": 559
+  },
+  "attempts_without_total_tokens": 1,
+  "cost_estimate": null,
+  "facts_unchanged": true,
+  "release_source_sha256": {
+    "finlens/providers.py": "99178b57c7626485a82a36e1369cf52e0b34eda62e5613e7e5ccaae19b872cbc",
+    "finlens/engine.py": "abbdab437127341419129b4bf48bb7a870483060cc6888a7ef88e4d67638cc5d",
+    "finlens/answer_check.py": "d73e47264f299759236ca4619d340d06449e8c5bd8a8b62cc6f0f8fba1a31952"
+  },
+  "warning": "One synthetic integration sample, not a quality/SLA/cost benchmark. Timeout usage is unknown; reported total does not cover every provider attempt.",
+  "report": "artifacts/usage-telemetry-v1/REPORT.md"
+}

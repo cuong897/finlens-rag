@@ -86,12 +86,20 @@ class Engine:
                   "ratios": [], "missing_inputs": [],
                   "generation_attempted": False, "generation_error": None,
                   "generation_model": None, "generation_attempts": [], "fallback_used": False,
+                  "generation_usage": None, "timings_ms": {"retrieval": 0.0, "generation": 0.0},
                   "premise_check": None,
                   "company": request.company, "years": request.years, "dataset": request.dataset}
 
         def finish():
             result["latency_ms"] = round((time.perf_counter() - started) * 1000, 1)
             return result
+
+        def timed(stage, callback, *args):
+            begin = time.perf_counter()
+            try:
+                return callback(*args)
+            finally:
+                result["timings_ms"][stage] += round((time.perf_counter()-begin)*1000,2)
 
         question_years = sorted({int(x) for x in re.findall(r"\b(?:19|20)\d{2}\b", request.question)})
         if question_years and request.years and not set(question_years).issubset(request.years):
@@ -197,7 +205,7 @@ class Engine:
         except EvidenceError as exc:
             result.update(answer=str(exc), citations=[], comparisons=[])
             if exc.code == "missing_fact":
-                hits, retrieval_mode, warnings = self.retrieve(request)
+                hits, retrieval_mode, warnings = timed("retrieval", self.retrieve, request)
                 result["retrieval"] = retrieval_mode
                 result["warnings"].extend(warnings)
                 # Source candidates are for human review, never promoted to facts.
@@ -221,7 +229,7 @@ class Engine:
             result["answer"] = "Hãy chọn một năm để tra cứu hoặc hai năm để so sánh chỉ tiêu đã xác nhận."
             return finish()
 
-        hits, retrieval_mode, warnings = self.retrieve(request)
+        hits, retrieval_mode, warnings = timed("retrieval", self.retrieve, request)
         result["retrieval"] = retrieval_mode
         if any("context_rank" in h for h in hits):
             result["retrieval_reranker"] = "financial_statement_context"
@@ -240,15 +248,16 @@ class Engine:
             result["generation_attempted"] = True
             try:
                 if hasattr(self.provider, "generate_with_report"):
-                    generation = self.provider.generate_with_report(request.question, evidence)
+                    generation = timed("generation", self.provider.generate_with_report, request.question, evidence)
                     generated = generation.text
                     result["generation_model"] = generation.model
                     result["generation_attempts"] = generation.attempts
+                    result["generation_usage"] = generation.usage
                     result["fallback_used"] = generation.model != self.config.chat_model
                     if result["fallback_used"]:
                         result["warnings"].append(f"Đã dùng mô hình dự phòng {generation.model} vì mô hình ưu tiên chưa phục vụ được.")
                 else:
-                    generated = self.provider.generate(request.question, evidence)
+                    generated = timed("generation", self.provider.generate, request.question, evidence)
                     result["generation_model"] = self.config.chat_model
                 if generated == "KHONG_DU_DU_LIEU":
                     result.update(status="partial" if numeric_answer else "insufficient_evidence",
@@ -264,7 +273,7 @@ class Engine:
                 return finish()
             except ProviderError as exc:
                 result["generation_error"] = {"code": exc.code, "retryable": exc.retryable}
-                result["generation_attempts"] = exc.attempts
+                result["generation_attempts"] = exc.attempts or result["generation_attempts"]
                 result["warnings"].append(str(exc) + " Đã chuyển sang trích xuất nguồn.")
         # Extract sentences rather than pretending retrieval alone proves an answer.
         excerpts = []

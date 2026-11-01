@@ -17,6 +17,22 @@ def valid_body(abstain=False, source="S1"):
 
 
 class FallbackTests(unittest.TestCase):
+    def test_attempt_timings_and_usage_are_separate_across_failover_and_requests(self):
+        def handler(request):
+            if '3.8' in request.url.path:raise httpx.ReadTimeout('secret',request=request)
+            body=valid_body();body['usageMetadata']={'promptTokenCount':10,'totalTokenCount':20}
+            return httpx.Response(200,json=body)
+        backend=self.backend(handler)
+        first=backend.generate_with_report('Why?',EVIDENCE)
+        self.assertIsNone(first.attempts[0]['usage'])
+        self.assertEqual(first.usage,{'promptTokenCount':10,'totalTokenCount':20})
+        self.assertTrue(all(a['latency_ms']>=0 for a in first.attempts))
+        second=backend.generate_with_report('Other?',EVIDENCE)
+        self.assertNotIn('usage',second.attempts[0])
+        self.assertNotIn('latency_ms',second.attempts[0])
+        self.assertEqual(second.attempts[0]['status'],'skipped')
+        self.assertIsNot(first.usage,second.usage)
+
     def setUp(self):
         self.config = ModelConfig(chat_model="gemini-3.8-flash", chat_provider="gemini")
         self.now = 100

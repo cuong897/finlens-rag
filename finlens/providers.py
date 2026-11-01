@@ -11,12 +11,23 @@ import httpx
 
 
 class ProviderError(RuntimeError):
-    def __init__(self, message: str, *, code="provider_error", retryable=False, retry_after=0, attempts=None):
+    def __init__(self, message: str, *, code="provider_error", retryable=False, retry_after=0, attempts=None, usage=None):
         super().__init__(message)
         self.code = code
         self.retryable = retryable
         self.retry_after = retry_after
         self.attempts = attempts or []
+        self.usage = usage
+
+
+def token_usage(metadata):
+    """Keep only documented, nonnegative integer counts; absence stays unknown."""
+    if not isinstance(metadata, dict):
+        return None
+    keys = {"promptTokenCount", "candidatesTokenCount", "totalTokenCount",
+            "cachedContentTokenCount", "thoughtsTokenCount", "toolUsePromptTokenCount"}
+    values = {k: v for k, v in metadata.items() if k in keys and type(v) is int and 0 <= v < 2**63}
+    return values or None
 
 
 @dataclass(frozen=True)
@@ -170,6 +181,9 @@ class Gemini:
         return self.embedder.embed(texts)
 
     def generate(self, question: str, evidence: list[dict], *, timeout=60):
+        return self.generate_with_metadata(question, evidence, timeout=timeout).text
+
+    def generate_with_metadata(self, question: str, evidence: list[dict], *, timeout=60):
         if not gemini_key_configured():
             raise ProviderError("Chưa cấu hình GEMINI_API_KEY. Điền key vào .env rồi chạy lại bằng --env-file .env.", code="missing_key")
         schema, system, user = grounded_request(question, evidence)
@@ -207,6 +221,7 @@ class Gemini:
         except (httpx.HTTPError, ValueError) as exc:
             # Do not expose request headers, keys, provider response bodies or URLs.
             raise ProviderError("Chưa gọi được Gemini hoặc phản hồi không hợp lệ.", code="request_failed", retryable=True) from exc
+        usage = token_usage(data.get("usageMetadata")) if isinstance(data, dict) else None
         try:
             if isinstance(data, dict) and isinstance(data.get("promptFeedback"), dict) and data["promptFeedback"].get("blockReason"):
                 raise ProviderError("Mô hình không thể trả lời yêu cầu này.", code="blocked")
@@ -221,9 +236,12 @@ class Gemini:
             if not isinstance(parts, list) or any(not isinstance(part, dict) for part in parts):
                 raise ValueError("Invalid content parts")
             text = "".join(p["text"] for p in parts if not p.get("thought") and isinstance(p.get("text"), str))
-            return render_grounded_output(text, evidence)
+            return Generation(render_grounded_output(text, evidence), self.config.chat_model, [], usage)
+        except ProviderError as exc:
+            exc.usage = usage
+            raise
         except (KeyError, IndexError, TypeError, ValueError) as exc:
-            raise ProviderError("Gemini không trả câu trả lời hoàn chỉnh có cấu trúc. Đã giữ nguyên các bằng chứng nguồn.") from exc
+            raise ProviderError("Gemini không trả câu trả lời hoàn chỉnh có cấu trúc. Đã giữ nguyên các bằng chứng nguồn.", usage=usage) from exc
 
 
 @dataclass(frozen=True)
@@ -231,6 +249,7 @@ class Generation:
     text: str
     model: str
     attempts: list[dict]
+    usage: dict | None = None
 
 
 class GeminiFallback(Gemini):
@@ -270,18 +289,20 @@ class GeminiFallback(Gemini):
                     attempts.append({"model": model, "status": "skipped", "code": "busy" if state["busy"] else "cooldown"})
                     continue
                 state["busy"] = True
+            attempt_started = time.perf_counter()
             try:
                 backend = Gemini(replace(self.config, chat_model=model), self.client, self.embedder)
-                answer = backend.generate(question, evidence, timeout=min(10, remaining))
-                attempts.append({"model": model, "status": "succeeded"})
+                completion = backend.generate_with_metadata(question, evidence, timeout=min(10, remaining))
+                attempts.append({"model": model, "status": "succeeded", "latency_ms": round((time.perf_counter()-attempt_started)*1000,2), "usage": completion.usage})
                 with self.lock:
                     state.update(until=0, failures=0)
                 # A grounded abstention is a valid answer, not an outage. Do not
                 # shop across models until one invents a satisfying response.
-                return Generation(answer, model, attempts)
+                return Generation(completion.text, model, attempts, completion.usage)
             except ProviderError as exc:
                 last_error = exc
-                attempts.append({"model": model, "status": "failed", "code": exc.code})
+                attempts.append({"model": model, "status": "failed", "code": exc.code,
+                                 "latency_ms": round((time.perf_counter()-attempt_started)*1000,2), "usage": exc.usage})
                 with self.lock:
                     if exc.code != "blocked":
                         state["failures"] = min(6, state["failures"] + 1)
