@@ -104,3 +104,7 @@ class FactRequest(StrictModel):
     @classmethod
     def validate_value(cls, value):
         return format(Decimal(value), "f")
+
+
+class FactBatchRequest(StrictModel):
+    facts: list[FactRequest] = Field(min_length=1, max_length=50)

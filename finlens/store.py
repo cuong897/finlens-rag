@@ -9,6 +9,12 @@ import sqlite3
 from finlens.text import chunk_page
 
 
+class FactReviewError(ValueError):
+    def __init__(self, message, status=422):
+        super().__init__(message)
+        self.status = status
+
+
 class Store:
     def __init__(self, data_dir: str | Path):
         self.root = Path(data_dir).resolve()
@@ -299,6 +305,39 @@ class Store:
             row = db.execute("""SELECT * FROM facts WHERE document_id=? AND page=? AND metric=?
                 AND year=? AND value=? AND unit=? AND currency=?""", tuple(fact[f] for f in fields[:7])).fetchone()
             return dict(row)
+
+    def confirm_facts(self, facts):
+        """Validate sources and persist an explicitly reviewed batch atomically."""
+        if not 1 <= len(facts) <= 50:
+            raise FactReviewError("Mỗi lượt xác nhận cần từ 1 đến 50 chỉ tiêu.")
+        with self.connection() as db:
+            db.execute("BEGIN IMMEDIATE")
+            for fact in facts:
+                row = db.execute("""SELECT p.text,d.is_demo,x.allowed_pages
+                    FROM pages p JOIN documents d ON d.id=p.document_id
+                    LEFT JOIN document_context x ON x.document_id=d.id
+                    WHERE p.document_id=? AND p.page=?""",
+                    (fact["document_id"], fact["page"])).fetchone()
+                if not row:
+                    raise FactReviewError("Tài liệu hoặc trang nguồn không tồn tại; chưa lưu lượt xác nhận.", 404)
+                if row["is_demo"]:
+                    raise FactReviewError("Không xác nhận thêm số liệu vào tài liệu giả lập.", 409)
+                if row["allowed_pages"] is not None and fact["page"] not in json.loads(row["allowed_pages"]):
+                    raise FactReviewError("Có trang ngoài phạm vi phân tích; chưa lưu lượt xác nhận.", 409)
+                if not row["text"].strip():
+                    raise FactReviewError("Trang nguồn không có văn bản để đối chiếu.")
+            fields = ("document_id", "page", "metric", "year", "value", "unit", "currency", "note")
+            saved, created = {}, 0
+            for fact in facts:
+                cursor = db.execute("""INSERT OR IGNORE INTO facts
+                    (document_id,page,metric,year,value,unit,currency,note,verified)
+                    VALUES (?,?,?,?,?,?,?,?,1)""", tuple(fact[f] for f in fields))
+                created += cursor.rowcount
+                row = db.execute("""SELECT * FROM facts WHERE document_id=? AND page=?
+                    AND metric=? AND year=? AND value=? AND unit=? AND currency=?""",
+                    tuple(fact[f] for f in fields[:7])).fetchone()
+                saved[row["id"]] = dict(row)
+            return {"facts": list(saved.values()), "created": created, "confirmed": len(saved)}
 
     def facts(self, company=None, scope=None, dataset="all", metric=None, years=None):
         # Fact years are independent of the report publication year.

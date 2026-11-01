@@ -17,7 +17,8 @@ from finlens.ingest import MAX_PDF_BYTES, IngestError, ingest_pdf, seed_demo
 from finlens.models import METRICS, UNIT_LABELS, AskRequest, CompareRequest, FactRequest, ImportURLRequest, TableOptions
 from pydantic import ValidationError
 from finlens.providers import ModelConfig, ProviderError, gemini_key_configured
-from finlens.store import Store
+from finlens.store import Store, FactReviewError
+from finlens.models import FactBatchRequest
 from finlens.suggestions import suggest_page
 
 
@@ -210,6 +211,13 @@ def create_app(data_dir=None, config=None):
         fact = request.model_dump(exclude={"confirmed"})
         fact["verified"] = True
         return store.add_fact(fact)
+
+    @app.post("/api/facts/batch", status_code=201)
+    def confirm_fact_batch(request: FactBatchRequest):
+        try:
+            return store.confirm_facts([f.model_dump(exclude={"confirmed"}) for f in request.facts])
+        except FactReviewError as exc:
+            raise HTTPException(exc.status, str(exc)) from exc
 
     @app.delete("/api/facts/{fact_id}")
     def remove_fact(fact_id: int):

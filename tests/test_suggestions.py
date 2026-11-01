@@ -128,6 +128,67 @@ class SuggestionParserTests(unittest.TestCase):
 
 
 class SuggestionAPITests(unittest.TestCase):
+    def batch_payload(self):
+        candidates = self.client.get(f"/api/documents/{self.document}/suggestions?page=1").json()["candidates"]
+        return {"facts": [{**{key: c[key] for key in ["document_id", "page", "metric", "year", "value", "unit", "currency"]},
+                          "confirmed": True, "note": "Human reviewed every selected row, unit and year column."} for c in candidates]}
+
+    def test_batch_review_is_explicit_idempotent_and_enables_comparison(self):
+        payload = self.batch_payload()
+        self.assertEqual(self.client.get('/api/facts').json(), [])
+        result = self.client.post('/api/facts/batch', json=payload)
+        self.assertEqual(result.status_code, 201)
+        self.assertEqual((result.json()['created'], result.json()['confirmed']), (2, 2))
+        again = self.client.post('/api/facts/batch', json=payload)
+        self.assertEqual((again.json()['created'], again.json()['confirmed']), (0, 2))
+        document = self.app.state.store.get_document(self.document)
+        comparison = self.client.post('/api/compare', json={'company': document['company'], 'metric': 'interest_expense',
+                    'from_year': 2023, 'to_year': 2024, 'scope': document['scope'], 'dataset': 'real'})
+        self.assertEqual(comparison.status_code, 200)
+        self.assertEqual(len(comparison.json()['citations']), 2)
+
+    def test_batch_invalid_member_never_saves_a_prefix(self):
+        payload = self.batch_payload()
+        payload['facts'][1]['page'] = 999
+        self.assertEqual(self.client.post('/api/facts/batch', json=payload).status_code, 404)
+        self.assertEqual(self.client.get('/api/facts').json(), [])
+        for invalid in [{'facts': []}, {'facts': self.batch_payload()['facts'] * 26},
+                        {'facts': [{**self.batch_payload()['facts'][0], 'confirmed': False}]}]:
+            self.assertEqual(self.client.post('/api/facts/batch', json=invalid).status_code, 422)
+        self.assertEqual(self.client.get('/api/facts').json(), [])
+
+    def test_batch_rejects_demo_and_out_of_scope_sources(self):
+        payload = self.batch_payload()
+        seed_demo(self.app.state.store)
+        payload['facts'][1]['document_id'] = 'demo-ANPHAT-2024'
+        self.assertEqual(self.client.post('/api/facts/batch', json=payload).status_code, 409)
+        self.assertEqual(self.app.state.store.facts(dataset='real'), [])
+        payload = self.batch_payload()
+        with self.app.state.store.connection() as db:
+            db.execute('INSERT OR REPLACE INTO document_context(document_id,allowed_pages) VALUES (?,?)', (self.document, '[]'))
+        self.assertEqual(self.client.post('/api/facts/batch', json=payload).status_code, 409)
+
+    def test_batch_storage_failure_rolls_back_earlier_insert(self):
+        payload = self.batch_payload()
+        with self.app.state.store.connection() as db:
+            db.execute("""CREATE TRIGGER reject_second BEFORE INSERT ON facts
+                WHEN NEW.year=2024 BEGIN SELECT RAISE(ABORT,'simulated storage error'); END""")
+        import sqlite3
+        with self.assertRaises(sqlite3.IntegrityError):
+            self.client.post('/api/facts/batch', json=payload)
+        self.assertEqual(self.client.get('/api/facts').json(), [])
+
+    def test_batch_duplicates_do_not_overwrite_existing_values(self):
+        payload = self.batch_payload()
+        self.client.post('/api/facts/batch', json=payload)
+        payload['facts'] = [{**payload['facts'][0], 'value': '999'}]
+        self.assertEqual(self.client.post('/api/facts/batch', json=payload).status_code, 201)
+        self.assertEqual(len(self.client.get('/api/facts').json()), 3)
+        from finlens.finance import compare, EvidenceError
+        document = self.app.state.store.get_document(self.document)
+        with self.assertRaises(EvidenceError):
+            compare(self.app.state.store, document['company'], 'interest_expense', 2023, 2024, document['scope'])
+
     def setUp(self):
         self.root = Path(__file__).resolve().parents[1] / "data" / "test-runs"
         self.root.mkdir(parents=True, exist_ok=True)
