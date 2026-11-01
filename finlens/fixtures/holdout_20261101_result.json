@@ -1,0 +1,542 @@
+{
+  "version": 1,
+  "kind": "frozen_product_new_source_measurement",
+  "frozen_product_commit": "0dd791caeaf404310aba10c27933eb8d2b91fc11",
+  "product_frozen_verified": true,
+  "main_facts_unchanged": true,
+  "main_facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+  "retrieval_dataset_sha256": "4718a716eef6791ddef43954ff7d855749a0b13ee41a0d51e5d179e796d8d632",
+  "answer_dataset_sha256": "d695f4cc2728c0d62b4543b8108f1c7de8c495ea0940f8304af5ba46918694ac",
+  "companies": [
+    "SAB",
+    "MWG",
+    "BCM",
+    "VNM"
+  ],
+  "retrieval": {
+    "cases": 200,
+    "summary": {
+      "bm25": {
+        "recall_at_5": 0.5925,
+        "mrr_at_5": 0.3862,
+        "questions_with_source": 121,
+        "latency_p50_ms": 37.19,
+        "latency_p95_ms": 55.57,
+        "evidence_cases": 200,
+        "evidence_recall_at_5": 0.5725,
+        "evidence_complete_questions": 112,
+        "evidence_mrr_at_5": 0.341,
+        "page_hit_without_complete_evidence": 9
+      },
+      "dense": {
+        "recall_at_5": 0.5475,
+        "mrr_at_5": 0.3792,
+        "questions_with_source": 112,
+        "latency_p50_ms": 370.74,
+        "latency_p95_ms": 518.9,
+        "evidence_cases": 200,
+        "evidence_recall_at_5": 0.4675,
+        "evidence_complete_questions": 90,
+        "evidence_mrr_at_5": 0.2731,
+        "page_hit_without_complete_evidence": 22
+      },
+      "hybrid_rrf": {
+        "recall_at_5": 0.645,
+        "mrr_at_5": 0.4726,
+        "questions_with_source": 132,
+        "latency_p50_ms": 405.19,
+        "latency_p95_ms": 570.91,
+        "evidence_cases": 200,
+        "evidence_recall_at_5": 0.615,
+        "evidence_complete_questions": 119,
+        "evidence_mrr_at_5": 0.3882,
+        "page_hit_without_complete_evidence": 13
+      },
+      "hybrid_context": {
+        "recall_at_5": 0.6575,
+        "mrr_at_5": 0.5082,
+        "questions_with_source": 134,
+        "latency_p50_ms": 568.53,
+        "latency_p95_ms": 803.33,
+        "evidence_cases": 200,
+        "evidence_recall_at_5": 0.5975,
+        "evidence_complete_questions": 115,
+        "evidence_mrr_at_5": 0.4278,
+        "page_hit_without_complete_evidence": 19
+      }
+    },
+    "by_company": {
+      "BCM": {
+        "bm25": {
+          "cases": 50,
+          "recall_at_5": 0.0,
+          "mrr_at_5": 0,
+          "questions_with_source": 0,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.0,
+          "evidence_mrr_at_5": 0,
+          "evidence_complete_questions": 0
+        },
+        "dense": {
+          "cases": 50,
+          "recall_at_5": 0.0,
+          "mrr_at_5": 0,
+          "questions_with_source": 0,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.0,
+          "evidence_mrr_at_5": 0,
+          "evidence_complete_questions": 0
+        },
+        "hybrid_rrf": {
+          "cases": 50,
+          "recall_at_5": 0.0,
+          "mrr_at_5": 0,
+          "questions_with_source": 0,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.0,
+          "evidence_mrr_at_5": 0,
+          "evidence_complete_questions": 0
+        },
+        "hybrid_context": {
+          "cases": 50,
+          "recall_at_5": 0.0,
+          "mrr_at_5": 0,
+          "questions_with_source": 0,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.0,
+          "evidence_mrr_at_5": 0,
+          "evidence_complete_questions": 0
+        }
+      },
+      "MWG": {
+        "bm25": {
+          "cases": 50,
+          "recall_at_5": 0.77,
+          "mrr_at_5": 0.5247,
+          "questions_with_source": 39,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.75,
+          "evidence_mrr_at_5": 0.4563,
+          "evidence_complete_questions": 37
+        },
+        "dense": {
+          "cases": 50,
+          "recall_at_5": 0.67,
+          "mrr_at_5": 0.4863,
+          "questions_with_source": 34,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.59,
+          "evidence_mrr_at_5": 0.362,
+          "evidence_complete_questions": 29
+        },
+        "hybrid_rrf": {
+          "cases": 50,
+          "recall_at_5": 0.86,
+          "mrr_at_5": 0.5847,
+          "questions_with_source": 44,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.84,
+          "evidence_mrr_at_5": 0.5047,
+          "evidence_complete_questions": 41
+        },
+        "hybrid_context": {
+          "cases": 50,
+          "recall_at_5": 0.86,
+          "mrr_at_5": 0.5847,
+          "questions_with_source": 44,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.78,
+          "evidence_mrr_at_5": 0.478,
+          "evidence_complete_questions": 37
+        }
+      },
+      "SAB": {
+        "bm25": {
+          "cases": 50,
+          "recall_at_5": 0.76,
+          "mrr_at_5": 0.5487,
+          "questions_with_source": 39,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.76,
+          "evidence_mrr_at_5": 0.482,
+          "evidence_complete_questions": 37
+        },
+        "dense": {
+          "cases": 50,
+          "recall_at_5": 0.74,
+          "mrr_at_5": 0.5263,
+          "questions_with_source": 38,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.64,
+          "evidence_mrr_at_5": 0.3803,
+          "evidence_complete_questions": 30
+        },
+        "hybrid_rrf": {
+          "cases": 50,
+          "recall_at_5": 0.77,
+          "mrr_at_5": 0.629,
+          "questions_with_source": 40,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.77,
+          "evidence_mrr_at_5": 0.5063,
+          "evidence_complete_questions": 37
+        },
+        "hybrid_context": {
+          "cases": 50,
+          "recall_at_5": 0.82,
+          "mrr_at_5": 0.77,
+          "questions_with_source": 42,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.82,
+          "evidence_mrr_at_5": 0.7133,
+          "evidence_complete_questions": 40
+        }
+      },
+      "VNM": {
+        "bm25": {
+          "cases": 50,
+          "recall_at_5": 0.84,
+          "mrr_at_5": 0.4713,
+          "questions_with_source": 43,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.78,
+          "evidence_mrr_at_5": 0.4257,
+          "evidence_complete_questions": 38
+        },
+        "dense": {
+          "cases": 50,
+          "recall_at_5": 0.78,
+          "mrr_at_5": 0.5043,
+          "questions_with_source": 40,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.64,
+          "evidence_mrr_at_5": 0.35,
+          "evidence_complete_questions": 31
+        },
+        "hybrid_rrf": {
+          "cases": 50,
+          "recall_at_5": 0.95,
+          "mrr_at_5": 0.6767,
+          "questions_with_source": 48,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.85,
+          "evidence_mrr_at_5": 0.5417,
+          "evidence_complete_questions": 41
+        },
+        "hybrid_context": {
+          "cases": 50,
+          "recall_at_5": 0.95,
+          "mrr_at_5": 0.6783,
+          "questions_with_source": 48,
+          "evidence_cases": 50,
+          "evidence_recall_at_5": 0.79,
+          "evidence_mrr_at_5": 0.52,
+          "evidence_complete_questions": 38
+        }
+      }
+    },
+    "missing_literal_evidence_cases": 58
+  },
+  "quality": {
+    "cases": 40,
+    "answerable": 32,
+    "unsupported": 8,
+    "answers_supplied_on_answerable": 18,
+    "fully_correct_answerable": 16,
+    "end_to_end_correct_answerable_rate": 0.5,
+    "conditional_correctness_on_supplied_answers": 0.8888888888888888,
+    "false_refusals": 14,
+    "false_refusal_rate": 0.4375,
+    "correct_negative_refusals": 8,
+    "refusal_precision": 0.36363636363636365,
+    "negative_refusal_recall": 1.0,
+    "partial_answer_ids": [
+      "sab-inventory-cost",
+      "vnm-fx-closing"
+    ],
+    "provider_error_cases": 0,
+    "by_company": {
+      "BCM": {
+        "cases": 10,
+        "fully_correct_including_negative": 2,
+        "answerable_cases": 8,
+        "fully_correct_answerable": 0,
+        "false_refusals": 8
+      },
+      "MWG": {
+        "cases": 10,
+        "fully_correct_including_negative": 9,
+        "answerable_cases": 8,
+        "fully_correct_answerable": 7,
+        "false_refusals": 1
+      },
+      "SAB": {
+        "cases": 10,
+        "fully_correct_including_negative": 5,
+        "answerable_cases": 8,
+        "fully_correct_answerable": 3,
+        "false_refusals": 4
+      },
+      "VNM": {
+        "cases": 10,
+        "fully_correct_including_negative": 8,
+        "answerable_cases": 8,
+        "fully_correct_answerable": 6,
+        "false_refusals": 1
+      }
+    },
+    "reviewer_supplied_metrics": {
+      "fully_correct_rate": 0.6,
+      "fully_complete_rate": 0.425,
+      "fully_supported_rate": 0.8888888888888888,
+      "source_support_denominator": 18,
+      "abstention_judged_count": 22,
+      "correct_abstention_rate": 0.36363636363636365
+    }
+  },
+  "stability": {
+    "summary": {
+      "planned": 100,
+      "completed": 100,
+      "not_executed": 0,
+      "valid_provider_responses": 90,
+      "observed_chain_success_rate": 0.9,
+      "provider_response_rate_on_attempted_questions": 1.0,
+      "generation_not_attempted": 10,
+      "provider_attempts": 102,
+      "per_model": {
+        "gemini-3.5-flash-lite": {
+          "attempts": 71,
+          "succeeded": 71,
+          "errors": {},
+          "p50_ms": 1286.02,
+          "p95_ms": 2354.62
+        },
+        "gemini-3.6-flash": {
+          "attempts": 26,
+          "succeeded": 19,
+          "errors": {
+            "service_unavailable": 3,
+            "rate_limited": 4
+          },
+          "p50_ms": 2763.2749999999996,
+          "p95_ms": 3919.31
+        },
+        "gemini-3.8-flash": {
+          "attempts": 5,
+          "succeeded": 0,
+          "errors": {
+            "timeout": 5
+          },
+          "p50_ms": 10134.94,
+          "p95_ms": 11121.15
+        }
+      },
+      "fallback_responses": 90,
+      "p50_ms": 1792.65,
+      "p95_ms": 11718.3,
+      "reported_usage_totals": {
+        "promptTokenCount": 240661,
+        "candidatesTokenCount": 7651,
+        "totalTokenCount": 248568,
+        "thoughtsTokenCount": 256
+      },
+      "attempts_without_total_tokens": 12,
+      "cost_estimate": null,
+      "warning": "Repeated questions in three nearby time windows; not long-term availability, independent samples, semantic quality or SLA."
+    },
+    "transport_generation_requests": 102,
+    "first_completed_at": "2026-11-01T14:13:41.952889+00:00",
+    "last_completed_at": "2026-11-01T14:29:58.228904+00:00",
+    "per_model_timeout_seconds": 10,
+    "chain_deadline_seconds": 30,
+    "repeats": {
+      "repeated_unique_cases": 40,
+      "cases_with_status_change": 0,
+      "cases_with_exact_answer_text_change": 15,
+      "note": "Status or exact-text consistency is not semantic correctness. Only the first wave received complete semantic review.",
+      "by_wave": {
+        "1": {
+          "planned": 40,
+          "completed": 40,
+          "not_executed": 0,
+          "valid_provider_responses": 36,
+          "observed_chain_success_rate": 0.9,
+          "provider_response_rate_on_attempted_questions": 1.0,
+          "generation_not_attempted": 4,
+          "provider_attempts": 42,
+          "per_model": {
+            "gemini-3.5-flash-lite": {
+              "attempts": 20,
+              "succeeded": 20,
+              "errors": {},
+              "p50_ms": 1269.0549999999998,
+              "p95_ms": 2354.62
+            },
+            "gemini-3.6-flash": {
+              "attempts": 19,
+              "succeeded": 16,
+              "errors": {
+                "service_unavailable": 3
+              },
+              "p50_ms": 3079.14,
+              "p95_ms": 4405.3
+            },
+            "gemini-3.8-flash": {
+              "attempts": 3,
+              "succeeded": 0,
+              "errors": {
+                "timeout": 3
+              },
+              "p50_ms": 10134.94,
+              "p95_ms": 10171.5
+            }
+          },
+          "fallback_responses": 36,
+          "p50_ms": 2718.8,
+          "p95_ms": 11718.3,
+          "reported_usage_totals": {
+            "promptTokenCount": 98572,
+            "candidatesTokenCount": 3162,
+            "totalTokenCount": 101903,
+            "thoughtsTokenCount": 169
+          },
+          "attempts_without_total_tokens": 6,
+          "cost_estimate": null,
+          "warning": "Repeated questions in three nearby time windows; not long-term availability, independent samples, semantic quality or SLA."
+        },
+        "2": {
+          "planned": 40,
+          "completed": 40,
+          "not_executed": 0,
+          "valid_provider_responses": 36,
+          "observed_chain_success_rate": 0.9,
+          "provider_response_rate_on_attempted_questions": 1.0,
+          "generation_not_attempted": 4,
+          "provider_attempts": 40,
+          "per_model": {
+            "gemini-3.5-flash-lite": {
+              "attempts": 33,
+              "succeeded": 33,
+              "errors": {},
+              "p50_ms": 1310.02,
+              "p95_ms": 2034.29
+            },
+            "gemini-3.6-flash": {
+              "attempts": 6,
+              "succeeded": 3,
+              "errors": {
+                "rate_limited": 3
+              },
+              "p50_ms": 1012.51,
+              "p95_ms": 2829.89
+            },
+            "gemini-3.8-flash": {
+              "attempts": 1,
+              "succeeded": 0,
+              "errors": {
+                "timeout": 1
+              },
+              "p50_ms": 11121.15,
+              "p95_ms": 11121.15
+            }
+          },
+          "fallback_responses": 36,
+          "p50_ms": 1712.4,
+          "p95_ms": 3277.3,
+          "reported_usage_totals": {
+            "promptTokenCount": 98572,
+            "candidatesTokenCount": 3083,
+            "totalTokenCount": 101742,
+            "thoughtsTokenCount": 87
+          },
+          "attempts_without_total_tokens": 4,
+          "cost_estimate": null,
+          "warning": "Repeated questions in three nearby time windows; not long-term availability, independent samples, semantic quality or SLA."
+        },
+        "3": {
+          "planned": 20,
+          "completed": 20,
+          "not_executed": 0,
+          "valid_provider_responses": 18,
+          "observed_chain_success_rate": 0.9,
+          "provider_response_rate_on_attempted_questions": 1.0,
+          "generation_not_attempted": 2,
+          "provider_attempts": 20,
+          "per_model": {
+            "gemini-3.5-flash-lite": {
+              "attempts": 18,
+              "succeeded": 18,
+              "errors": {},
+              "p50_ms": 1185.975,
+              "p95_ms": 11087.85
+            },
+            "gemini-3.6-flash": {
+              "attempts": 1,
+              "succeeded": 0,
+              "errors": {
+                "rate_limited": 1
+              },
+              "p50_ms": 343.41,
+              "p95_ms": 343.41
+            },
+            "gemini-3.8-flash": {
+              "attempts": 1,
+              "succeeded": 0,
+              "errors": {
+                "timeout": 1
+              },
+              "p50_ms": 10117.03,
+              "p95_ms": 10117.03
+            }
+          },
+          "fallback_responses": 18,
+          "p50_ms": 1679.4,
+          "p95_ms": 11618.9,
+          "reported_usage_totals": {
+            "promptTokenCount": 43517,
+            "candidatesTokenCount": 1406,
+            "totalTokenCount": 44923
+          },
+          "attempts_without_total_tokens": 2,
+          "cost_estimate": null,
+          "warning": "Repeated questions in three nearby time windows; not long-term availability, independent samples, semantic quality or SLA."
+        }
+      }
+    },
+    "cooldown_skips": {
+      "gemini-3.8-flash": 85,
+      "gemini-3.6-flash": 64
+    }
+  },
+  "regression_tests": {
+    "command": ".venv/Scripts/python.exe -m unittest discover -s tests -q",
+    "passed": 248
+  },
+  "limitations": [
+    "Same assistant authors and reviews labels; no independently verified human ground truth.",
+    "Numeric targets and question families are reused; 200 questions are correlated, not 200 independent facts.",
+    "The 40 answer cases cover accounting policies and unsupported questions, not numeric calculation accuracy.",
+    "Company/year/scope are supplied; retrieval scoring does not execute the complete answer routing path.",
+    "100 sequential requests reuse 40 cases in three nearby waves; not concurrency, multi-day availability or SLA.",
+    "3.8 timeouts are under the current 10-second per-model policy; do not establish inability with a longer timeout.",
+    "The isolated corpus contains no confirmed facts; no changes or new reports were added to the user main store.",
+    "Any subsequent tuning informed by these results makes these sources development data for that change; require new untouched sources for another generalization claim."
+  ],
+  "evidence_sha256": {
+    "finlens/fixtures/holdout_20261101_protocol.json": "ccd3e48f8ad50de45c6b7715569f0bab56261f5576f9b0ef79bd5fe0147ae86c",
+    "finlens/fixtures/holdout_20261101_reports.json": "fbad6c2f23dc12ec21493e75b602dc5099c4a0408c640aa887caf64832b39ed5",
+    "finlens/fixtures/holdout_retrieval_20261101.json": "76d2fa705510867036724c5069321dc8187beb75bdfc35a6a4654e7baaffc134",
+    "finlens/fixtures/holdout_targets_20261101.json": "776b59ed091f741890cf3bc81549db1e1d094e7944132ef2d94c6edfe894f25c",
+    "finlens/fixtures/holdout_answers_20261101.json": "19a7ef286cf49a452aed6539356caad3952bb9779a03e13471f9b953a28ff382",
+    "artifacts/new-holdout-final-v1/preparation.json": "6b4b74bf676f3eaa59457b2cd8e07f27c50678a3326a2e2549ea2edd7ca80ae9",
+    "artifacts/new-holdout-final-v1/selection.json": "a220f18184159e71687adac3cde6fc0e68139768b68bc826013bf9c987420f55",
+    "artifacts/new-holdout-final-v1/assistant-grades.json": "1d4b2785085712b7a5a926c3396568a92629b3f0820506f9927594c073cdb018",
+    "artifacts/new-holdout-final-v1/gemini/requests.jsonl": "fbeb63069b6536a44b6d735cf1b4c1afcf349685a6aa320d59ab34800a89bd11",
+    "artifacts/new-holdout-final-v1/gemini/stability.json": "4959f729b11f33134672891180b4c001f33289a5e58cc2f0d59ab61bbe472cf6",
+    "artifacts/new-holdout-final-v1/gemini/answer-check.json": "d17e89eec4f80d5b77f3fad73ebecaf4af9285f18de765a247ac7de3149fbd9a",
+    "artifacts/new-holdout-final-v1/retrieval/retrieval-ablation.json": "315b97b0449a5e6ae401812a9fcebf66e2c0c5dd93402135e5f1755908585b8d",
+    "artifacts/new-holdout-final-v1/final/answer-reviews.csv": "d05a9dc20e150fa2feb8f52255e7c7552584e158834373212e931071ccdf902b",
+    "artifacts/new-holdout-final-v1/final/quality/review-scores.json": "624e17f57552e2682e47733a9b12e6ad2973fe6854adb0651a2fefc0d7629ded"
+  }
+}
