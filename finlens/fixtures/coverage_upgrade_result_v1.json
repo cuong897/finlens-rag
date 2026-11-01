@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "code_commit": "d9afe56b0e39b234af023ff0b798c1a8301a8eaa",
+  "ranking_sha256": "d6e102a5f98681759c656a4f3281c97f473cc8b4581e890d21832cc197935793",
+  "split": "development",
+  "warning": "All evaluated sets have been exposed for development. These are retrieval coverage/regression metrics, not independent generalization or answer accuracy.",
+  "before_200": {
+    "recall_at_5": 1.0,
+    "mrr_at_5": 0.9775,
+    "questions_with_source": 200,
+    "latency_p50_ms": 655.95,
+    "latency_p95_ms": 857.76,
+    "evidence_cases": 200,
+    "evidence_recall_at_5": 0.9958,
+    "evidence_complete_questions": 198,
+    "evidence_mrr_at_5": 0.9183,
+    "page_hit_without_complete_evidence": 2
+  },
+  "after": {
+    "development-200": {
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9825,
+      "questions_with_source": 200,
+      "latency_p50_ms": 615.76,
+      "latency_p95_ms": 923.64,
+      "evidence_cases": 200,
+      "evidence_recall_at_5": 1.0,
+      "evidence_complete_questions": 200,
+      "evidence_mrr_at_5": 0.9275,
+      "page_hit_without_complete_evidence": 0
+    },
+    "regression-108": {
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9861,
+      "questions_with_source": 108,
+      "latency_p50_ms": 647.95,
+      "latency_p95_ms": 786.34,
+      "evidence_cases": 108,
+      "evidence_recall_at_5": 1.0,
+      "evidence_complete_questions": 108,
+      "evidence_mrr_at_5": 0.963,
+      "page_hit_without_complete_evidence": 0
+    },
+    "stress-80": {
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9875,
+      "questions_with_source": 80,
+      "latency_p50_ms": 545.98,
+      "latency_p95_ms": 790.06,
+      "evidence_cases": 80,
+      "evidence_recall_at_5": 1.0,
+      "evidence_complete_questions": 80,
+      "evidence_mrr_at_5": 0.9875,
+      "page_hit_without_complete_evidence": 0
+    }
+  },
+  "gate_passed": true,
+  "improved_ids": [
+    "dpm-v3-multi-cashflows",
+    "gmd-v3-multi-assets"
+  ],
+  "regressed_ids": [],
+  "corpus_sha256": "aa8b29be4a52135b161e8f4b03258fd00f31db66f78b75b09e0ef3b733ba7e97",
+  "dataset_sha256": "6e7e57b1b2657cbe35585f494a4421e7ad86aa1fc2e26fd91b0bf520c388567b",
+  "same_200_query_vectors": true,
+  "facts_unchanged": true,
+  "facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+  "unit_tests_passed": 200,
+  "csv_rows_verified": 1552,
+  "cloud_generation_calls": 0,
+  "generation_evaluated": false,
+  "report": "artifacts/coverage-upgrade-final/REPORT.md"
+}
