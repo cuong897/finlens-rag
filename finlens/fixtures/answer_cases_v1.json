@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "split": "development",
+  "label_origin": "Assistant-authored on the known synthetic demo. Integration and review workflow only; not real-document answer accuracy or an independent test.",
+  "cases": [
+    {"id":"growth-revenue","company":"An Phát Demo","years":[2023,2024],"question":"So sánh DTT năm 2023 và 2024","expected_status":"answered","expected_mode":"calculated","growth":["25.00"]},
+    {"id":"growth-profit","company":"An Phát Demo","years":[2023,2024],"question":"So sánh LNST năm 2023 và 2024","expected_status":"answered","expected_mode":"calculated","growth":["-10.00"]},
+    {"id":"growth-two-metrics","company":"Bình Minh Demo","years":[2023,2024],"question":"So sánh doanh thu và lợi nhuận sau thuế năm 2023 và 2024","expected_status":"answered","expected_mode":"calculated","growth":["20.00","50.00"]},
+    {"id":"lookup-revenue","company":"An Phát Demo","years":[2024],"question":"DTT năm 2024 là bao nhiêu?","expected_status":"answered","expected_mode":"calculated","exact_text":"Doanh thu thuần năm 2024: 1250 tỷ VND."},
+    {"id":"lookup-cashflow","company":"An Phát Demo","years":[2025],"question":"Dòng tiền kinh doanh năm 2025 là bao nhiêu?","expected_status":"answered","expected_mode":"calculated","exact_text":"Dòng tiền kinh doanh năm 2025: 180 tỷ VND."},
+    {"id":"wrong-premise","company":"An Phát Demo","years":[2024],"question":"Vì sao lợi nhuận sau thuế tăng năm 2024?","expected_status":"answered","expected_mode":"calculated","premise_contradicted":true,"reference":"LNST giảm từ 100 xuống 90 tỷ, không được giải thích giả định tăng."},
+    {"id":"missing-year","company":"An Phát Demo","years":[2022],"question":"Doanh thu năm 2022 là bao nhiêu?","expected_status":"insufficient_evidence"},
+    {"id":"wrong-scope","company":"An Phát Demo","years":[2024],"scope":"standalone","question":"Doanh thu năm 2024 là bao nhiêu?","expected_status":"insufficient_evidence"},
+    {"id":"year-filter-conflict","company":"An Phát Demo","years":[2023],"question":"Doanh thu năm 2024 là bao nhiêu?","expected_status":"insufficient_evidence"},
+    {"id":"unreviewed-inventory","company":"An Phát Demo","years":[2024],"question":"Hàng tồn kho năm 2024 là bao nhiêu?","expected_status":"insufficient_evidence","reference":"Không có chỉ tiêu tồn kho được xác nhận; nguồn gợi ý không phải đáp án."},
+    {"id":"explain-margin","company":"Bình Minh Demo","years":[2024],"question":"Những yếu tố nào giúp biên lợi nhuận cải thiện năm 2024?","expected_status":"answered","expected_mode":"generated","requires_model":true,"source_page":2,"reference":"Giảm chi phí logistics và tối ưu tồn kho; không tự thêm nguyên nhân khác.","concept_groups":[["logistics","vận chuyển"],["tồn kho"]]},
+    {"id":"explain-working-capital","company":"An Phát Demo","years":[2025],"question":"Dòng tiền kinh doanh năm 2025 cải thiện nhờ đâu?","expected_status":"answered","expected_mode":"generated","requires_model":true,"source_page":2,"reference":"Thu hồi khoản phải thu khách hàng.","concept_groups":[["thu hồi"],["phải thu"]]},
+    {"id":"explain-cost","company":"An Phát Demo","years":[2024],"question":"Theo thuyết minh, những chi phí nào làm thu hẹp biên lợi nhuận?","expected_status":"answered","expected_mode":"generated","requires_model":true,"source_page":2,"reference":"Chi phí nguyên vật liệu và chi phí lãi vay tăng.","concept_groups":[["nguyên vật liệu"],["lãi vay"]]},
+    {"id":"unknown-ceo-salary","company":"An Phát Demo","years":[2024],"question":"CEO nhận lương bao nhiêu năm 2024?","expected_status":"insufficient_evidence","requires_model":true,"reference":"Không có lương CEO trong tài liệu; từ chối cung cấp số."},
+    {"id":"unknown-emissions","company":"An Phát Demo","years":[2023],"question":"Công ty phát thải bao nhiêu tấn carbon trong năm 2023?","expected_status":"insufficient_evidence","requires_model":true,"reference":"Tài liệu nói chưa cung cấp dữ liệu phát thải; không có con số."}
+  ]
+}
