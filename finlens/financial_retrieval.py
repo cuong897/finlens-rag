@@ -128,6 +128,17 @@ def expansion(query):
 
 
 def statement_kinds(text):
+    # A footer referring to notes must not override the statement's own title.
+    for line in text[:1500].splitlines():
+        title = re.sub(r"^[^\w]+", "", line).strip()
+        for kind, pattern in (
+            ("notes", r"notes to (?:the )?(?:consolidated )?financial statements|thuyết minh báo cáo"),
+            ("balance", r"(?:consolidated )?(?:balance sheet|statement of financial position)|bảng cân đối"),
+            ("income", r"(?:consolidated )?(?:income statement|statement of income|statement of profit)|báo cáo kết quả"),
+            ("cashflow", r"(?:consolidated )?(?:cash flow statement|statement of cash flows)|báo cáo lưu chuyển"),
+        ):
+            if re.match(pattern, title, re.I):
+                return {kind}
     header = " ".join(text[:1500].split())
     # Repeated side navigation is title case; actual headings are usually uppercase.
     if "NOTES TO THE" in header or "NOTES TO CONSOLIDATED" in header:
@@ -151,6 +162,27 @@ def statement_kinds(text):
 _AMOUNT = re.compile(r"(?<!\w)\(?-?\d{1,3}(?:[,.]\d{3})+(?:[,.]\d+)?\)?(?!\w)")
 
 
+def _ordered_label(line, label):
+    """Bounded word insertions from adjacent PDF columns; no answer values."""
+    words, wanted = line.split(), label.split()
+    if len(wanted) < 4:
+        return False
+    for start in range(len(words) - 2):
+        if words[start:start + 3] != wanted[:3]:
+            continue
+        position, noise = start + 3, 0
+        for word in wanted[3:]:
+            while position < len(words) and words[position] != word and noise < 6:
+                position += 1
+                noise += 1
+            if position == len(words) or words[position] != word:
+                break
+            position += 1
+        else:
+            return True
+    return False
+
+
 def label_strength(text, concept):
     # Financial PDFs often insert row codes/amounts into a wrapped label.
     # Match its words without numeric interruptions, retaining numbers only as
@@ -164,7 +196,8 @@ def label_strength(text, concept):
         if not re.search(r"\d", raw): continue
         line = " ".join(t for t in clean(_AMOUNT.sub(" ", raw)).split() if not t.isdigit())
         for label in concept["labels"]:
-            if not contains(line, label): continue
+            intact = contains(line, label)
+            if not intact and not _ordered_label(line, label): continue
             # Avoid a broader/sibling row being mistaken for the requested item.
             if concept["key"] == "cash" and ("equivalent" in line or "flows" in line): continue
             if concept["key"] == "current_assets" and ("non current" in line or "other current" in line): continue
@@ -178,7 +211,8 @@ def label_strength(text, concept):
             before = line.split(label, 1)[0].strip()
             exact = not before or all(re.fullmatch(r"[ivx]+|[a-z]", t) for t in before.split())
             best = max(best, 1.0 + .4 * exact + .02 * min(8, len(label.split()))
-                       + .08 * min(2, len(_AMOUNT.findall(raw))) + .12 * contains(clean(raw), label))
+                       + .08 * min(2, len(_AMOUNT.findall(raw))) + .12 * contains(clean(raw), label)
+                       - (.2 if not intact else 0))
     if not best and any(contains(clean(text), label) for label in concept["labels"]):
         best = .25
     return best
