@@ -48,7 +48,8 @@ def score_fields(fields, text, candidates):
     actual = Counter((c['metric'], c['year'], c['value'], c['unit'], c['currency']) for c in candidates)
     import re
     return {'expected_fields':len(expected),
-        'numeric_text_preserved':sum(bool(re.search(r'(?<![\d.,])' + re.escape(f['raw_value']) + r'(?![\d.,])', text)) for f in fields),
+        'numeric_text_expected':sum(f.get('raw_value') is not None for f in fields),
+        'numeric_text_preserved':sum(bool(re.search(r'(?<![\d.,])' + re.escape(f['raw_value']) + r'(?![\d.,])', text)) for f in fields if f.get('raw_value') is not None),
         'exact_drafts':len(expected & actual.keys()), 'proposals':len(candidates),
         'wrong_drafts':sum(count for key,count in actual.items() if key not in expected),
         'duplicates':sum(max(0,n-1) for n in actual.values()),

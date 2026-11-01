@@ -1,0 +1,103 @@
+{
+  "kind": "existing_real_pdf_draft_development",
+  "warning": "Existing assistant visual labels already exposed for development. 12 supported target metrics plus 29 pilot fields. Total receivables targets excluded because the app metric means trade receivables. Extra proposals outside gold metric/year/page scope are not judged false. Not independent, production accuracy or full-document coverage.",
+  "parser_version": "financial-layout-v4-ocr-bilingual",
+  "targets_sha256": "3a101bff4adfda77f53f7fef23024c4f2234323540f10517862af30c5d7db8a5",
+  "pilot_labels_sha256": "829b872c4ecff86817838143409e754e2b0c1d478cf9c15cce24fdf006d62032",
+  "groups": {
+    "all": {
+      "pages": 36,
+      "fields": 125,
+      "exact_drafts": 53,
+      "proposals": 55,
+      "recall_within_supported_metrics": 0.424,
+      "precision_within_label_scope": 0.9636363636363636,
+      "wrong_drafts": 2,
+      "numeric_text_preserved": 96,
+      "numeric_text_expected": 96
+    },
+    "BMP": {
+      "pages": 3,
+      "fields": 24,
+      "exact_drafts": 0,
+      "proposals": 0,
+      "recall_within_supported_metrics": 0.0,
+      "precision_within_label_scope": null,
+      "wrong_drafts": 0,
+      "numeric_text_preserved": 24,
+      "numeric_text_expected": 24
+    },
+    "CMG": {
+      "pages": 2,
+      "fields": 6,
+      "exact_drafts": 6,
+      "proposals": 6,
+      "recall_within_supported_metrics": 1.0,
+      "precision_within_label_scope": 1.0,
+      "wrong_drafts": 0,
+      "numeric_text_preserved": 0,
+      "numeric_text_expected": 0
+    },
+    "DPM": {
+      "pages": 4,
+      "fields": 24,
+      "exact_drafts": 0,
+      "proposals": 0,
+      "recall_within_supported_metrics": 0.0,
+      "precision_within_label_scope": null,
+      "wrong_drafts": 0,
+      "numeric_text_preserved": 24,
+      "numeric_text_expected": 24
+    },
+    "ELC": {
+      "pages": 2,
+      "fields": 6,
+      "exact_drafts": 6,
+      "proposals": 6,
+      "recall_within_supported_metrics": 1.0,
+      "precision_within_label_scope": 1.0,
+      "wrong_drafts": 0,
+      "numeric_text_preserved": 0,
+      "numeric_text_expected": 0
+    },
+    "FPT": {
+      "pages": 12,
+      "fields": 17,
+      "exact_drafts": 17,
+      "proposals": 17,
+      "recall_within_supported_metrics": 1.0,
+      "precision_within_label_scope": 1.0,
+      "wrong_drafts": 0,
+      "numeric_text_preserved": 0,
+      "numeric_text_expected": 0
+    },
+    "GMD": {
+      "pages": 6,
+      "fields": 24,
+      "exact_drafts": 10,
+      "proposals": 12,
+      "recall_within_supported_metrics": 0.4166666666666667,
+      "precision_within_label_scope": 0.8333333333333334,
+      "wrong_drafts": 2,
+      "numeric_text_preserved": 24,
+      "numeric_text_expected": 24
+    },
+    "REE": {
+      "pages": 7,
+      "fields": 24,
+      "exact_drafts": 14,
+      "proposals": 14,
+      "recall_within_supported_metrics": 0.5833333333333334,
+      "precision_within_label_scope": 1.0,
+      "wrong_drafts": 0,
+      "numeric_text_preserved": 24,
+      "numeric_text_expected": 24
+    }
+  },
+  "facts_unchanged": true,
+  "facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+  "duration_seconds": 11.77,
+  "generation_calls": 0,
+  "facts_written": 0,
+  "measurement_stage": "before geometry and header fixes; exposed development"
+}
