@@ -1,0 +1,59 @@
+[
+  {
+    "company": "SAB",
+    "url": "https://www.sabeco.com.vn/Data/Sites/1/media/co%20dong/bao%20cao%20tai%20chinh/2025/2025_03_27/2024FS-CONSO-EN.pdf",
+    "filename": "SAB_2024.pdf",
+    "pages": 72,
+    "bytes": 19750917,
+    "sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794",
+    "eligible": true,
+    "year": 2024,
+    "scope": "consolidated",
+    "publisher": "SABECO",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024"
+  },
+  {
+    "company": "MWG",
+    "url": "https://cdnv2.tgdd.vn/mwgvn/investorrelations/files/posts/2025/4/0/02/b2/02b2f3760cfcfdb9aba7ee93e3e059bd.pdf",
+    "filename": "MWG_2024.pdf",
+    "pages": 96,
+    "bytes": 15240068,
+    "sha256": "af72db45916fc453d0642e0950ed2a0649895cc6eefb6b32b5c906352af5f13a",
+    "year": 2024,
+    "scope": "consolidated",
+    "publisher": "Mobile World Investment Corporation",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024"
+  },
+  {
+    "company": "BCM",
+    "url": "https://becamex.com.vn/wp-content/uploads/2025/04/20250331-BCM-THE-AUDITED-CONSOLIDATED-FINANCIAL-STATEMENTS-2024.pdf",
+    "filename": "BCM_2024.pdf",
+    "pages": 79,
+    "bytes": 14384802,
+    "sha256": "ee5fa1f42aa8cf52bf674c51d683c9e60a673d236172a25b8d75e09b79f604c4",
+    "year": 2024,
+    "scope": "consolidated",
+    "publisher": "Becamex Group",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024"
+  },
+  {
+    "company": "VNM",
+    "url": "https://d8um25gjecm9v.cloudfront.net/cms/1740733443_20250228_VNM_BCTC_KIEM_TOAN_2024_HOP_NHAT_VN_632cc4f30d.pdf",
+    "filename": "VNM_VAS_2024.pdf",
+    "pages": 63,
+    "bytes": 3453158,
+    "sha256": "a70f448abc8aa61f0b6d25a281a1af4bf0d46d7309083d18556129cc53620450",
+    "year": 2024,
+    "scope": "consolidated",
+    "publisher": "Vinamilk",
+    "period_start": "2024-01-01",
+    "period_end": "2024-12-31",
+    "period_label": "2024: 01/01/2024 - 31/12/2024"
+  }
+]
