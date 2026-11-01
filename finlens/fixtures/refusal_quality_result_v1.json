@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "date": "2026-11-01",
+  "cases": 3,
+  "contract_passed": 3,
+  "tests_passed": 226,
+  "prior_review": "artifacts/answer-check-v1/ASSISTANT_REVIEW.md",
+  "prior_reviews_preserved": true,
+  "scope": "Three previously known synthetic refusal cases after targeted fixes, not independent validation.",
+  "results": [
+    {
+      "id": "unreviewed-inventory",
+      "answer": "Chưa có Hàng tồn kho năm 2024 được xác nhận trong phạm vi đã chọn.",
+      "citation_count": 0,
+      "model": null,
+      "attempts": []
+    },
+    {
+      "id": "unknown-ceo-salary",
+      "answer": "Chưa tìm thấy số liệu trả lời câu hỏi “CEO nhận lương bao nhiêu năm 2024?” trong các đoạn nguồn đã chọn.",
+      "citation_count": 0,
+      "model": "gemini-3.6-flash",
+      "attempts": [
+        {
+          "model": "gemini-3.8-flash",
+          "status": "failed",
+          "code": "timeout",
+          "latency_ms": 10395.42,
+          "usage": null
+        },
+        {
+          "model": "gemini-3.6-flash",
+          "status": "succeeded",
+          "latency_ms": 2015.55,
+          "usage": {
+            "promptTokenCount": 530,
+            "candidatesTokenCount": 17,
+            "totalTokenCount": 622,
+            "thoughtsTokenCount": 75
+          }
+        }
+      ]
+    },
+    {
+      "id": "unknown-emissions",
+      "answer": "Chưa tìm thấy số liệu trả lời câu hỏi “Công ty phát thải bao nhiêu tấn carbon trong năm 2023?” trong các đoạn nguồn đã chọn.\n\nNguồn ghi: “Công ty chưa cung cấp dữ liệu về phát thải carbon trong tài liệu này.” [S1]",
+      "citation_count": 1,
+      "model": "gemini-3.5-flash-lite",
+      "attempts": [
+        {
+          "model": "gemini-3.8-flash",
+          "status": "skipped",
+          "code": "cooldown"
+        },
+        {
+          "model": "gemini-3.6-flash",
+          "status": "failed",
+          "code": "service_unavailable",
+          "latency_ms": 1839.09,
+          "usage": null
+        },
+        {
+          "model": "gemini-3.5-flash-lite",
+          "status": "succeeded",
+          "latency_ms": 1201.36,
+          "usage": {
+            "promptTokenCount": 531,
+            "candidatesTokenCount": 17,
+            "totalTokenCount": 548
+          }
+        }
+      ]
+    }
+  ],
+  "report": "artifacts/refusal-quality-live-v1/REPORT.md"
+}

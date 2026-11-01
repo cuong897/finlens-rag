@@ -10,6 +10,7 @@ from finlens.providers import ModelConfig, ProviderError, make_provider
 from finlens.retrieval import bm25, content_terms, contextual_fusion, cosine, financial_query, net_sales_intent
 from finlens.store import Store
 from finlens.query_language import canonical_query
+from finlens.financial_retrieval import profile, label_strength, clean, contains
 
 ALIASES = {
     "revenue": ["doanh thu", "revenue"],
@@ -206,6 +207,9 @@ class Engine:
             result.update(answer=str(exc), citations=[], comparisons=[])
             if exc.code == "missing_fact":
                 hits, retrieval_mode, warnings = timed("retrieval", self.retrieve, request)
+                concepts = profile(request.question + ' ' + ' '.join(METRICS[m] for m in metrics))
+                hits = [h for h in hits if any(label_strength(h['text'], c) >= 1 or
+                        any(contains(clean(h['text']), phrase) for phrase in c['vi']) for c in concepts)]
                 result["retrieval"] = retrieval_mode
                 result["warnings"].extend(warnings)
                 # Source candidates are for human review, never promoted to facts.
@@ -260,9 +264,21 @@ class Engine:
                     generated = timed("generation", self.provider.generate, request.question, evidence)
                     result["generation_model"] = self.config.chat_model
                 if generated == "KHONG_DU_DU_LIEU":
+                    refusal = ('Không đủ bằng chứng để giải thích nguyên nhân trong các đoạn nguồn đã chọn.' if wants_reason else
+                               f'Chưa tìm thấy số liệu trả lời câu hỏi “{request.question}” trong các đoạn nguồn đã chọn.')
                     result.update(status="partial" if numeric_answer else "insufficient_evidence",
                                   mode="calculated" if numeric_answer else "extractive",
-                                  answer="\n\n".join(numeric_answer + ["Không đủ bằng chứng để trả lời phần giải thích."]))
+                                  answer="\n\n".join(numeric_answer + [refusal]))
+                    query_terms = content_terms(request.question) - {'cong', 'ty'}
+                    for citation in evidence:
+                        sentences = re.split(r"(?<=[.!?])\s+|\n", citation['excerpt'])
+                        negative = next((s.strip() for s in sentences if len(s.strip()) >= 25 and
+                            any(phrase in canonical_query(s) for phrase in ('chua cung cap du lieu', 'khong co du lieu', 'chua cong bo so lieu')) and
+                            len(content_terms(s) & query_terms) >= 2), None)
+                        if negative:
+                            result['citations'].append(citation)
+                            result['answer'] += f'\n\nNguồn ghi: “{negative}” [{citation["id"]}]'
+                            break
                     return finish()
                 if not valid_citations(generated, evidence):
                     raise ProviderError("Câu trả lời của mô hình không đạt kiểm tra nguồn dẫn.")

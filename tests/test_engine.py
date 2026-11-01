@@ -32,6 +32,23 @@ class EngineTests(unittest.TestCase):
         self.assertEqual(len(result['generation_attempts']),1)
         self.assertGreaterEqual(result['timings_ms']['generation'],0)
 
+    def test_unknown_metric_does_not_offer_unrelated_review_sources(self):
+        result=self.engine.answer(self.request('Hàng tồn kho năm 2024 là bao nhiêu?',years=[2024]))
+        self.assertEqual(result['status'],'insufficient_evidence')
+        self.assertEqual(result['citations'],[])
+        self.assertFalse(result.get('review_required',False))
+
+    def test_model_abstention_names_the_question_and_quotes_explicit_missing_data(self):
+        class Refuse:
+            def generate_with_report(self,q,e):return Generation('KHONG_DU_DU_LIEU','test',[{'model':'test','status':'succeeded'}])
+        engine=Engine(self.store,ModelConfig(chat_model='test'),Refuse())
+        result=engine.answer(self.request('Công ty phát thải bao nhiêu tấn carbon năm 2023?',years=[2023]))
+        self.assertEqual(result['status'],'insufficient_evidence')
+        self.assertNotIn('phần giải thích',result['answer'])
+        self.assertIn('chưa cung cấp dữ liệu về phát thải carbon',result['answer'])
+        self.assertTrue(result['citations'])
+        self.assertTrue(all(c['report_year']==2023 for c in result['citations']))
+
     def setUp(self):
         self.test_root = Path(__file__).resolve().parents[1] / "data" / "test-runs"
         self.test_root.mkdir(parents=True, exist_ok=True)
