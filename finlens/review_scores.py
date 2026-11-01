@@ -1,9 +1,15 @@
 """Validate reviewer-supplied answer scores without certifying independence."""
 import csv
 import json
+import re
 from pathlib import Path
 
 from finlens.retrieval_dataset import fingerprint
+
+
+def original_cell(actual, expected):
+    # The browser worksheet escapes formula-like CSV cells for spreadsheet safety.
+    return actual==expected or (bool(re.match(r'^\s*[=+\-@]|^[\t\r\n]',expected)) and actual=="'"+expected)
 
 
 def score_reviews(results_file,reviews_file,cases_file,output_dir):
@@ -25,7 +31,7 @@ def score_reviews(results_file,reviews_file,cases_file,output_dir):
         if not any(grades) and not row.get('abstention_correct','').strip():continue
         if ident not in answers:raise ValueError('Không chấm câu chưa được chạy.')
         answer=answers[ident]['response']
-        if row.get('question')!=cases[ident]['question'] or row.get('answer')!=answer['answer']:
+        if not original_cell(row.get('question'),cases[ident]['question']) or not original_cell(row.get('answer'),answer['answer']):
             raise ValueError('Nội dung phiếu chấm khác câu trả lời đã lưu.')
         try:source_matches=json.loads(row.get('sources',''))==answer['citations']
         except json.JSONDecodeError:source_matches=False
