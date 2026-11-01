@@ -16,8 +16,8 @@ import pymupdf
 from finlens.pdf_text import read_page, VERSION
 from finlens.retrieval_dataset import fingerprint
 from finlens.store import Store
-from finlens.suggestions import extract_page, parse_amount
-from scripts.evaluate_pdf_quality import score_fields
+from finlens.suggestions import suggest_page, parse_amount
+from scripts.evaluate_pdf_quality import score_fields, implementation_digest
 
 
 METRICS = {'current_assets':'current_assets','cash':'cash','inventory':'inventory',
@@ -55,7 +55,7 @@ def main():
         with pymupdf.open(path) as pdf:
             for number,fields in sorted(pages.items()):
                 text,warnings=read_page(pdf[number-1],ocr_dir=store.root/'ocr/tessdata')
-                extracted=extract_page(pdf[number-1],document['id'],number,context=document,ocr_dir=store.root/'ocr/tessdata')
+                extracted=suggest_page(path,document['id'],number,context=document,ocr_dir=store.root/'ocr/tessdata')
                 keys={(f['metric'],f['year']) for f in fields}
                 candidates=[c for c in extracted['candidates'] if (c['metric'],c['year']) in keys]
                 row={'company':report['company'],'report_year':report['year'],'page':number,'source_sha256':report['sha256'],
@@ -73,6 +73,7 @@ def main():
             'wrong_drafts':sum(r['wrong_drafts'] for r in selected),'numeric_text_preserved':sum(r['numeric_text_preserved'] for r in selected),'numeric_text_expected':sum(r['numeric_text_expected'] for r in selected)}
     result={'kind':'existing_real_pdf_draft_development','warning':'Existing assistant visual labels already exposed for development. 12 supported target metrics plus 29 pilot fields. Total receivables targets excluded because the app metric means trade receivables. Extra proposals outside gold metric/year/page scope are not judged false. Not independent, production accuracy or full-document coverage.',
         'parser_version':VERSION,'targets_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
+        'implementation_sha256':implementation_digest(),
         'pilot_labels_sha256':hashlib.sha256(pilot_path.read_bytes()).hexdigest(),
         'groups':groups,'rows':rows,'facts_unchanged':before==fingerprint(store.facts()),'facts_sha256':before,
         'duration_seconds':round(time.perf_counter()-started,2),'generation_calls':0,'facts_written':0}

@@ -17,6 +17,12 @@ from finlens.pdf_text import read_page, VERSION
 from finlens.suggestions import extract_page
 
 
+def implementation_digest():
+    paths=['finlens/ocr.py','finlens/pdf_text.py','finlens/suggestions.py',
+           'scripts/evaluate_pdf_quality.py','scripts/evaluate_real_pdf_drafts.py']
+    return hashlib.sha256(json.dumps({p:hashlib.sha256(Path(p).read_bytes()).hexdigest() for p in paths},sort_keys=True).encode()).hexdigest()
+
+
 def assemble(source):
     labels = json.loads((source / 'labels.json').read_text(encoding='utf-8'))
     with pymupdf.open(source / 'native-source.pdf') as native, pymupdf.open() as result:
@@ -90,6 +96,7 @@ def evaluate(source, output, ocr_dir):
             'draft_precision': correct/proposals if proposals else None, 'proposals':proposals,
             'wrong_drafts': wrong, 'errors': sum(r['error'] is not None for r in selected)}
     report = {'kind':'synthetic_pdf_quality_development', 'warning':labels['limitations'], 'parser_version':VERSION,
+        'implementation_sha256':implementation_digest(),
         'pymupdf_version':pymupdf.VersionBind, 'pdf_sha256':labels['pdf_sha256'],
         'labels_sha256':hashlib.sha256((source/'labels.json').read_bytes()).hexdigest(),
         'duration_seconds':round(time.perf_counter()-start,2), 'groups':groups, 'rows':rows,

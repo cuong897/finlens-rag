@@ -194,6 +194,12 @@ function renderSuggestions() {
       ? `/api/documents/${encodeURIComponent(candidate.document_id)}/pdf#page=${candidate.page}`
       : `/api/documents/${encodeURIComponent(candidate.document_id)}/file`;
     original.target = '_blank'; original.rel = 'noopener'; content.append(original);
+    if (candidate.method === 'aligned_ocr_columns') content.append(node('div', 'doc-meta', 'Đọc từ ảnh · cần kiểm tra từng chữ số với nguồn'));
+    if (candidate.unit_source_page) {
+      const unitSource = node('a', 'text-link', `Đối chiếu đơn vị ở trang ${candidate.unit_source_page} ↗`);
+      unitSource.href = `/api/documents/${encodeURIComponent(candidate.document_id)}/pdf#page=${candidate.unit_source_page}`;
+      unitSource.target = '_blank'; unitSource.rel = 'noopener'; content.append(unitSource);
+    }
     if (!confirmed) {
       const selection = node('label', 'check-label');
       const checkbox = node('input', 'batch-candidate'); checkbox.type = 'checkbox';
@@ -211,7 +217,7 @@ function renderSuggestions() {
       $('#fact-page').max = state.documents.find(d => d.id === candidate.document_id)?.page_count || 250;
       $('#fact-metric').value = candidate.metric; $('#fact-year').value = candidate.year;
       $('#fact-value').value = candidate.value; $('#fact-unit').value = candidate.unit; $('#fact-currency').value = candidate.currency;
-      $('#fact-note').value = `Đối chiếu ${candidate.source_cell ? `${candidate.source_label}, ô ${candidate.source_cell}` : `dòng ${candidate.source_label}, trang PDF ${candidate.page}`}, cột năm ${candidate.year}; đơn vị ${state.catalog.units[candidate.unit]} ${candidate.currency}.`.slice(0, 600);
+      $('#fact-note').value = `Đối chiếu ${candidate.source_cell ? `${candidate.source_label}, ô ${candidate.source_cell}` : `dòng ${candidate.source_label}, trang PDF ${candidate.page}`}, cột năm ${candidate.year}; đơn vị ${state.catalog.units[candidate.unit]} ${candidate.currency}${candidate.unit_source_page ? ` đọc từ trang ${candidate.unit_source_page}` : ''}.`.slice(0, 600);
       $('#fact-confirm').checked = false;
       const tableSource = state.documents.find(d => d.id === candidate.document_id)?.file_type !== 'pdf';
       const pdf = node('a', 'text-link', tableSource ? 'Tải tệp gốc để kiểm tra ↗' : 'Mở PDF gốc để kiểm tra ↗');
@@ -258,7 +264,7 @@ $('#batch-review-form').addEventListener('submit', async event => {
     const c = state.suggestions[index];
     return { document_id: c.document_id, page: c.page, metric: c.metric, year: c.year,
       value: c.value, unit: c.unit, currency: c.currency, confirmed: true,
-      note: `Đã đối chiếu ${c.source_label}, ${c.source_cell ? `ô ${c.source_cell}` : `trang PDF ${c.page}`}, cột năm ${c.year}; giá trị gốc ${c.raw_value}; ${state.catalog.units[c.unit]} ${c.currency}.`.slice(0, 600) };
+      note: `Đã đối chiếu ${c.source_label}, ${c.source_cell ? `ô ${c.source_cell}` : `trang PDF ${c.page}`}, cột năm ${c.year}; giá trị gốc ${c.raw_value}; ${state.catalog.units[c.unit]} ${c.currency}${c.unit_source_page ? ` đọc từ trang ${c.unit_source_page}` : ''}.`.slice(0, 600) };
   });
   state.batchBusy = true; updateBatchReview();
   try {
