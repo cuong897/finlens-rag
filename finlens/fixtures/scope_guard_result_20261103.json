@@ -1,0 +1,625 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "kind": "scope_and_bilingual_rows_development_regression",
+  "measured_product_commit": "ec6959c935727573ed21c3ebd9b266936264cf3b",
+  "test_count": 270,
+  "label_role": "Exposed development sources, not independent test.",
+  "original_results_unchanged": true,
+  "main_facts_unchanged": true,
+  "main_facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+  "same_recent_corpus_sha256": "8b0dec1879f11ba475029f0ebf69feb472992530987c0af369af0b67a0745cfb",
+  "retrieval": {
+    "recent200": {
+      "cases": 200,
+      "summary": {
+        "bm25": {
+          "recall_at_5": 0.82,
+          "mrr_at_5": 0.5838,
+          "questions_with_source": 167,
+          "latency_p50_ms": 23.73,
+          "latency_p95_ms": 43.04,
+          "evidence_cases": 200,
+          "evidence_recall_at_5": 0.74,
+          "evidence_complete_questions": 143,
+          "evidence_mrr_at_5": 0.4712,
+          "page_hit_without_complete_evidence": 24
+        },
+        "dense": {
+          "recall_at_5": 0.7125,
+          "mrr_at_5": 0.4887,
+          "questions_with_source": 146,
+          "latency_p50_ms": 287.7,
+          "latency_p95_ms": 380.18,
+          "evidence_cases": 200,
+          "evidence_recall_at_5": 0.565,
+          "evidence_complete_questions": 106,
+          "evidence_mrr_at_5": 0.318,
+          "page_hit_without_complete_evidence": 40
+        },
+        "hybrid_rrf": {
+          "recall_at_5": 0.8975,
+          "mrr_at_5": 0.6807,
+          "questions_with_source": 183,
+          "latency_p50_ms": 314.07,
+          "latency_p95_ms": 407.82,
+          "evidence_cases": 200,
+          "evidence_recall_at_5": 0.8125,
+          "evidence_complete_questions": 156,
+          "evidence_mrr_at_5": 0.5172,
+          "page_hit_without_complete_evidence": 27
+        },
+        "hybrid_context": {
+          "recall_at_5": 0.9825,
+          "mrr_at_5": 0.9675,
+          "questions_with_source": 197,
+          "latency_p50_ms": 483.67,
+          "latency_p95_ms": 622.33,
+          "evidence_cases": 200,
+          "evidence_recall_at_5": 0.8575,
+          "evidence_complete_questions": 166,
+          "evidence_mrr_at_5": 0.79,
+          "page_hit_without_complete_evidence": 31
+        }
+      },
+      "by_company": {
+        "BCM": {
+          "bm25": {
+            "cases": 50,
+            "recall_at_5": 0.81,
+            "mrr_at_5": 0.6613,
+            "questions_with_source": 41,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.57,
+            "evidence_mrr_at_5": 0.394,
+            "evidence_complete_questions": 26
+          },
+          "dense": {
+            "cases": 50,
+            "recall_at_5": 0.64,
+            "mrr_at_5": 0.423,
+            "questions_with_source": 33,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.4,
+            "evidence_mrr_at_5": 0.184,
+            "evidence_complete_questions": 17
+          },
+          "hybrid_rrf": {
+            "cases": 50,
+            "recall_at_5": 0.94,
+            "mrr_at_5": 0.7407,
+            "questions_with_source": 48,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.72,
+            "evidence_mrr_at_5": 0.4207,
+            "evidence_complete_questions": 33
+          },
+          "hybrid_context": {
+            "cases": 50,
+            "recall_at_5": 1.0,
+            "mrr_at_5": 1.0,
+            "questions_with_source": 50,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.72,
+            "evidence_mrr_at_5": 0.66,
+            "evidence_complete_questions": 34
+          }
+        },
+        "MWG": {
+          "bm25": {
+            "cases": 50,
+            "recall_at_5": 0.77,
+            "mrr_at_5": 0.5247,
+            "questions_with_source": 39,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.75,
+            "evidence_mrr_at_5": 0.4563,
+            "evidence_complete_questions": 37
+          },
+          "dense": {
+            "cases": 50,
+            "recall_at_5": 0.67,
+            "mrr_at_5": 0.4863,
+            "questions_with_source": 34,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.59,
+            "evidence_mrr_at_5": 0.362,
+            "evidence_complete_questions": 29
+          },
+          "hybrid_rrf": {
+            "cases": 50,
+            "recall_at_5": 0.86,
+            "mrr_at_5": 0.5847,
+            "questions_with_source": 44,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.84,
+            "evidence_mrr_at_5": 0.5047,
+            "evidence_complete_questions": 41
+          },
+          "hybrid_context": {
+            "cases": 50,
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.9533,
+            "questions_with_source": 50,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.92,
+            "evidence_mrr_at_5": 0.8433,
+            "evidence_complete_questions": 45
+          }
+        },
+        "SAB": {
+          "bm25": {
+            "cases": 50,
+            "recall_at_5": 0.84,
+            "mrr_at_5": 0.6547,
+            "questions_with_source": 43,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.84,
+            "evidence_mrr_at_5": 0.588,
+            "evidence_complete_questions": 41
+          },
+          "dense": {
+            "cases": 50,
+            "recall_at_5": 0.74,
+            "mrr_at_5": 0.5263,
+            "questions_with_source": 38,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.64,
+            "evidence_mrr_at_5": 0.3803,
+            "evidence_complete_questions": 30
+          },
+          "hybrid_rrf": {
+            "cases": 50,
+            "recall_at_5": 0.81,
+            "mrr_at_5": 0.689,
+            "questions_with_source": 42,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.81,
+            "evidence_mrr_at_5": 0.5663,
+            "evidence_complete_questions": 39
+          },
+          "hybrid_context": {
+            "cases": 50,
+            "recall_at_5": 0.93,
+            "mrr_at_5": 0.94,
+            "questions_with_source": 47,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.93,
+            "evidence_mrr_at_5": 0.88,
+            "evidence_complete_questions": 46
+          }
+        },
+        "VNM": {
+          "bm25": {
+            "cases": 50,
+            "recall_at_5": 0.86,
+            "mrr_at_5": 0.4947,
+            "questions_with_source": 44,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.8,
+            "evidence_mrr_at_5": 0.4463,
+            "evidence_complete_questions": 39
+          },
+          "dense": {
+            "cases": 50,
+            "recall_at_5": 0.8,
+            "mrr_at_5": 0.519,
+            "questions_with_source": 41,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.63,
+            "evidence_mrr_at_5": 0.3457,
+            "evidence_complete_questions": 30
+          },
+          "hybrid_rrf": {
+            "cases": 50,
+            "recall_at_5": 0.98,
+            "mrr_at_5": 0.7083,
+            "questions_with_source": 49,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.88,
+            "evidence_mrr_at_5": 0.5773,
+            "evidence_complete_questions": 43
+          },
+          "hybrid_context": {
+            "cases": 50,
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.9767,
+            "questions_with_source": 50,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.86,
+            "evidence_mrr_at_5": 0.7767,
+            "evidence_complete_questions": 41
+          }
+        }
+      }
+    },
+    "legacy200": {
+      "cases": 200,
+      "summary": {
+        "bm25": {
+          "recall_at_5": 0.8125,
+          "mrr_at_5": 0.5475,
+          "questions_with_source": 165,
+          "latency_p50_ms": 56.12,
+          "latency_p95_ms": 84.89,
+          "evidence_cases": 200,
+          "evidence_recall_at_5": 0.78,
+          "evidence_complete_questions": 153,
+          "evidence_mrr_at_5": 0.4542,
+          "page_hit_without_complete_evidence": 12
+        },
+        "dense": {
+          "recall_at_5": 0.51,
+          "mrr_at_5": 0.3157,
+          "questions_with_source": 106,
+          "latency_p50_ms": 326.87,
+          "latency_p95_ms": 409.62,
+          "evidence_cases": 200,
+          "evidence_recall_at_5": 0.3383,
+          "evidence_complete_questions": 62,
+          "evidence_mrr_at_5": 0.1854,
+          "page_hit_without_complete_evidence": 44
+        },
+        "hybrid_rrf": {
+          "recall_at_5": 0.87,
+          "mrr_at_5": 0.6667,
+          "questions_with_source": 178,
+          "latency_p50_ms": 382.59,
+          "latency_p95_ms": 484.72,
+          "evidence_cases": 200,
+          "evidence_recall_at_5": 0.8075,
+          "evidence_complete_questions": 157,
+          "evidence_mrr_at_5": 0.5105,
+          "page_hit_without_complete_evidence": 21
+        },
+        "hybrid_context": {
+          "recall_at_5": 1.0,
+          "mrr_at_5": 0.9652,
+          "questions_with_source": 200,
+          "latency_p50_ms": 602.58,
+          "latency_p95_ms": 742.75,
+          "evidence_cases": 200,
+          "evidence_recall_at_5": 1.0,
+          "evidence_complete_questions": 200,
+          "evidence_mrr_at_5": 0.9102,
+          "page_hit_without_complete_evidence": 0
+        }
+      },
+      "by_company": {
+        "BMP": {
+          "bm25": {
+            "cases": 50,
+            "recall_at_5": 0.92,
+            "mrr_at_5": 0.679,
+            "questions_with_source": 46,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.92,
+            "evidence_mrr_at_5": 0.6013,
+            "evidence_complete_questions": 46
+          },
+          "dense": {
+            "cases": 50,
+            "recall_at_5": 0.26,
+            "mrr_at_5": 0.1047,
+            "questions_with_source": 13,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.1933,
+            "evidence_mrr_at_5": 0.0797,
+            "evidence_complete_questions": 9
+          },
+          "hybrid_rrf": {
+            "cases": 50,
+            "recall_at_5": 0.84,
+            "mrr_at_5": 0.5513,
+            "questions_with_source": 42,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.76,
+            "evidence_mrr_at_5": 0.45,
+            "evidence_complete_questions": 37
+          },
+          "hybrid_context": {
+            "cases": 50,
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.96,
+            "questions_with_source": 50,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 1.0,
+            "evidence_mrr_at_5": 0.92,
+            "evidence_complete_questions": 50
+          }
+        },
+        "DPM": {
+          "bm25": {
+            "cases": 50,
+            "recall_at_5": 0.82,
+            "mrr_at_5": 0.5863,
+            "questions_with_source": 41,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.76,
+            "evidence_mrr_at_5": 0.4413,
+            "evidence_complete_questions": 37
+          },
+          "dense": {
+            "cases": 50,
+            "recall_at_5": 0.68,
+            "mrr_at_5": 0.4737,
+            "questions_with_source": 35,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.2667,
+            "evidence_mrr_at_5": 0.2067,
+            "evidence_complete_questions": 12
+          },
+          "hybrid_rrf": {
+            "cases": 50,
+            "recall_at_5": 0.91,
+            "mrr_at_5": 0.653,
+            "questions_with_source": 47,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.83,
+            "evidence_mrr_at_5": 0.4633,
+            "evidence_complete_questions": 40
+          },
+          "hybrid_context": {
+            "cases": 50,
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.9557,
+            "questions_with_source": 50,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 1.0,
+            "evidence_mrr_at_5": 0.889,
+            "evidence_complete_questions": 50
+          }
+        },
+        "GMD": {
+          "bm25": {
+            "cases": 50,
+            "recall_at_5": 0.76,
+            "mrr_at_5": 0.5053,
+            "questions_with_source": 39,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.75,
+            "evidence_mrr_at_5": 0.4453,
+            "evidence_complete_questions": 37
+          },
+          "dense": {
+            "cases": 50,
+            "recall_at_5": 0.59,
+            "mrr_at_5": 0.404,
+            "questions_with_source": 31,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.4267,
+            "evidence_mrr_at_5": 0.2073,
+            "evidence_complete_questions": 19
+          },
+          "hybrid_rrf": {
+            "cases": 50,
+            "recall_at_5": 0.85,
+            "mrr_at_5": 0.689,
+            "questions_with_source": 44,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.78,
+            "evidence_mrr_at_5": 0.5063,
+            "evidence_complete_questions": 38
+          },
+          "hybrid_context": {
+            "cases": 50,
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.965,
+            "questions_with_source": 50,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 1.0,
+            "evidence_mrr_at_5": 0.915,
+            "evidence_complete_questions": 50
+          }
+        },
+        "REE": {
+          "bm25": {
+            "cases": 50,
+            "recall_at_5": 0.75,
+            "mrr_at_5": 0.4193,
+            "questions_with_source": 39,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.69,
+            "evidence_mrr_at_5": 0.3287,
+            "evidence_complete_questions": 33
+          },
+          "dense": {
+            "cases": 50,
+            "recall_at_5": 0.51,
+            "mrr_at_5": 0.2803,
+            "questions_with_source": 27,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.4667,
+            "evidence_mrr_at_5": 0.248,
+            "evidence_complete_questions": 22
+          },
+          "hybrid_rrf": {
+            "cases": 50,
+            "recall_at_5": 0.88,
+            "mrr_at_5": 0.7733,
+            "questions_with_source": 45,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 0.86,
+            "evidence_mrr_at_5": 0.6223,
+            "evidence_complete_questions": 42
+          },
+          "hybrid_context": {
+            "cases": 50,
+            "recall_at_5": 1.0,
+            "mrr_at_5": 0.98,
+            "questions_with_source": 50,
+            "evidence_cases": 50,
+            "evidence_recall_at_5": 1.0,
+            "evidence_mrr_at_5": 0.9167,
+            "evidence_complete_questions": 50
+          }
+        }
+      }
+    }
+  },
+  "recent_before": {
+    "recall_at_5": 0.925,
+    "mrr_at_5": 0.7857,
+    "questions_with_source": 187,
+    "latency_p50_ms": 478.82,
+    "latency_p95_ms": 758.02,
+    "evidence_cases": 200,
+    "evidence_recall_at_5": 0.795,
+    "evidence_complete_questions": 153,
+    "evidence_mrr_at_5": 0.6222,
+    "page_hit_without_complete_evidence": 34
+  },
+  "quality": {
+    "cases": 40,
+    "answerable": 32,
+    "unsupported": 8,
+    "answers_supplied_on_answerable": 32,
+    "fully_correct_answerable": 30,
+    "end_to_end_correct_answerable_rate": 0.9375,
+    "conditional_correctness_on_supplied_answers": 0.9375,
+    "false_refusals": 0,
+    "false_refusal_rate": 0.0,
+    "correct_negative_refusals": 8,
+    "refusal_precision": 1.0,
+    "negative_refusal_recall": 1.0,
+    "partial_answer_ids": [
+      "vnm-inventory-value",
+      "vnm-fx-closing"
+    ],
+    "provider_error_cases": 0,
+    "by_company": {
+      "BCM": {
+        "cases": 10,
+        "fully_correct_including_negative": 10,
+        "answerable_cases": 8,
+        "fully_correct_answerable": 8,
+        "false_refusals": 0
+      },
+      "MWG": {
+        "cases": 10,
+        "fully_correct_including_negative": 10,
+        "answerable_cases": 8,
+        "fully_correct_answerable": 8,
+        "false_refusals": 0
+      },
+      "SAB": {
+        "cases": 10,
+        "fully_correct_including_negative": 10,
+        "answerable_cases": 8,
+        "fully_correct_answerable": 8,
+        "false_refusals": 0
+      },
+      "VNM": {
+        "cases": 10,
+        "fully_correct_including_negative": 8,
+        "answerable_cases": 8,
+        "fully_correct_answerable": 6,
+        "false_refusals": 0
+      }
+    },
+    "reviewer_supplied_metrics": {
+      "fully_correct_rate": 0.95,
+      "fully_complete_rate": 0.975,
+      "fully_supported_rate": 0.9375,
+      "source_support_denominator": 32,
+      "abstention_judged_count": 8,
+      "correct_abstention_rate": 1.0
+    }
+  },
+  "language_review": {
+    "failures": [],
+    "minor_wording_defects": [
+      "sab-inventory-cost: perfectual instead of perpetual in an English parenthesis; Vietnamese term correct"
+    ],
+    "reviewed_generated_answers": 32,
+    "compliant": 32
+  },
+  "provider_window": {
+    "planned": 40,
+    "completed": 40,
+    "not_executed": 0,
+    "valid_provider_responses": 40,
+    "observed_chain_success_rate": 1.0,
+    "provider_response_rate_on_attempted_questions": 1.0,
+    "generation_not_attempted": 0,
+    "provider_attempts": 46,
+    "per_model": {
+      "gemini-3.5-flash-lite": {
+        "attempts": 40,
+        "succeeded": 40,
+        "errors": {},
+        "p50_ms": 1591.35,
+        "p95_ms": 4239.16
+      },
+      "gemini-3.6-flash": {
+        "attempts": 3,
+        "succeeded": 0,
+        "errors": {
+          "rate_limited": 2,
+          "service_unavailable": 1
+        },
+        "p50_ms": 429.37,
+        "p95_ms": 1107.42
+      },
+      "gemini-3.8-flash": {
+        "attempts": 3,
+        "succeeded": 0,
+        "errors": {
+          "service_unavailable": 3
+        },
+        "p50_ms": 1173.23,
+        "p95_ms": 1518.53
+      }
+    },
+    "fallback_responses": 40,
+    "p50_ms": 2157.3500000000004,
+    "p95_ms": 4901.7,
+    "reported_usage_totals": {
+      "promptTokenCount": 138061,
+      "candidatesTokenCount": 7782,
+      "totalTokenCount": 145843
+    },
+    "attempts_without_total_tokens": 6,
+    "cost_estimate": null,
+    "warning": "One pass of 40 unique exposed cases; not an independent semantic benchmark, multi-day availability or SLA."
+  },
+  "provider_posts": 46,
+  "scope_rejection_attempts": 0,
+  "label_scope_note": {
+    "kind": "qualitative_canonical_page_limitation",
+    "date": "2026-11-03",
+    "reviewer": "Codex same-assistant original-PDF inspection",
+    "source": "SAB_2024.pdf",
+    "sha256": "5f4f51e508e0e408cf7078b9b10c71ca481360b64f27c127b9eea9b476c0a794",
+    "observed_pdf_pages": [
+      10,
+      11
+    ],
+    "canonical_gold_page": 11,
+    "examples": [
+      "sab-net_income-2024",
+      "sab-net_income-2023",
+      "sab-compare-net_income",
+      "sab-multi-5"
+    ],
+    "observation": "PDF page 10 already prints Net profit after tax, row code 60, 4,494,773,426,912 for 2024 and 4,255,052,995,709 for 2023, carried forward to page 11. Canonical labels choose page 11, so page-10-only retrieval can be a strict metric miss while containing the correct answer. Multi-5 requires both canonical pages even though page 10 includes both requested values.",
+    "original_labels_changed": false,
+    "alternate_metric_computed": false,
+    "note": "This is a documented label-scope limitation, not a reason to tune ranking toward the annotated page or replace the original benchmark score."
+  },
+  "limitations": [
+    "Same assistant author/reviewer; all source cases previously observed.",
+    "Classification guard detects a narrow syntactic broadening, not arbitrary entailment.",
+    "Recall@5 and canonical pages do not establish numeric OCR fidelity or answer accuracy.",
+    "Short sequential provider window is not multi-day availability or concurrent-load SLA."
+  ],
+  "sha256": {
+    "artifacts/scope-guard-v2/answers/answer-check.json": "4844dfc928aa10bda8b89e652892e833b10bda19b40667ac273e75f53015f83e",
+    "artifacts/scope-guard-v2/assistant-grades.json": "3578b0c7e2c25e8e8bf2e4ae2caad2c36dea98d456c39d326bff3d29e8e633eb",
+    "artifacts/scope-guard-v2/final/answer-reviews.csv": "775a0f79d933bc0ab66bedf7f72548e1e92424032d9eab5f3ff3840a3d49ba70",
+    "artifacts/scope-guard-v2/final/quality/review-scores.json": "f5be551b21e0185bf3c0521d4d6a499c1d080e1a3bb864e70d0b3339c9ed2439",
+    "artifacts/scope-guard-v2/recent200/retrieval-ablation.json": "f1e8915019c7813e29003ab9d4ca183454c8d4e316bff8f636af9d3d7f224378",
+    "artifacts/scope-guard-v2/legacy200/retrieval-ablation.json": "abd7216a619d24f6412d084416d327688b9b92bb15ef4decfbbebf7545597956",
+    "finlens/fixtures/scope_guard_protocol_20261103.json": "25c125497c0bbe08c9e6686b07464d7374d8917a7a96241910010ff6caf533be"
+  }
+}
