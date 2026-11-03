@@ -4,8 +4,9 @@ import re
 
 import pymupdf
 from finlens.ocr import ocr_requirements, textpage_ocr
+from finlens.ocr_quality import improve_table_ocr, tidy_amounts
 
-VERSION = "financial-layout-v5-tiled-ocr"
+VERSION = "financial-layout-v6-checked-numeric-ocr"
 
 
 def _compact(text):
@@ -37,6 +38,14 @@ def read_page(page, *, ocr_dir=None):
                 regions = [pymupdf.Rect(w * .16, 0, w, h)]
     for index, region in enumerate(regions, 1):
         text = _compact(extract(region))
+        if textpage:
+            if len(regions) == 1 and region == page.rect:
+                text, issues = improve_table_ocr(page, text, ocr_dir)
+                warnings.extend(issues)
+            text, corrected = tidy_amounts(text)
+            text = _compact(text)
+            if corrected:
+                warnings.append(f'Đã chuẩn hóa khoảng trắng/dấu nhóm ở {corrected} số OCR theo bảng; không đổi chữ số, cần kiểm tra PDF gốc.')
         try:
             for table in page.find_tables(clip=region).tables:
                 rendered = "\n".join(" | ".join(_compact(str(cell or "")).replace("\n", " ") for cell in row) for row in table.extract())

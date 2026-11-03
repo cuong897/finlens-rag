@@ -90,12 +90,17 @@ def grounded_request(question: str, evidence: list[dict], *, repair_code=None):
         "Không sao chép toàn bộ đáp án bằng tiếng Anh: diễn giải bằng tiếng Việt, có thể giữ thuật ngữ gốc trong ngoặc. "
         "Giữ cả điều kiện, ngoại lệ và thời điểm áp dụng của quy định trong nguồn; không lược bỏ điều kiện "
         "làm thay đổi phạm vi kết luận. Ghép điều kiện với ý tương ứng nếu cần để giữ tối đa năm ý. "
+        "Trước khi viết, đối chiếu toàn bộ đoạn liên quan: xác định quy tắc chung, điều kiện riêng của nghiệp vụ, "
+        "thời điểm và ngoại lệ. Khi hỏi điều kiện ghi nhận, phải trình bày cả điều kiện chung ở đoạn dẫn nhập "
+        "và điều kiện riêng dưới tiểu mục; không chỉ chọn câu có nhiều từ giống câu hỏi nhất. "
+        "Không đưa quy tắc của tiểu mục khác vào câu trả lời. Trước khi trả JSON, kiểm tra từng yêu cầu của câu hỏi "
+        "đã được trả lời cùng các điều kiện áp dụng có trong nguồn; bỏ chi tiết phụ thay vì bỏ điều kiện. "
         "Không bịa số liệu, trang, nguồn hoặc giải thích nguyên nhân ngoài tài liệu."
         " report_year là nhãn năm báo cáo; period_label mô tả kỳ tài chính, có thể khác năm dương lịch."
     )
     if repair_code in QUALITY_ERRORS:
         system += (
-            ' Lượt trước bị bộ kiểm tra nội dung từ chối. Hãy trả lời ngắn, chỉ giữ quy tắc chính trực tiếp trả lời câu hỏi; '
+            ' Lượt trước bị bộ kiểm tra nội dung từ chối. Hãy trả lời đủ các điều kiện chung và riêng liên quan đến câu hỏi; '
             'không thêm ví dụ hay cơ sở phân bổ không có trong nguồn. Giữ điều kiện phân loại dưới dạng nếu/khi, '
             'không nối thành khẳng định rằng toàn bộ nhóm đều có đặc tính đó. Tất cả ý phải bằng tiếng Việt. '
             'Nếu nguồn không đủ, abstain=true; không đoán để vượt kiểm tra.'
