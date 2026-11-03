@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "targeted_followup_source_review",
+  "product_commit": "af248328d74375a29db2175534356efba4da6f52",
+  "raw_sha256": "aaeeee5a2ac4eaa4c204f951cb4613cad1c24dcdf6bb4bd5925a5c798cca26f1",
+  "planned": 4,
+  "executed": 4,
+  "reviewer": "Codex same-assistant review; not independent human validation",
+  "does_not_replace_40_case_regression": true,
+  "scores": {
+    "bcm-asset-cost": {
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "vietnamese": true,
+      "notes": "Page 26 supports all three paragraphs, including capitalization condition for subsequent expenditures. Now explained in Vietnamese rather than wholly English."
+    },
+    "bcm-sales-recognition": {
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "vietnamese": true,
+      "notes": "Page 31 supports core recognition requirements and the explicit contractual return-right condition, including exception for exchange for other goods/services. Previously omitted qualification now included."
+    },
+    "vnm-fx-closing": {
+      "correctness": 1,
+      "completeness": 2,
+      "source_support": 1,
+      "vietnamese": true,
+      "notes": "Core asset-buy/liability-sell distinction agrees with page 24. Extra paragraph groups held-to-maturity investments and receivables as foreign-currency monetary items without retaining the source qualification classified as. This can overgeneralize all such balances as FX-denominated; partial credit, not a full pass."
+    },
+    "bcm-unknown-ai": {
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": null,
+      "vietnamese": true,
+      "abstention_correct": true,
+      "notes": "Correctly refuses unsupported AI forecasting algorithm; no provider error and no invented algorithm."
+    }
+  },
+  "remaining_issue": "Optional extra explanation can still lose source qualifiers; prompt guidance is not an entailment guarantee."
+}
