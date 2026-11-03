@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "date": "2026-11-03",
+  "frozen_product_commit": "0f07fc0dda3d5d78da4fa77d9b311b3897e5d9e6",
+  "frozen_product_files": {
+    "finlens/accounting_policy.py": "0a4b300895fd1264e7c63ef93b1aa40923824d42de3aed94e69bda0e321b930b",
+    "finlens/answer_check.py": "d73e47264f299759236ca4619d340d06449e8c5bd8a8b62cc6f0f8fba1a31952",
+    "finlens/api.py": "337f5cec2fec684f4143c180a129a0571c343e642c28f62adbb1ee6ab56bda0e",
+    "finlens/backup.py": "24787417c943180e7ebd22e71f6fd693cda0e75b64885b4e311d48927971b56b",
+    "finlens/benchmark.py": "c3bb4b0ceca3921f3d2e6cadfdd17d97ab2af186fc9ad527f8c713ed19ea140a",
+    "finlens/cli.py": "3ac1544c8fe05bdca06ad54ba2c6580a10fb65e34ef9389e19e6deb5bd32facd",
+    "finlens/engine.py": "e129929ce33411428d621c7af250626919e88d9e6e33461e42746f606455ad29",
+    "finlens/environment.py": "3f0bfe8ad8cea5758426491aa994b50a2a52dd08bcd25b388075ad9a9483957a",
+    "finlens/evaluate.py": "f87924385ce4e1e720c3ff73a261860c5672cff5763bca2091c61389bfe0a724",
+    "finlens/finance.py": "ed45e382c968ca127b255b024a67807ab9c148f507861fd01aac6f8e2201173d",
+    "finlens/financial_retrieval.py": "11172244bb1fc4e3878f0d8b6e2ce6c871339bbeab49d25e0d0e0f531fa03183",
+    "finlens/grounding.py": "26bebb126759fa0e4720c17de073b72147fca787b593ceb3c253997303e3c29f",
+    "finlens/ingest.py": "d6b4f56f888806652d481f90f91781b6f5ead0d7f24fdccc19251b946dd8de56",
+    "finlens/local.py": "9e60314a2428819948f377c97977446d6c18647b840de810fb105cf5b19eb4f1",
+    "finlens/models.py": "90ca5682ad542ea385d10666838907d478f49cbd7f3f90d93788144e2cf3dd84",
+    "finlens/ocr.py": "a7f1cb7b8f45c950c4b62e41212a7ce94baa5925972ae3dffb29aeca85d98dff",
+    "finlens/pdf_text.py": "2ce773e20618cdcc0e556082be9f96fdde14814621be34b6ab3877523f50a525",
+    "finlens/pilot_check.py": "05675fa9c3daf497f66d6abc4a4cf5f06d80b5831a70f41d623215669c379b2e",
+    "finlens/providers.py": "427de8c3e88a0b0d47f118778eb151d19f6cd2cc92e9a16a87e4562f1f56a273",
+    "finlens/public_pilot.py": "99345340338f1c9c23276a792dae854e095edabddf976cef6daafb273bc0c90e",
+    "finlens/query_language.py": "dfa74e90e635ac6a26aaeb0b996ec0212a99a051e46ca1d407e8cca87ecfa9cd",
+    "finlens/report_url.py": "28ba9f76dd8b6925f114ae00a69f23ac5bb7564b49e5997eb378c8851dee4600",
+    "finlens/retrieval.py": "c219492c7292680e7fa9e2becfa8e80f6472ad46bf79e7c92b1047e06057a34f",
+    "finlens/retrieval_check.py": "9d7fe80f3a487b5614c4e277c16d5677cfffc2756824464a9557a1284f2b9803",
+    "finlens/retrieval_dataset.py": "cba4712ef771f9f407c7df9c1ae87f8a34126d286667a71d1ab487d8a85f78ea",
+    "finlens/retrieval_diagnostics.py": "140cbe0e0112f33b62e19a8afe5fa245a8473b18a81f8853d539489bd26d064d",
+    "finlens/retrieval_reporting.py": "e21b75acff9a799e391c9a5dd5d11961019232101f982a7a0056b81f79bfda01",
+    "finlens/review_page.py": "2edb7529b44c31a1865b20f81b9ffec3c1cc4c7d270830af0ea6daf72ba7402d",
+    "finlens/review_scores.py": "2a4456a897a1782492eb1da8ed7126b89c42915b05724fbd9a1e86e248b41177",
+    "finlens/store.py": "ef8f2a95da87bcfab14b1f82a5946636d10c14551c1460394bacbf67d30c5685",
+    "finlens/suggestions.py": "edc472ac2e2a4957497485bf69656bf95f57559ebd927fcad3b8803d26b92dc4",
+    "finlens/tables.py": "a6999c97a8c872886b7dd1b5e33bafbe7950ac9161e886027e238394e1322a3f",
+    "finlens/text.py": "764ee81283ec42ccf00e0ec4e6ee65c67d063abfb652379a1180269c1b210cfd",
+    "finlens/__init__.py": "574fcfa51558d8569b8d929a0e4e6b70295a1461a588e9b917471edecf44685e",
+    "finlens/__main__.py": "875e93e088c9332b0276bbfcd2ad4899ad5c587f51581d30a9352e1bf08b773d"
+  },
+  "main_facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+  "label_role": "development regression; labels unchanged; sources already exposed",
+  "plan": {
+    "retrieval_sets": [
+      "holdout_retrieval_20261101.json",
+      "benchmark_development_v3_200.json"
+    ],
+    "answer_cases": "holdout_answers_20261101.json",
+    "unique_answer_cases": 40,
+    "repeats": 1,
+    "max_posts": 120,
+    "interval_seconds": 6
+  },
+  "answer_labels_sha256": "d695f4cc2728c0d62b4543b8108f1c7de8c495ea0940f8304af5ba46918694ac",
+  "prior_result_sha256": {
+    "artifacts/holdout-repair-20261103/answers/answer-check.json": "0e81c7bbe85b9e6e75fb45b540c6956284e841ca0098e7076009879081a21774",
+    "artifacts/holdout-repair-20261103/retrieval/retrieval-ablation.json": "2bea139e45f1da6d086726a7ed92381933202d1f6057b259f0d499ff52e9e19d",
+    "artifacts/new-holdout-final-v1/gemini/answer-check.json": "d17e89eec4f80d5b77f3fad73ebecaf4af9285f18de765a247ac7de3149fbd9a",
+    "artifacts/new-holdout-final-v1/retrieval/retrieval-ablation.json": "315b97b0449a5e6ae401812a9fcebf66e2c0c5dd93402135e5f1755908585b8d"
+  }
+}

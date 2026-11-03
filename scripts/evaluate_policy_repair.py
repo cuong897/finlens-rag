@@ -55,11 +55,11 @@ def retrieval():
     check_frozen();print(json.dumps(result['summary'],indent=2),flush=True)
 
 
-def answers():
-    protocol=check_frozen();load_env_file('.env');dataset=read('holdout_answers_20261101.json')
+def answers(*,root=ROOT,check=check_frozen):
+    protocol=check();load_env_file('.env');dataset=read('holdout_answers_20261101.json')
     cfg=replace(ModelConfig.from_env(),embed_model='bge-m3:latest')
     if cfg.chat_provider!='gemini' or not cfg.chat_model:raise ValueError('Configured Gemini profile required')
-    out=ROOT/'answers';out.mkdir(exist_ok=False);rows=[];consecutive=0;stop=None
+    out=root/'answers';out.mkdir(exist_ok=False);rows=[];consecutive=0;stop=None
     class CappedClient:
         used=0
         def post(self,*args,**kwargs):
@@ -67,10 +67,10 @@ def answers():
             self.used+=1
             return client.post(*args,**kwargs)
     with httpx.Client(trust_env=False) as client:
-        engine=Engine(Store(ROOT/'data'),cfg);engine.provider.client=CappedClient()
+        engine=Engine(Store(root/'data'),cfg);engine.provider.client=CappedClient()
         for i,c in enumerate(dataset['cases']):
             if i:time.sleep(6)
-            check_frozen()
+            check()
             a=engine.answer(AskRequest(company=c['company'],years=c['years'],scope=c['scope'],question=c['question'],dataset='real'))
             contract=a['status']==c['expected_status'] and not a.get('generation_error') and bool(a.get('generation_model'))
             if a['mode']=='generated':contract=contract and valid_citations(a['answer'],a['citations'])
@@ -87,8 +87,9 @@ def answers():
         'product_commit':protocol['frozen_product_commit'],'label_role':'development, not independent test',
         'transport_generation_requests':engine.provider.client.used,'summary':summarize(rows,planned=40),'stop':stop,
         'results':[first.get(c['id'],{'id':c['id'],'execution':'skipped','reason':'provider_stop'}) for c in dataset['cases']]}
+    result['summary']['warning']='One pass of 40 unique exposed cases; not an independent semantic benchmark, multi-day availability or SLA.'
     (out/'answer-check.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
-    check_frozen();print(json.dumps(result['summary'],indent=2),flush=True)
+    check();print(json.dumps(result['summary'],indent=2),flush=True)
 
 
 def probe():
