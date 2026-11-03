@@ -9,6 +9,7 @@ import threading
 import time
 
 import httpx
+from finlens.grounding import lost_classification_scope
 
 
 class ProviderError(RuntimeError):
@@ -124,6 +125,9 @@ def render_grounded_output(text: str, evidence: list[dict]):
             if re.search(r"\[[A-Za-z]\d+\]", claim):
                 raise ValueError("References must be in sources")
             claim = " ".join(claim.split())
+            excerpts=[c['excerpt'] for c in evidence if c['id'] in sources]
+            if lost_classification_scope(claim,excerpts):
+                raise ProviderError("Diễn giải của mô hình đã bỏ điều kiện phân loại trong nguồn; cần đối chiếu phạm vi quy định.",code="unsupported_scope",retryable=True)
             paragraphs.append(claim + " " + " ".join(f"[{source}]" for source in dict.fromkeys(sources)))
         rendered = "\n\n".join(paragraphs)
         if clearly_english_output(rendered):
