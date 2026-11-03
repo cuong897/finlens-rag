@@ -53,7 +53,10 @@ class ModelConfig:
                        "FINLENS_FALLBACK_MODELS", "gemini-3.6-flash,gemini-3.5-flash-lite").split(",") if x.strip())))
 
 
-def grounded_request(question: str, evidence: list[dict]):
+QUALITY_ERRORS = {'unsupported_scope','unsupported_policy_detail','invalid_output_language'}
+
+
+def grounded_request(question: str, evidence: list[dict], *, repair_code=None):
     allowed = {item["id"] for item in evidence}
     if not allowed:
         raise ProviderError("Không có bằng chứng để gửi cho mô hình.")
@@ -90,6 +93,13 @@ def grounded_request(question: str, evidence: list[dict]):
         "Không bịa số liệu, trang, nguồn hoặc giải thích nguyên nhân ngoài tài liệu."
         " report_year là nhãn năm báo cáo; period_label mô tả kỳ tài chính, có thể khác năm dương lịch."
     )
+    if repair_code in QUALITY_ERRORS:
+        system += (
+            ' Lượt trước bị bộ kiểm tra nội dung từ chối. Hãy trả lời ngắn, chỉ giữ quy tắc chính trực tiếp trả lời câu hỏi; '
+            'không thêm ví dụ hay cơ sở phân bổ không có trong nguồn. Giữ điều kiện phân loại dưới dạng nếu/khi, '
+            'không nối thành khẳng định rằng toàn bộ nhóm đều có đặc tính đó. Tất cả ý phải bằng tiếng Việt. '
+            'Nếu nguồn không đủ, abstain=true; không đoán để vượt kiểm tra.'
+        )
     user = json.dumps({"question": question, "evidence": [{"id": c["id"], "text": c["excerpt"],
                        "report_year": c.get("report_year"), "period_label": c.get("period_label"),
                        "source_label": c.get("source_label")} for c in evidence]}, ensure_ascii=False)
@@ -215,10 +225,10 @@ class Gemini:
     def generate(self, question: str, evidence: list[dict], *, timeout=60):
         return self.generate_with_metadata(question, evidence, timeout=timeout).text
 
-    def generate_with_metadata(self, question: str, evidence: list[dict], *, timeout=60):
+    def generate_with_metadata(self, question: str, evidence: list[dict], *, timeout=60,repair_code=None):
         if not gemini_key_configured():
             raise ProviderError("Chưa cấu hình GEMINI_API_KEY. Điền key vào .env rồi chạy lại bằng --env-file .env.", code="missing_key")
-        schema, system, user = grounded_request(question, evidence)
+        schema, system, user = grounded_request(question, evidence,repair_code=repair_code)
         payload = {
             "systemInstruction": {"parts": [{"text": system}]},
             "contents": [{"role": "user", "parts": [{"text": user}]}],
@@ -309,6 +319,7 @@ class GeminiFallback(Gemini):
         attempts = []
         deadline = self.clock() + 30
         last_error = None
+        repair_used = False
         for model in self.models:
             remaining = deadline - self.clock()
             if remaining < 1:
@@ -321,11 +332,26 @@ class GeminiFallback(Gemini):
                     attempts.append({"model": model, "status": "skipped", "code": "busy" if state["busy"] else "cooldown"})
                     continue
                 state["busy"] = True
-            attempt_started = time.perf_counter()
             try:
                 backend = Gemini(replace(self.config, chat_model=model), self.client, self.embedder)
-                completion = backend.generate_with_metadata(question, evidence, timeout=min(10, remaining))
-                attempts.append({"model": model, "status": "succeeded", "latency_ms": round((time.perf_counter()-attempt_started)*1000,2), "usage": completion.usage})
+                repair_code=None
+                while True:
+                    attempt_started = time.perf_counter()
+                    remaining=deadline-self.clock()
+                    if remaining<1:
+                        raise ProviderError('Đã hết thời gian chờ của câu hỏi.',code='timeout',retryable=True)
+                    tag={'repair':True} if repair_code else {}
+                    try:
+                        completion = backend.generate_with_metadata(question,evidence,timeout=min(10,remaining),repair_code=repair_code)
+                        attempts.append({"model": model, "status": "succeeded", "latency_ms": round((time.perf_counter()-attempt_started)*1000,2), "usage": completion.usage,**tag})
+                        break
+                    except ProviderError as exc:
+                        attempts.append({"model": model,"status":"failed","code":exc.code,
+                            "latency_ms":round((time.perf_counter()-attempt_started)*1000,2),"usage":exc.usage,**tag})
+                        if exc.code in QUALITY_ERRORS and not repair_used and deadline-self.clock()>=1:
+                            repair_used=True;repair_code=exc.code
+                            continue
+                        raise
                 with self.lock:
                     state.update(until=0, failures=0)
                 # A grounded abstention is a valid answer, not an outage. Do not
@@ -333,10 +359,10 @@ class GeminiFallback(Gemini):
                 return Generation(completion.text, model, attempts, completion.usage)
             except ProviderError as exc:
                 last_error = exc
-                attempts.append({"model": model, "status": "failed", "code": exc.code,
-                                 "latency_ms": round((time.perf_counter()-attempt_started)*1000,2), "usage": exc.usage})
                 with self.lock:
-                    if exc.code != "blocked":
+                    if exc.code in QUALITY_ERRORS:
+                        state.update(until=0,failures=0)
+                    elif exc.code != "blocked":
                         state["failures"] = min(6, state["failures"] + 1)
                         state["until"] = self.clock() + max(exc.retry_after, min(300, 60 * 2 ** (state["failures"] - 1)))
                     if exc.code in {"access_denied", "missing_key", "invalid_request"}:

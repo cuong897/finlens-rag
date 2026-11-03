@@ -17,6 +17,28 @@ def valid_body(abstain=False, source="S1"):
 
 
 class FallbackTests(unittest.TestCase):
+    def test_only_one_quality_repair_is_allowed_across_the_entire_chain(self):
+        evidence=[{'id':'S1','excerpt':'Các khoản phải thu được phân loại là tài sản ngắn hạn được trình bày riêng.'}]
+        calls=[]
+        def handler(request):
+            calls.append(request)
+            output={'abstain':False,'statements':[{'text':'Các khoản phải thu là tài sản ngắn hạn.','sources':['S1']}]}
+            return httpx.Response(200,json={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(output)}]}}]})
+        with self.assertRaises(ProviderError) as error:self.backend(handler).generate_with_report('Policy?',evidence)
+        self.assertEqual(len(calls),4)
+        self.assertEqual(sum(bool(a.get('repair')) for a in error.exception.attempts),1)
+
+    def test_repair_abstention_is_final_without_searching_for_a_positive_answer(self):
+        evidence=[{'id':'S1','excerpt':'Các khoản phải thu được phân loại là tài sản ngắn hạn được trình bày riêng.'}]
+        calls=[]
+        def handler(request):
+            calls.append(request)
+            output={'abstain':True,'statements':[]} if len(calls)>1 else {'abstain':False,'statements':[{'text':'Các khoản phải thu là tài sản ngắn hạn.','sources':['S1']}]}
+            return httpx.Response(200,json={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(output)}]}}]})
+        result=self.backend(handler).generate_with_report('Policy?',evidence)
+        self.assertEqual(result.text,'KHONG_DU_DU_LIEU')
+        self.assertEqual(len(calls),2)
+
     def test_lost_scope_is_rejected_and_valid_fallback_keeps_the_condition(self):
         evidence=[{'id':'S1','excerpt':'Các khoản phải thu được phân loại là tài sản ngắn hạn được trình bày riêng.'}]
         calls=[]
@@ -26,10 +48,27 @@ class FallbackTests(unittest.TestCase):
             output={'abstain':False,'statements':[{'text':claim,'sources':['S1']}]}
             return httpx.Response(200,json={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(output)}]}}]})
         result=self.backend(handler).generate_with_report('Nguyên tắc phân loại?',evidence)
-        self.assertEqual(result.model,'gemini-3.6-flash')
+        self.assertEqual(result.model,'gemini-3.8-flash')
         self.assertEqual(result.attempts[0]['code'],'unsupported_scope')
         self.assertEqual(result.attempts[0]['status'],'failed')
+        self.assertTrue(result.attempts[1]['repair'])
         self.assertIn('được phân loại',result.text)
+
+    def test_persistent_quality_failure_has_one_repair_without_global_cooldown(self):
+        config=replace(self.config,fallback_models=())
+        evidence=[{'id':'S1','excerpt':'Các khoản phải thu được phân loại là tài sản ngắn hạn được trình bày riêng.'}]
+        calls=[]
+        def handler(request):
+            calls.append(request)
+            output={'abstain':False,'statements':[{'text':'Các khoản phải thu là tài sản ngắn hạn.','sources':['S1']}]}
+            return httpx.Response(200,json={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(output)}]}}]})
+        backend=self.backend(handler,config)
+        for _ in range(2):
+            with self.assertRaises(ProviderError):backend.generate_with_report('Policy?',evidence)
+        self.assertEqual(len(calls),4)
+        self.assertEqual(backend.states[config.chat_model]['until'],0)
+        self.assertNotIn('Lượt trước',json.loads(calls[0].content)['systemInstruction']['parts'][0]['text'])
+        self.assertIn('Lượt trước',json.loads(calls[1].content)['systemInstruction']['parts'][0]['text'])
 
     def test_attempt_timings_and_usage_are_separate_across_failover_and_requests(self):
         def handler(request):
