@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "kind": "bounded_repair_targeted_review",
+  "date": "2026-11-03",
+  "product_commit": "7699aadeb3cba376cf492a40c71b16316409b01d",
+  "reviewer": "Codex same-assistant source review; not independent human adjudication",
+  "raw_sha256": "51e7be331350bb122584137a75acb67d48a108086cc7e4bf9437f85574c14ebb",
+  "provider_posts": 7,
+  "targeted_cases": 4,
+  "original_40_unchanged": true,
+  "scores": {
+    "vnm-inventory-value": {
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "notes": "Page 26 supports all four concise claims. First output was rejected for unsupported allocation detail; exactly one repair succeeded without normal-capacity invention."
+    },
+    "vnm-fx-closing": {
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "notes": "Pages 24-26 and29 support ordered asset-buy/liability-sell rule, P&L differences and narrower classification clauses. The qualification is retained without the conjunction that asserted it for all balances."
+    },
+    "bcm-inventory-value": {
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "notes": "Page25 explicitly supports normal-operations allocation; checker correctly permits this supported detail, alongside inventory cost/NRV and costing groups."
+    },
+    "mwg-sales-recognition": {
+      "correctness": 2,
+      "completeness": 1,
+      "source_support": 2,
+      "notes": "Page20 supports transfer of major risks/ownership on delivery. Still omits the general economic-benefits recognition condition; completeness remains partial."
+    }
+  },
+  "fully_correct": 4,
+  "fully_complete": 3,
+  "fully_supported": 4,
+  "semantic_guard_repairs": 1,
+  "limitations": "Four selected development cases, not a new full benchmark; no best-of-N substitution. Missing conditions and other entailment failures are not all detected."
+}
