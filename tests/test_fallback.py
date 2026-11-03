@@ -17,6 +17,20 @@ def valid_body(abstain=False, source="S1"):
 
 
 class FallbackTests(unittest.TestCase):
+    def test_lost_scope_is_rejected_and_valid_fallback_keeps_the_condition(self):
+        evidence=[{'id':'S1','excerpt':'Các khoản phải thu được phân loại là tài sản ngắn hạn được trình bày riêng.'}]
+        calls=[]
+        def handler(request):
+            calls.append(request)
+            claim='Các khoản phải thu là tài sản ngắn hạn.' if len(calls)==1 else 'Các khoản phải thu được phân loại là tài sản ngắn hạn được trình bày riêng.'
+            output={'abstain':False,'statements':[{'text':claim,'sources':['S1']}]}
+            return httpx.Response(200,json={'candidates':[{'finishReason':'STOP','content':{'parts':[{'text':json.dumps(output)}]}}]})
+        result=self.backend(handler).generate_with_report('Nguyên tắc phân loại?',evidence)
+        self.assertEqual(result.model,'gemini-3.6-flash')
+        self.assertEqual(result.attempts[0]['code'],'unsupported_scope')
+        self.assertEqual(result.attempts[0]['status'],'failed')
+        self.assertIn('được phân loại',result.text)
+
     def test_attempt_timings_and_usage_are_separate_across_failover_and_requests(self):
         def handler(request):
             if '3.8' in request.url.path:raise httpx.ReadTimeout('secret',request=request)

@@ -11,6 +11,7 @@ class ClassificationScopeTests(unittest.TestCase):
         self.assertTrue(lost_classification_scope('Các khoản phải thu là tài sản ngắn hạn.',[source]))
         for good in ['Các khoản phải thu được phân loại là tài sản ngắn hạn được trình bày riêng.',
                      'Nếu các khoản phải thu được phân loại là tài sản ngắn hạn thì được trình bày riêng.',
+                     'Nếu khoản phải thu là tài sản ngắn hạn thì được trình bày riêng.',
                      'Các khoản phải thu ngắn hạn được trình bày riêng.',
                      'Các khoản phải thu không phải là tài sản ngắn hạn.']:
             self.assertFalse(lost_classification_scope(good,[source]),good)

@@ -200,7 +200,9 @@ def label_strength(text, concept):
     raw_lines = [line.strip() for line in text.splitlines() if line.strip()]
     windows = list(raw_lines)
     windows.extend(a + " " + b for a, b in zip(raw_lines, raw_lines[1:])
-                   if b[:1].islower() and (not _AMOUNT.search(a) or not _AMOUNT.search(b)))
+                   if (b[:1].islower() or (b.startswith('(') and len(_AMOUNT.findall(b))>=2)
+                       or (len(_AMOUNT.findall(b))>=2 and not re.search('[a-zA-ZÀ-ỹ]',_AMOUNT.sub(' ',b))))
+                   and (not _AMOUNT.search(a) or not _AMOUNT.search(b)))
     best = 0.0
     for raw in windows:
         if not re.search(r"\d", raw): continue
@@ -222,6 +224,7 @@ def label_strength(text, concept):
             if concept['key']=='liabilities' and any(s in joined for s in ('nonganhan','nodaihan','nophaitranganhan','nophaitradaihan','vonchusohuu','nguonvon')):continue
             if concept['key']=='equity' and any(s in joined for s in ('nophaitra','tongcongnguonvon')):continue
             if concept['key']=='net_income' and any(s in joined for s in ('cuacongtyme','cuacodong','khongkiemsoat')):continue
+            if concept['key']=='net_income' and any(s in joined for s in ('chuaphanphoi','retained','undistributed')):continue
             if concept['key']=='total_assets' and short_row and any(s in line.split() for s in ('current','noncurrent','financial','investments','liabilities','equity','other','term')):continue
             # Avoid a broader/sibling row being mistaken for the requested item.
             if concept["key"] == "cash" and ("equivalent" in line or "flows" in line): continue

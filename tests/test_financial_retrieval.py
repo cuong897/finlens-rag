@@ -5,6 +5,12 @@ from finlens.retrieval import contextual_fusion
 
 
 class FinancialRowsTests(unittest.TestCase):
+    def test_wrapped_income_formula_does_not_promote_retained_profit(self):
+        c=profile('Lợi nhuận sau thuế')[0]
+        wrapped='Lợi nhuận sau thuếTNDN ===\n(60 = 50 - 51 - 52) (mang sang trang sau) 60 7.654.321 8.765.432'
+        self.assertGreater(label_strength(wrapped,c),1)
+        self.assertLess(label_strength('Lợi nhuận sau thuếchưa phân phối 421 7.654.321 8.765.432',c),1)
+
     def test_vietnamese_rows_are_ranked_even_when_ocr_joins_syllables(self):
         concept=profile('Lợi nhuận sau thuế')[0]
         self.assertGreater(label_strength('Lợi nhuận sau thuếTNDN 60 7.654.321 8.765.432',concept),1)

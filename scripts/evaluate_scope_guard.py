@@ -36,7 +36,8 @@ def retrieval():
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['retrieval','answers']);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=['retrieval','answers'])
+    p.add_argument('--output-root',default=str(ROOT));a=p.parse_args();ROOT=Path(a.output_root);ROOT.mkdir(exist_ok=True)
     if a.action=='retrieval':retrieval()
     else:
         # Reuse the bounded answer runner and its source/contract records, with

@@ -46,7 +46,7 @@ def lost_classification_scope(claim,source_texts):
     for source in source_texts:
         for subject,category,language in classification_rules(source):
             if language=='vi':
-                if any(p in joined for p in ('duocphanloai','neuduoc','khiduoc','trongtruonghop','neucac','khicac')):continue
+                if 'duocphanloai' in joined or 'trongtruonghop' in joined or re.search(r'\b(?:neu|khi)\b',normalize(claim)):continue
                 predicate=joined.find('la'+category)
                 if predicate<0 or joined[max(0,predicate-12):predicate].endswith(('khongphai','chuaphai')):continue
             else:
