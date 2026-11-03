@@ -4,8 +4,10 @@ The original PDF remains authoritative. Syntactic quality is not accuracy:
 two well-formed OCR amounts can still disagree and require source review.
 """
 from collections import Counter
+from collections import defaultdict
 import math
 import re
+import statistics
 
 import pymupdf
 
@@ -77,6 +79,32 @@ def suspicious_currency_glyphs(text):
     return len(re.findall(r'[$§]\d{1,3}(?:[.,]\d{3}){3,}', text))
 
 
+def ordered_ocr_rows(words):
+    """Keep Tesseract line words together before joining adjacent table cells.
+
+    A tall noisy glyph/stamp must not interleave words inside a recognized line.
+    Median baselines resist one oversized bounding box; overlapping columns
+    and distinct baselines are never joined. No word or number is substituted.
+    """
+    groups=defaultdict(list)
+    for word in words:
+        groups[(word[5],word[6])].append(word)
+    lines=[]
+    for group in groups.values():
+        group.sort(key=lambda w:w[7])
+        lines.append({'x0':min(w[0] for w in group),'x1':max(w[2] for w in group),
+            'y':statistics.median(w[3] for w in group),
+            'height':statistics.median(w[3]-w[1] for w in group),
+            'text':' '.join(w[4] for w in group)})
+    rows=[]
+    for line in sorted(lines,key=lambda l:(l['y'],l['x0'])):
+        if rows and abs(line['y']-rows[-1][0]['y'])<=min(3,line['height']*.25) and all(
+                line['x0']>=p['x1']-1 or line['x1']<=p['x0']+1 for p in rows[-1]):
+            rows[-1].append(line)
+        else:rows.append([line])
+    return '\n'.join(' '.join(p['text'] for p in sorted(row,key=lambda l:l['x0'])) for row in rows)
+
+
 def improve_table_ocr(page, text, ocr_dir):
     """One bounded second reading for numeric tables; never use gold labels.
 
@@ -98,7 +126,7 @@ def improve_table_ocr(page, text, ocr_dir):
         pixmap = page.get_pixmap(dpi=dpi, colorspace=pymupdf.csRGB, alpha=False)
         content = pixmap.pdfocr_tobytes(language='+'.join(languages), tessdata=str(root.resolve()))
         with pymupdf.open(stream=content, filetype='pdf') as rendered:
-            candidate = rendered[0].get_text(sort=True)
+            candidate = ordered_ocr_rows(rendered[0].get_text('words'))
         after = amount_digits(candidate)
         # Do not replace a full page with a truncated or badly scrambled read.
         length_ok = .75 <= len(''.join(candidate.split())) / max(1, len(''.join(text.split()))) <= 1.35

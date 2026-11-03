@@ -6,7 +6,7 @@ import pymupdf
 from finlens.ocr import ocr_requirements, textpage_ocr
 from finlens.ocr_quality import improve_table_ocr, tidy_amounts
 
-VERSION = "financial-layout-v7-checked-numeric-spacing"
+VERSION = "financial-layout-v8-checked-ocr-rows"
 
 
 def _compact(text):

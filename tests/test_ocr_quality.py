@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 
 import pymupdf
 
-from finlens.ocr_quality import tidy_amounts, improve_table_ocr
+from finlens.ocr_quality import tidy_amounts, improve_table_ocr, ordered_ocr_rows
 
 
 class OCRQualityTests(TestCase):
@@ -48,13 +48,24 @@ class OCRQualityTests(TestCase):
             page=Mock();page.rect=pymupdf.Rect(0,0,595,842)
             doc=Mock();doc.__enter__=Mock(return_value=doc);doc.__exit__=Mock(return_value=None)
             doc.__getitem__=Mock(return_value=Mock());doc[0].get_text.return_value=after
-            with patch('finlens.ocr_quality.MODELS',model),patch('finlens.ocr_quality.pymupdf.open',return_value=doc):
+            with patch('finlens.ocr_quality.MODELS',model),patch('finlens.ocr_quality.pymupdf.open',return_value=doc),patch('finlens.ocr_quality.ordered_ocr_rows',side_effect=lambda _:doc[0].get_text.return_value):
                 text,warnings=improve_table_ocr(page,before,tmp)
                 self.assertEqual(text,after)
                 self.assertTrue(any('số khác nhau' in w for w in warnings))
                 page.get_pixmap.assert_called_once()
                 doc[0].get_text.return_value=after[:30]
                 self.assertEqual(improve_table_ocr(page,before,tmp)[0],before)
+
+    def test_tall_glyph_does_not_split_a_label_and_cells_keep_their_rows(self):
+        words=[(10,80,30,100,'TOTAL',0,0,0),(35,94,60,104,'ASSETS',0,0,1),
+               (65,94,75,104,'NET',0,0,2),(120,94,145,104,'270',0,1,0),
+               (160,94,210,104,'1.234.567.890',0,2,0),(240,94,290,104,'2.345.678.901',0,3,0),
+               (45,85,55,95,'stamp',1,0,0),(10,110,60,120,'OTHER',2,0,0),
+               (160,110,210,120,'3.456.789.012',2,1,0)]
+        text=ordered_ocr_rows(words)
+        self.assertIn('TOTAL ASSETS NET 270 1.234.567.890 2.345.678.901',text.splitlines())
+        self.assertIn('OTHER 3.456.789.012',text.splitlines())
+        self.assertEqual(text.split().count('stamp'),1)
 
     def test_non_numeric_pages_never_trigger_an_extra_read(self):
         page=Mock()
