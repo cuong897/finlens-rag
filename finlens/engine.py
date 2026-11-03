@@ -11,6 +11,7 @@ from finlens.retrieval import bm25, content_terms, contextual_fusion, cosine, fi
 from finlens.store import Store
 from finlens.query_language import canonical_query
 from finlens.financial_retrieval import profile, label_strength, clean, contains
+from finlens.accounting_policy import policy_intent
 
 ALIASES = {
     "revenue": ["doanh thu", "revenue"],
@@ -144,6 +145,8 @@ class Engine:
         if net_sales_intent(request.question) and "revenue" not in metrics:
             metrics.insert(0, "revenue")
         wants_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nhu the nao", "nho dau", "yeu to", "dong luc"])
+        policy_only = bool(policy_intent(request.question))
+        wants_reason = wants_reason or policy_only
         debt_intent = any(word in normalized for word in ["kha nang tra no", "kha nang thanh toan", "thanh toan hien hanh"])
         causal_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nho dau", "yeu to", "dong luc"])
         if debt_intent and not causal_reason:
@@ -175,6 +178,8 @@ class Engine:
         wants_change = any(word in change_query for word in ["tang", "giam", "so sanh", "chenh lech", "thay doi"])
         wants_numbers = any(word in normalized for word in ["bao nhieu", "dat", "gia tri", "so lieu", "so sanh", "chenh lech", "%", "ty le"])
         wants_numbers = wants_numbers or bool(metrics and years and not wants_reason)
+        if policy_only:
+            wants_numbers = wants_change = False
         if metrics and wants_change and len(years) != 2 and not wants_reason:
             result["answer"] = "Hãy chọn đúng hai năm để so sánh; cần xác định rõ năm gốc."
             return finish()
@@ -265,7 +270,9 @@ class Engine:
 
         hits, retrieval_mode, warnings = timed("retrieval", self.retrieve, request)
         result["retrieval"] = retrieval_mode
-        if any("context_rank" in h for h in hits):
+        if any("policy_rank" in h for h in hits):
+            result["retrieval_reranker"] = "accounting_policy_context"
+        elif any("context_rank" in h for h in hits):
             result["retrieval_reranker"] = "financial_statement_context"
         result["warnings"].extend(warnings)
         if not hits:
@@ -294,8 +301,7 @@ class Engine:
                     generated = timed("generation", self.provider.generate, request.question, evidence)
                     result["generation_model"] = self.config.chat_model
                 if generated == "KHONG_DU_DU_LIEU":
-                    refusal = ('Không đủ bằng chứng để giải thích nguyên nhân trong các đoạn nguồn đã chọn.' if wants_reason else
-                               f'Chưa tìm thấy số liệu trả lời câu hỏi “{request.question}” trong các đoạn nguồn đã chọn.')
+                    refusal = f'Chưa đủ bằng chứng trong các đoạn nguồn đã chọn để trả lời câu hỏi “{request.question}”.'
                     result.update(status="partial" if numeric_answer else "insufficient_evidence",
                                   mode="calculated" if numeric_answer else "extractive",
                                   answer="\n\n".join(numeric_answer + [refusal]))

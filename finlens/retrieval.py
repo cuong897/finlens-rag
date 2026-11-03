@@ -8,6 +8,7 @@ from finlens.text import tokens
 from finlens.text import normalize
 from finlens.financial_retrieval import expansion, profile, rank_rows
 from finlens.query_language import canonical_query
+from finlens.accounting_policy import policy_intent, policy_expansion, rank_policy_chunks
 
 STOPWORDS = set("la va cua co cac cho trong mot nhung voi tu den thi nay bao cao nam hay nhu nao bao nhieu ve toi gi vi sao tai khi the".split())
 
@@ -32,6 +33,7 @@ def financial_query(query: str):
     normalized = canonical_query(query)
     extra = [english for vietnamese, english in FINANCIAL_TERMS.items() if vietnamese in normalized]
     extra.append(expansion(query))
+    extra.append(policy_expansion(query))
     if net_sales_intent(query):
         extra.append("net revenue sales deductions")
     return normalized + (" " + " ".join(extra) if extra else "")
@@ -96,7 +98,8 @@ def financial_context_rank(query, hits, page_texts, limit=5):
 
 def contextual_fusion(query, sparse, dense, page_lookup, limit=5):
     pool = rrf([sparse, dense], 120)
-    if not profile(query):
+    policy = policy_intent(query)
+    if not policy and not profile(query):
         return pool[:limit]
     contexts = {}
     for hit in pool:
@@ -104,7 +107,7 @@ def contextual_fusion(query, sparse, dense, page_lookup, limit=5):
         if key not in contexts:
             page = page_lookup(*key)
             contexts[key] = page["text"] if page else ""
-    return rank_rows(query, pool, contexts, limit)
+    return rank_policy_chunks(query, pool, contexts, limit) if policy else rank_rows(query, pool, contexts, limit)
 
 
 def content_terms(text: str):

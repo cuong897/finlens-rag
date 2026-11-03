@@ -76,7 +76,12 @@ def grounded_request(question: str, evidence: list[dict]):
         "abstain=true, statements=[]. Nếu đủ, abstain=false, statements gồm các ý ngắn. "
         "Mỗi ý có text là câu trả lời và sources là danh sách ID nguồn hỗ trợ trực tiếp ý đó. "
         "Không chèn ký hiệu [S1] vào text; ghi ID vào sources. Không thêm mở đầu, tiêu đề hoặc kết luận. "
-        "Phần tính toán so sánh đã được hệ thống xử lý riêng; bạn chỉ diễn giải nguyên nhân trong tài liệu. "
+        "Trả lời đúng loại câu hỏi: chính sách/định nghĩa/phương pháp kế toán không đòi số liệu đã xác nhận "
+        "và không đòi một nguyên nhân biến động. Phần tính toán so sánh được hệ thống xử lý riêng. "
+        "Giữ nguyên phạm vi từng quy định: khoản phải thu không đại diện mọi tài sản hoặc nợ phải trả; "
+        "phân biệt tỷ giá mua cho tài sản với tỷ giá bán cho nợ khi nguồn có nêu. Nếu nguồn chỉ hỗ trợ "
+        "một nhóm, nêu rõ nhóm đó và giới hạn thông tin; không khái quát cho tất cả khoản mục. "
+        "Dịch đúng thuật ngữ: weighted average là bình quân gia quyền; specific identification là đích danh. "
         "Không bịa số liệu, trang, nguồn hoặc giải thích nguyên nhân ngoài tài liệu."
         " report_year là nhãn năm báo cáo; period_label mô tả kỳ tài chính, có thể khác năm dương lịch."
     )
