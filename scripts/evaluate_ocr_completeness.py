@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import re
 
 from finlens.backup import create_backup
 from finlens.engine import Engine
@@ -74,9 +75,57 @@ def retrieval():
         check()
 
 
+def amend_spacing():
+    """One pre-measurement migration from v6; no second image/model selection.
+
+    AMOUNT already accepted whitespace, so amount_digits/selection scores are
+    unchanged. Only group spaces in the selected OCR text need updating.
+    """
+    if any((ROOT/p).exists() for p in ('answers','recent200','legacy200','initial-ocr-protocol.json')):
+        raise ValueError('Amend only once, before any retrieval or answer measurement')
+    protocol=json.loads((ROOT/'protocol.json').read_text(encoding='utf-8'))
+    current=snapshot()
+    for key in ('labels','main_facts','prior_results'):
+        if current[key]!=protocol['snapshot'][key]:raise ValueError('Protected inputs changed')
+    changed={p for p in current['code'] if current['code'][p]!=protocol['snapshot']['code'].get(p)}
+    if changed!={'finlens/pdf_text.py','finlens/ocr_quality.py'}:
+        raise ValueError('Unexpected product changes for spacing migration')
+    create_backup(ROOT/'data',ROOT/'initial-ocr-data')
+    shutil.copyfile(ROOT/'protocol.json',ROOT/'initial-ocr-protocol.json')
+    from finlens.ocr_quality import tidy_amounts, amount_digits
+    from finlens.pdf_text import VERSION
+    store=Store(ROOT/'data');audit=[]
+    for doc in store.documents():
+        if store.processing_version(doc['id'])!='financial-layout-v6-checked-numeric-ocr':
+            raise ValueError('Expected the completed v6 corpus')
+        with store.connection() as db:
+            pages=[r['text'] for r in db.execute('SELECT text FROM pages WHERE document_id=? ORDER BY page',(doc['id'],))]
+        warnings=list(doc['warnings']);edits=[]
+        for index,original in enumerate(pages,1):
+            if not any(w.startswith(f'Trang {index}: OCR cục bộ (') for w in warnings):continue
+            cleaned,count=tidy_amounts(original)
+            if cleaned!=original:
+                assert re.sub(r'\D','',cleaned)==re.sub(r'\D','',original)
+                assert amount_digits(cleaned)==amount_digits(original)
+                pages[index-1]=cleaned;edits.append(index)
+                warnings.append(f'Trang {index}: Đã khép khoảng trắng trong {count} số OCR; không đổi chữ số.')
+        if edits:store.replace_derived_text(doc['id'],pages,warnings,VERSION)
+        else:
+            with store.connection() as db:
+                db.execute('UPDATE document_processing SET version=? WHERE document_id=?',(VERSION,doc['id']))
+        audit.append({'company':doc['company'],'changed_pages':edits})
+    protocol.update(frozen_product_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),snapshot=current,
+        amendment={'before_first_measurement':True,'reason':'Safe group-space cleanup on continuation pages; no change to digits or OCR candidate scores.',
+            'initial_protocol':'initial-ocr-protocol.json','initial_corpus':'initial-ocr-data','changes':audit})
+    (ROOT/'protocol.json').write_text(json.dumps(protocol,ensure_ascii=False,indent=2),encoding='utf-8')
+    cfg=ModelConfig(embed_model='bge-m3:latest',chat_provider='extractive')
+    print(json.dumps(Engine(store,cfg,Ollama(cfg)).index_embeddings()),flush=True)
+    check()
+
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['prepare','retrieval','answers'])
+    parser.add_argument('action',choices=['prepare','retrieval','answers','amend_spacing'])
     action=parser.parse_args().action
     if action=='answers':answers(root=ROOT,check=check)
     else:globals()[action]()
