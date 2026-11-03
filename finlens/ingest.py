@@ -19,6 +19,17 @@ class IngestError(ValueError):
     pass
 
 
+def check_searchable_pages(pages, warnings):
+    readable = sum(len(text.strip()) >= 20 for text in pages)
+    if not readable:
+        raise IngestError("PDF không có đủ văn bản để tìm kiếm. Hãy chuẩn bị OCR cục bộ hoặc cung cấp PDF có lớp chữ; đối chiếu chất lượng bản scan.")
+    if len(pages) >= 10 and readable / len(pages) <= .1:
+        raise IngestError(f"Chỉ đọc được văn bản trên {readable}/{len(pages)} trang; chưa nhập báo cáo vì phần lớn nội dung không tìm kiếm được. Hãy chuẩn bị OCR cục bộ và thử lại.")
+    missing = len(pages) - readable
+    if missing >= 3 and missing / len(pages) >= .25:
+        warnings.insert(0, f"Chỉ {readable}/{len(pages)} trang có đủ văn bản để tìm kiếm; cần kiểm tra {missing} trang ít chữ. Các trang bìa/ảnh cũng có thể nằm trong số này.")
+
+
 def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: int, scope: str, *, context=None):
     if len(content) > MAX_PDF_BYTES:
         raise IngestError("PDF vượt giới hạn 32 MB.")
@@ -49,8 +60,7 @@ def ingest_pdf(store: Store, content: bytes, filename: str, company: str, year: 
         raise
     except Exception as exc:
         raise IngestError("Không đọc được PDF. Hãy kiểm tra tệp gốc.") from exc
-    if not any(len(p.strip()) >= 20 for p in pages):
-        raise IngestError("PDF không có đủ văn bản để tìm kiếm. Hãy chuẩn bị OCR cục bộ hoặc cung cấp PDF có lớp chữ; đối chiếu chất lượng bản scan.")
+    check_searchable_pages(pages, warnings)
     document_id = uuid.uuid4().hex
     relative_path = f"uploads/{document_id}.pdf"
     target = store.root / relative_path
@@ -109,6 +119,7 @@ def reprocess_pdfs(store):
                 warnings.extend(f"Trang {i + 1}: {issue}" for issue in issues)
         if sum(map(len, pages)) > MAX_TEXT_CHARS:
             raise IngestError("Nội dung PDF vượt giới hạn xử lý.")
+        check_searchable_pages(pages, warnings)
         store.replace_derived_text(document["id"], pages, warnings, VERSION)
         results.append({"document_id": document["id"], "company": document["company"], "pages": len(pages)})
         print(f"Reprocessed {document['company']} {document['report_year']}: {len(pages)} pages", flush=True)

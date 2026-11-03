@@ -6,14 +6,54 @@ from unittest.mock import patch, Mock
 
 import pymupdf
 
-from finlens.ocr import needs_ocr, prepare_ocr, textpage_ocr
+from finlens.ocr import needs_ocr, ocr_requirements, prepare_ocr, textpage_ocr
 from finlens.pdf_text import read_page
-from finlens.ingest import ingest_pdf
+from finlens.ingest import ingest_pdf, IngestError
 from finlens.store import Store
 from finlens.retrieval_check import evaluate_retrieval
 
 
 class LocalOCRTests(unittest.TestCase):
+    def test_readable_cover_cannot_mask_an_unreadable_report(self):
+        root=Path(__file__).resolve().parents[1]/'data/test-runs';root.mkdir(parents=True,exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=root) as tmp, pymupdf.open() as pdf:
+            pdf.new_page().insert_text((35,80),'Public report cover with searchable signature text')
+            for _ in range(9):pdf.new_page()
+            store=Store(tmp)
+            with self.assertRaisesRegex(IngestError,'1/10'):
+                ingest_pdf(store,pdf.tobytes(),'scan.pdf','EXAMPLE',2024,'consolidated')
+            self.assertEqual(store.documents(),[])
+            self.assertEqual(list((Path(tmp)/'uploads').iterdir()),[])
+
+    def test_tiled_scan_is_recognized_without_a_native_financial_heading(self):
+        with pymupdf.open() as source, pymupdf.open() as target:
+            tile=source.new_page(width=500,height=160)
+            tile.insert_text((20,70),'Inventory valuation policy and financial statement rows')
+            page=target.new_page(width=595,height=842)
+            for y in [40,210,380,550]:
+                page.insert_image(pymupdf.Rect(40,y,555,y+160),stream=tile.get_pixmap().tobytes('png'))
+            self.assertEqual(ocr_requirements(page),(True,True))
+            with patch('finlens.pdf_text.textpage_ocr',return_value=(None,'missing OCR')) as ocr:
+                read_page(page)
+                self.assertTrue(ocr.call_args.kwargs['full'])
+
+    def test_overlapping_logos_do_not_count_as_a_full_page_scan(self):
+        with pymupdf.open() as source, pymupdf.open() as target:
+            logo=source.new_page(width=120,height=180);logo.insert_text((20,70),'Logo')
+            page=target.new_page(width=595,height=842)
+            for _ in range(15):
+                page.insert_image(pymupdf.Rect(30,30,150,210),stream=logo.get_pixmap().tobytes('png'))
+            self.assertEqual(ocr_requirements(page),(False,False))
+
+    def test_searchable_tiled_images_do_not_need_duplicate_ocr(self):
+        with pymupdf.open() as source, pymupdf.open() as target:
+            tile=source.new_page(width=500,height=160);tile.insert_text((20,70),'Background')
+            page=target.new_page(width=595,height=842)
+            for y in [40,210,380,550]:
+                page.insert_image(pymupdf.Rect(40,y,555,y+160),stream=tile.get_pixmap().tobytes('png'))
+                page.insert_text((60,y+70),'Searchable native text already covers this image region')
+            self.assertEqual(ocr_requirements(page),(False,False))
+
     def test_native_footer_does_not_hide_a_scanned_body(self):
         with pymupdf.open() as source, pymupdf.open() as target:
             table=source.new_page(width=595,height=780)

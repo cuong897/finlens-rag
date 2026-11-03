@@ -3,9 +3,9 @@
 import re
 
 import pymupdf
-from finlens.ocr import needs_ocr, textpage_ocr
+from finlens.ocr import ocr_requirements, textpage_ocr
 
-VERSION = "financial-layout-v4-ocr-bilingual"
+VERSION = "financial-layout-v5-tiled-ocr"
 
 
 def _compact(text):
@@ -17,8 +17,9 @@ def read_page(page, *, ocr_dir=None):
     regions = [page.rect]
     texts, warnings = [], []
     textpage = None
-    if needs_ocr(page):
-        textpage, notice = textpage_ocr(page, ocr_dir)
+    needs_ocr, full_page = ocr_requirements(page)
+    if needs_ocr:
+        textpage, notice = textpage_ocr(page, ocr_dir, full=full_page)
         warnings.append(notice)
     def extract(region):
         return pymupdf.utils.get_sorted_text(page, clip=region, textpage=textpage) if textpage else page.get_text(clip=region, sort=True)
