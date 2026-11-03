@@ -149,7 +149,7 @@ class Engine:
         wants_reason = wants_reason or policy_only
         debt_intent = any(word in normalized for word in ["kha nang tra no", "kha nang thanh toan", "thanh toan hien hanh"])
         causal_reason = any(word in normalized for word in ["vi sao", "tai sao", "nguyen nhan", "giai thich", "nho dau", "yeu to", "dong luc"])
-        if debt_intent and not causal_reason:
+        if debt_intent and not causal_reason and not policy_only:
             try:
                 analysis = debt_capacity(self.store, request.company, years, request.scope, request.dataset)
             except EvidenceError as exc:

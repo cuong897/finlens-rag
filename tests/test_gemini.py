@@ -9,7 +9,7 @@ import httpx
 
 from finlens.api import create_app
 from finlens.environment import load_env_file
-from finlens.providers import Gemini, ModelConfig, ProviderError, make_provider, token_usage
+from finlens.providers import Gemini, ModelConfig, ProviderError, make_provider, token_usage, render_grounded_output, clearly_english_output
 
 EVIDENCE = [{"id": "S1", "excerpt": "Biên lợi nhuận cải thiện nhờ giảm chi phí logistics."}]
 
@@ -20,6 +20,16 @@ def candidate(statement=None, finish="STOP"):
 
 
 class GeminiTests(unittest.TestCase):
+    def test_wholly_english_output_is_rejected_without_falsely_claiming_translation(self):
+        claim='Tangible fixed assets are determined by their historical costs less accumulated depreciation. Historical costs include all the expenses paid by the Group to bring the asset to its working condition for its intended use.'
+        with self.assertRaises(ProviderError) as caught:
+            render_grounded_output(json.dumps({'abstain':False,'statements':[{'text':claim,'sources':['S1']}]}),EVIDENCE)
+        self.assertEqual(caught.exception.code,'invalid_output_language')
+        for answer in ['Tài sản được thể hiện theo nguyên giá (historical cost) trừ khấu hao lũy kế.',
+                       'Tai san duoc the hien theo nguyen gia tru khau hao luy ke. Nguyen gia bao gom chi phi mua va chi phi truc tiep.',
+                       'Chi phí logistics giảm.']:
+            self.assertFalse(clearly_english_output(answer))
+
     def test_usage_metadata_filters_unknown_private_and_invalid_fields(self):
         self.assertIsNone(token_usage(None))
         self.assertIsNone(token_usage({'promptTokenCount': True, 'totalTokenCount': -1}))

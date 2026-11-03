@@ -12,6 +12,22 @@ from finlens.store import Store
 
 
 class AccountingPolicyTests(unittest.TestCase):
+    def test_liquidity_wording_in_cash_policy_does_not_request_ratio_facts(self):
+        root=Path(__file__).resolve().parents[1]/'data/test-runs';root.mkdir(parents=True,exist_ok=True)
+        class Reply:
+            def generate(self,q,e):return 'Tương đương tiền là khoản đầu tư ngắn hạn có tính thanh khoản cao. [S1]'
+        with tempfile.TemporaryDirectory(dir=root) as tmp:
+            store=Store(tmp)
+            store.add_document({'id':'d','company':'EXAMPLE','report_year':2025,'scope':'consolidated',
+                'filename':'notes.pdf','sha256':'example','is_demo':False,'pdf_path':None},
+                ['Cash equivalents are short-term highly liquid investments readily convertible to known cash amounts.'])
+            engine=Engine(store,ModelConfig(chat_model='fake'),Reply())
+            with patch('finlens.engine.debt_capacity',side_effect=AssertionError('No ratio calculation for a definition')):
+                a=engine.answer(AskRequest(company='EXAMPLE',years=[2025],question='Nguyên tắc phân loại tương đương tiền để đáp ứng khả năng thanh toán là gì?'))
+            self.assertEqual(a['mode'],'generated')
+            self.assertEqual(a['ratios'],[])
+            self.assertEqual(store.facts(),[])
+
     def test_policy_and_numeric_requests_have_distinct_routes(self):
         for q in ['Nguyên tắc đo lường giá trị hàng tồn kho là gì?',
                   'TSCĐ hữu hình được trình bày theo giá trị nào?',

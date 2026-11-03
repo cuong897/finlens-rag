@@ -4,6 +4,7 @@ from dataclasses import dataclass, replace
 import json
 import math
 import os
+import re
 import threading
 import time
 
@@ -82,6 +83,9 @@ def grounded_request(question: str, evidence: list[dict]):
         "phân biệt tỷ giá mua cho tài sản với tỷ giá bán cho nợ khi nguồn có nêu. Nếu nguồn chỉ hỗ trợ "
         "một nhóm, nêu rõ nhóm đó và giới hạn thông tin; không khái quát cho tất cả khoản mục. "
         "Dịch đúng thuật ngữ: weighted average là bình quân gia quyền; specific identification là đích danh. "
+        "Không sao chép toàn bộ đáp án bằng tiếng Anh: diễn giải bằng tiếng Việt, có thể giữ thuật ngữ gốc trong ngoặc. "
+        "Giữ cả điều kiện, ngoại lệ và thời điểm áp dụng của quy định trong nguồn; không lược bỏ điều kiện "
+        "làm thay đổi phạm vi kết luận. Ghép điều kiện với ý tương ứng nếu cần để giữ tối đa năm ý. "
         "Không bịa số liệu, trang, nguồn hoặc giải thích nguyên nhân ngoài tài liệu."
         " report_year là nhãn năm báo cáo; period_label mô tả kỳ tài chính, có thể khác năm dương lịch."
     )
@@ -121,9 +125,26 @@ def render_grounded_output(text: str, evidence: list[dict]):
                 raise ValueError("References must be in sources")
             claim = " ".join(claim.split())
             paragraphs.append(claim + " " + " ".join(f"[{source}]" for source in dict.fromkeys(sources)))
-        return "\n\n".join(paragraphs)
+        rendered = "\n\n".join(paragraphs)
+        if clearly_english_output(rendered):
+            raise ProviderError("Mô hình chưa diễn giải bằng tiếng Việt theo yêu cầu; cần đối chiếu các đoạn nguồn.",code="invalid_output_language",retryable=True)
+        return rendered
     except (ValueError, TypeError, KeyError) as exc:
         raise ProviderError("Câu trả lời AI không đúng cấu trúc hoặc có nguồn không hợp lệ.") from exc
+
+
+def clearly_english_output(text):
+    """Catch long, wholly English copies; not a general language classifier.
+
+    Permit bilingual explanations and unaccented Vietnamese. Never rewrite or
+    translate a source locally, which could introduce an unsupported claim.
+    """
+    if re.search('[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]',text,re.I):
+        return False
+    words=re.findall(r'[a-z]+',text.lower())
+    english=sum(w in {'the','are','is','and','of','to','their','be','by','with','for','shall','its','these','which'} for w in words)
+    vietnamese=sum(w in {'duoc','cua','va','theo','nhung','viec','khoan','nguyen','khau','nhan'} for w in words)
+    return len(words)>=15 and english>=4 and vietnamese<3
 
 
 class Ollama:
