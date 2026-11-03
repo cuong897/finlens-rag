@@ -9,7 +9,7 @@ import threading
 import time
 
 import httpx
-from finlens.grounding import lost_classification_scope
+from finlens.grounding import lost_classification_scope,unsupported_allocation_basis
 
 
 class ProviderError(RuntimeError):
@@ -128,6 +128,8 @@ def render_grounded_output(text: str, evidence: list[dict]):
             excerpts=[c['excerpt'] for c in evidence if c['id'] in sources]
             if lost_classification_scope(claim,excerpts):
                 raise ProviderError("Diễn giải của mô hình đã bỏ điều kiện phân loại trong nguồn; cần đối chiếu phạm vi quy định.",code="unsupported_scope",retryable=True)
+            if unsupported_allocation_basis(claim,excerpts):
+                raise ProviderError("Nguồn được dẫn chưa nêu cơ sở phân bổ chi phí mà mô hình bổ sung; cần đối chiếu chính sách gốc.",code="unsupported_policy_detail",retryable=True)
             paragraphs.append(claim + " " + " ".join(f"[{source}]" for source in dict.fromkeys(sources)))
         rendered = "\n\n".join(paragraphs)
         if clearly_english_output(rendered):

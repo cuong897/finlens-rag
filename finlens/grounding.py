@@ -46,8 +46,12 @@ def lost_classification_scope(claim,source_texts):
     for source in source_texts:
         for subject,category,language in classification_rules(source):
             if language=='vi':
-                if 'duocphanloai' in joined or 'trongtruonghop' in joined or re.search(r'\b(?:neu|khi)\b',normalize(claim)):continue
-                predicate=joined.find('la'+category)
+                if 'trongtruonghop' in joined or re.search(r'\b(?:neu|khi)\b',normalize(claim)):continue
+                categories=[category]
+                if category.startswith('cac') and not category.startswith('cach'):categories.append(category[3:])
+                coordinated=next((joined.find('duocphanloaila'+c+'va') for c in categories if 'duocphanloaila'+c+'va' in joined),-1)
+                if 'duocphanloai' in joined and coordinated<0:continue
+                predicate=coordinated if coordinated>=0 else next((joined.find('la'+c) for c in categories if 'la'+c in joined),-1)
                 if predicate<0 or joined[max(0,predicate-12):predicate].endswith(('khongphai','chuaphai')):continue
             else:
                 if re.search(r'\b(?:if|when|classified|that are)\b',normalize(claim)):continue
@@ -57,3 +61,14 @@ def lost_classification_scope(claim,source_texts):
             overlap=(set(tokens(subject))-stop)&(words-stop)
             if len(overlap)>=2 or any(len(w)>=8 for w in overlap):return True
     return False
+
+
+def unsupported_allocation_basis(claim,source_texts):
+    """A normal-capacity allocation basis is a policy detail, not a default.
+
+    Check only that the named basis occurs in at least one cited excerpt, in
+    either language. This is not verification of every accounting principle.
+    """
+    phrases=('hoat dong binh thuong','cong suat binh thuong','normal operations','normal operating activity','normal capacity','normal level of activity')
+    present=lambda text:any(compact(p) in compact(text) for p in phrases)
+    return present(claim) and not any(present(s) for s in source_texts)

@@ -1,11 +1,23 @@
 import json
 import unittest
 
-from finlens.grounding import lost_classification_scope
+from finlens.grounding import lost_classification_scope,unsupported_allocation_basis
 from finlens.providers import render_grounded_output,ProviderError
 
 
 class ClassificationScopeTests(unittest.TestCase):
+    def test_coordination_does_not_remove_the_classification_condition(self):
+        source='Các khoản phải thu được phân loại là các khoản mục tiền tệ có gốc ngoại tệ được đánh giá lại theo tỷ giá mua.'
+        bad='Các khoản phải thu được phân loại là khoản mục tiền tệ có gốc ngoại tệ và được đánh giá lại theo tỷ giá mua.'
+        self.assertTrue(lost_classification_scope(bad,[source]))
+        self.assertFalse(lost_classification_scope('Nếu các khoản phải thu được phân loại là khoản mục tiền tệ có gốc ngoại tệ và được đánh giá lại theo tỷ giá mua.',[source]))
+
+    def test_normal_capacity_is_not_imported_from_general_knowledge(self):
+        claim='Chi phí sản xuất chung được phân bổ dựa trên mức độ hoạt động bình thường.'
+        self.assertTrue(unsupported_allocation_basis(claim,['Giá gốc gồm chi phí nguyên liệu, nhân công và chi phí sản xuất chung được phân bổ.']))
+        self.assertFalse(unsupported_allocation_basis(claim,['Manufacturing overheads are allocated on the basis of normal operations.']))
+        self.assertFalse(unsupported_allocation_basis('Chi phí sản xuất chung được phân bổ.',['No allocation basis stated.']))
+
     def test_classification_condition_is_not_an_unconditional_property(self):
         source='Các khoản phải thu được phân loại là tài sản ngắn hạn được trình bày riêng trong báo cáo.'
         self.assertTrue(lost_classification_scope('Các khoản phải thu là tài sản ngắn hạn.',[source]))
