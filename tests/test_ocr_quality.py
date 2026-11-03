@@ -32,6 +32,10 @@ class OCRQualityTests(TestCase):
         mixed = self.table() + self.table().replace('.', ',') + '\n2.345,678.901'
         self.assertEqual(tidy_amounts(mixed), (mixed, 0))
 
+    def test_continuation_page_closes_group_space_without_inferring_currency(self):
+        self.assertEqual(tidy_amounts('Cash flow (2.345.678. 901)\n3.456.789.\n012'),
+                         ('Cash flow (2.345.678.901)\n3.456.789.\n012', 1))
+
     def test_second_read_recovers_structural_damage_but_reports_disagreement(self):
         root=Path(__file__).resolve().parents[1]/'data/test-runs'
         root.mkdir(parents=True,exist_ok=True)

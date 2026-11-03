@@ -23,21 +23,29 @@ NOISY_AMOUNT = re.compile(r'(?<![\w.,])\d{1,3}(?:[.,]{1,2}[ \t]*\d{3}){3,}(?![\d
 def tidy_amounts(text):
     """Normalize grouping only when a numeric table establishes its style.
 
-    At least eight clean, same-style amounts and 80% agreement are required.
+    Punctuation needs VND, eight clean amounts and 80% style agreement.
+    Spaces inside a long grouped number can be closed on continuation pages.
     All digits, signs, parentheses and line boundaries remain unchanged.
     """
+    spacing_changes = 0
+    def close_group_space(match):
+        nonlocal spacing_changes
+        cleaned = re.sub(r'[ \t]', '', match[0])
+        spacing_changes += int(cleaned != match[0])
+        return cleaned
+    text = AMOUNT.sub(close_group_space, text)
     if not re.search(r'\bVND\b', text, re.I):
-        return text, 0
+        return text, spacing_changes
     votes = Counter()
     for match in AMOUNT.finditer(text):
         marks = set(re.findall(r'[.,]', match[0]))
         if len(marks) == 1:
             votes[next(iter(marks))] += 1
     if not votes:
-        return text, 0
+        return text, spacing_changes
     mark, count = votes.most_common(1)[0]
     if count < 8 or count / sum(votes.values()) < .8:
-        return text, 0
+        return text, spacing_changes
     changed = 0
 
     def replace(match):
@@ -52,7 +60,8 @@ def tidy_amounts(text):
         changed += int(clean != raw)
         return clean
 
-    return NOISY_AMOUNT.sub(replace, text), changed
+    result = NOISY_AMOUNT.sub(replace, text)
+    return result, changed + spacing_changes
 
 
 def amount_digits(text):
