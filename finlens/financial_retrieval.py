@@ -19,7 +19,7 @@ prepayments|tra truoc cho nguoi ban|prepayments to suppliers|balance
 inventory|hang ton kho thuan;hang ton kho sau du phong;hang ton kho|inventories;inventory|balance
 fixed_assets|tai san co dinh|fixed assets|balance
 construction|xay dung co ban do dang|construction in progress|balance
-total_assets|tong tai san|total assets|balance
+total_assets|tong tai san;tong cong tai san|total assets|balance
 liabilities|no phai tra|liabilities;total liabilities|balance
 current_liabilities|no ngan han|current liabilities;short term liabilities|balance
 long_liabilities|no dai han|non current liabilities;long term liabilities|balance
@@ -139,6 +139,15 @@ def statement_kinds(text):
         ):
             if re.match(pattern, title, re.I):
                 return {kind}
+        # OCR headings can lose Vietnamese accents or syllable spaces.
+        joined = re.sub(r'[^a-z]','',normalize(title))
+        for kind,prefixes in (
+            ('notes',('thuyetminhbaocao',)),
+            ('balance',('bangcandoi','baocaotinhhinhtaichinh')),
+            ('income',('baocaoketqua',)),
+            ('cashflow',('baocaoluuchuyentien',)),
+        ):
+            if joined.startswith(prefixes):return {kind}
     header = " ".join(text[:1500].split())
     # Repeated side navigation is title case; actual headings are usually uppercase.
     if "NOTES TO THE" in header or "NOTES TO CONSOLIDATED" in header:
@@ -162,17 +171,18 @@ def statement_kinds(text):
 _AMOUNT = re.compile(r"(?<!\w)\(?-?\d{1,3}(?:[,.]\d{3})+(?:[,.]\d+)?\)?(?!\w)")
 
 
-def _ordered_label(line, label):
+def _ordered_label(line, label, *, short_row=False):
     """Bounded word insertions from adjacent PDF columns; no answer values."""
     words, wanted = line.split(), label.split()
-    if len(wanted) < 4:
+    if len(wanted) < (2 if short_row else 4):
         return False
-    for start in range(len(words) - 2):
-        if words[start:start + 3] != wanted[:3]:
+    prefix = 1 if short_row and len(wanted)<4 else 3
+    for start in range(len(words) - prefix + 1):
+        if words[start:start + prefix] != wanted[:prefix]:
             continue
-        position, noise = start + 3, 0
-        for word in wanted[3:]:
-            while position < len(words) and words[position] != word and noise < 6:
+        position, noise = start + prefix, 0
+        for word in wanted[prefix:]:
+            while position < len(words) and words[position] != word and noise < (12 if short_row else 6):
                 position += 1
                 noise += 1
             if position == len(words) or words[position] != word:
@@ -195,9 +205,24 @@ def label_strength(text, concept):
     for raw in windows:
         if not re.search(r"\d", raw): continue
         line = " ".join(t for t in clean(_AMOUNT.sub(" ", raw)).split() if not t.isdigit())
-        for label in concept["labels"]:
+        labels=list(dict.fromkeys(concept['labels']+concept['vi']))
+        for label in labels:
             intact = contains(line, label)
-            if not intact and not _ordered_label(line, label): continue
+            # Missing syllable spaces are common in Vietnamese OCR. Only
+            # contiguous characters are matched; no fuzzy word substitutions.
+            vi_joined = label in concept['vi'] and len(label.replace(' ',''))>=8 and label.replace(' ','') in line.replace(' ','')
+            # Short English labels may be separated by OCR noise. Require a
+            # row code and two amount columns before allowing bounded gaps.
+            structured = len(_AMOUNT.findall(raw))>=2 and bool(re.search(r'\b\d{1,3}\b',_AMOUNT.sub(' ',raw)))
+            short_row=structured and label in concept['labels'] and 2<=len(label.split())<4
+            if not intact and not vi_joined and not _ordered_label(line, label,short_row=short_row): continue
+            joined=line.replace(' ','')
+            if concept['key']=='current_assets' and any(s in joined for s in ('taisannganhankhac','taisandaihan')):continue
+            if concept['key']=='noncurrent_assets' and any(s in joined for s in ('taisandaihankhac','taisandodangdaihan')):continue
+            if concept['key']=='liabilities' and any(s in joined for s in ('nonganhan','nodaihan','nophaitranganhan','nophaitradaihan','vonchusohuu','nguonvon')):continue
+            if concept['key']=='equity' and any(s in joined for s in ('nophaitra','tongcongnguonvon')):continue
+            if concept['key']=='net_income' and any(s in joined for s in ('cuacongtyme','cuacodong','khongkiemsoat')):continue
+            if concept['key']=='total_assets' and short_row and any(s in line.split() for s in ('current','noncurrent','financial','investments','liabilities','equity','other','term')):continue
             # Avoid a broader/sibling row being mistaken for the requested item.
             if concept["key"] == "cash" and ("equivalent" in line or "flows" in line): continue
             if concept["key"] == "current_assets" and ("non current" in line or "other current" in line): continue
@@ -213,7 +238,7 @@ def label_strength(text, concept):
             best = max(best, 1.0 + .4 * exact + .02 * min(8, len(label.split()))
                        + .08 * min(2, len(_AMOUNT.findall(raw))) + .12 * contains(clean(raw), label)
                        - (.2 if not intact else 0))
-    if not best and any(contains(clean(text), label) for label in concept["labels"]):
+    if not best and any(contains(clean(text), label) for label in concept["labels"]+concept['vi']):
         best = .25
     return best
 

@@ -5,6 +5,32 @@ from finlens.retrieval import contextual_fusion
 
 
 class FinancialRowsTests(unittest.TestCase):
+    def test_vietnamese_rows_are_ranked_even_when_ocr_joins_syllables(self):
+        concept=profile('Lợi nhuận sau thuế')[0]
+        self.assertGreater(label_strength('Lợi nhuận sau thuếTNDN 60 7.654.321 8.765.432',concept),1)
+        self.assertLess(label_strength('Lợi nhuận sau thuếcủa công ty mẹ 61 7.654.321 8.765.432',concept),1)
+        self.assertGreater(label_strength('TỔNG CỘNG TÀI SẢN 270 7.654.321 8.765.432',profile('Tổng tài sản')[0]),1)
+
+    def test_vietnamese_statement_headings_survive_lost_accents_and_spaces(self):
+        self.assertEqual(statement_kinds('BANG CANDOI KE TOAN HOP NHAT\nTai san\nThuyet minh bao cao tai chinh dinh kem'),{'balance'})
+        self.assertEqual(statement_kinds('BAO CAO TINH HINH TAI CHINH HOP NHAT'),{'balance'})
+        self.assertEqual(statement_kinds('THUYET MINH BAO CAO TAI CHINH\nBang can doi ke toan tham khao'),{'notes'})
+
+    def test_short_label_noise_requires_row_code_and_two_amounts(self):
+        concept=profile('Tổng tài sản')[0]
+        row='TOTAL oa sae de aes pep ne pep onsen ape ASSETS 999 7,654,321 8,765,432'
+        self.assertGreaterEqual(label_strength(row,concept),1)
+        self.assertLess(label_strength(row,concept),label_strength('TOTAL ASSETS 999 7,654,321 8,765,432',concept))
+        self.assertLess(label_strength(row.replace('999 ',''),concept),1)
+        self.assertLess(label_strength(row.replace('8,765,432',''),concept),1)
+        self.assertLess(label_strength('TOTAL CURRENT ASSETS 999 7,654,321 8,765,432',concept),1)
+
+    def test_vietnamese_sibling_rows_do_not_replace_totals(self):
+        for q,wrong in [('Tài sản ngắn hạn','Tài sản ngắn hạn khác 150 7.654.321 8.765.432'),
+                        ('Tài sản dài hạn','Tài sản dở dang dài hạn 240 7.654.321 8.765.432'),
+                        ('Nợ phải trả','Nợ phải trảngắn hạn 310 7.654.321 8.765.432')]:
+            self.assertLess(label_strength(wrong,profile(q)[0]),1)
+
     def test_statement_title_takes_precedence_over_notes_footer(self):
         text = 'Consolidated Balance Sheet (cont.)\nTOTAL ASSETS 123,456\nThis statement should be read in conjunction with the Notes to the Consolidated Financial Statements'
         self.assertEqual(statement_kinds(text), {'balance'})
