@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "date": "2026-11-09",
+  "kind": "ocr_and_completeness_development_regression",
+  "measured_product_commit": "ee76b7bb23c08a810c9ca2af12a47ec745f0c8cc",
+  "tests": 282,
+  "role": "Same previously exposed reports and questions; same-assistant source review, not independent testing.",
+  "main_facts_unchanged": true,
+  "prior_results_unchanged": true,
+  "retrieval": {
+    "recent200": {
+      "recall_at_5": 0.9825,
+      "mrr_at_5": 0.965,
+      "questions_with_source": 197,
+      "latency_p50_ms": 477.05,
+      "latency_p95_ms": 582.27,
+      "evidence_cases": 200,
+      "evidence_recall_at_5": 0.9,
+      "evidence_complete_questions": 177,
+      "evidence_mrr_at_5": 0.8375,
+      "page_hit_without_complete_evidence": 20
+    },
+    "legacy200": {
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9652,
+      "questions_with_source": 200,
+      "latency_p50_ms": 537.47,
+      "latency_p95_ms": 635.84,
+      "evidence_cases": 200,
+      "evidence_recall_at_5": 1.0,
+      "evidence_complete_questions": 200,
+      "evidence_mrr_at_5": 0.9102,
+      "page_hit_without_complete_evidence": 0
+    }
+  },
+  "retrieval_before": {
+    "recall_at_5": 0.9825,
+    "mrr_at_5": 0.9675,
+    "questions_with_source": 197,
+    "latency_p50_ms": 483.67,
+    "latency_p95_ms": 622.33,
+    "evidence_cases": 200,
+    "evidence_recall_at_5": 0.8575,
+    "evidence_complete_questions": 166,
+    "evidence_mrr_at_5": 0.79,
+    "page_hit_without_complete_evidence": 31
+  },
+  "ocr": {
+    "note": "Literal anchor records, not unique OCR errors or character error rate; queries reuse some anchors.",
+    "before_missing": 20,
+    "after_missing": 6,
+    "regressions": [],
+    "remaining": [
+      {
+        "id": "mwg-fx-closing-retrieval",
+        "company": "MWG",
+        "page": 19,
+        "quotes": [
+          "tỷ giá mua"
+        ],
+        "before": false,
+        "after": false
+      },
+      {
+        "id": "bcm-current_liabilities-2024",
+        "company": "BCM",
+        "page": 11,
+        "quotes": [
+          "21.929.549.417.474"
+        ],
+        "before": false,
+        "after": false
+      },
+      {
+        "id": "bcm-current_liabilities-2023",
+        "company": "BCM",
+        "page": 11,
+        "quotes": [
+          "22.997.575.585.298"
+        ],
+        "before": false,
+        "after": false
+      },
+      {
+        "id": "bcm-multi-2",
+        "company": "BCM",
+        "page": 11,
+        "quotes": [
+          "21.929.549.417.474"
+        ],
+        "before": false,
+        "after": false
+      },
+      {
+        "id": "vnm-short_invest-2024",
+        "company": "VNM",
+        "page": 7,
+        "quotes": [
+          "23.260.088.671.767"
+        ],
+        "before": false,
+        "after": false
+      },
+      {
+        "id": "vnm-fx-closing-retrieval",
+        "company": "VNM",
+        "page": 24,
+        "quotes": [
+          "tỷ giá mua"
+        ],
+        "before": false,
+        "after": false
+      }
+    ]
+  },
+  "quality": {
+    "planned": 40,
+    "completed": 12,
+    "unexecuted": 28,
+    "observed_answerable": 10,
+    "observed_unsupported": 2,
+    "fully_correct_answerable": 5,
+    "correct_negative_refusals": 1,
+    "provider_error_cases": 6,
+    "reviewer_supplied_metrics_on_completed_only": {
+      "fully_correct_rate": 0.5,
+      "fully_complete_rate": 0.5,
+      "fully_supported_rate": 1.0,
+      "source_support_denominator": 11,
+      "abstention_judged_count": 2,
+      "correct_abstention_rate": 0.5
+    },
+    "full_benchmark_quality_available": false
+  },
+  "provider": {
+    "planned": 40,
+    "completed": 12,
+    "not_executed": 28,
+    "valid_provider_responses": 6,
+    "observed_chain_success_rate": 0.5,
+    "provider_response_rate_on_attempted_questions": 0.5,
+    "generation_not_attempted": 0,
+    "provider_attempts": 13,
+    "per_model": {
+      "gemini-3.5-flash-lite": {
+        "attempts": 3,
+        "succeeded": 1,
+        "errors": {
+          "service_unavailable": 2
+        },
+        "p50_ms": 1362.06,
+        "p95_ms": 8751.11
+      },
+      "gemini-3.6-flash": {
+        "attempts": 7,
+        "succeeded": 5,
+        "errors": {
+          "service_unavailable": 1,
+          "timeout": 1
+        },
+        "p50_ms": 3406.87,
+        "p95_ms": 10092.51
+      },
+      "gemini-3.8-flash": {
+        "attempts": 3,
+        "succeeded": 0,
+        "errors": {
+          "timeout": 3
+        },
+        "p50_ms": 10112.46,
+        "p95_ms": 10143.94
+      }
+    },
+    "fallback_responses": 6,
+    "p50_ms": 6381.450000000001,
+    "p95_ms": 18324.7,
+    "reported_usage_totals": {
+      "promptTokenCount": 23374,
+      "candidatesTokenCount": 1043,
+      "totalTokenCount": 24417
+    },
+    "attempts_without_total_tokens": 7,
+    "cost_estimate": null,
+    "warning": "Two availability windows; each case executed once. All initial provider failures retained. Exposed development data, not an independent benchmark or SLA."
+  },
+  "provider_posts": 13,
+  "sha256": {
+    "artifacts/ocr-completeness-v2/protocol.json": "0162e309c9122cac1698faba9e602d9cb5d76b2429ec22f2fe25e2be630d7867",
+    "artifacts/ocr-completeness-v2/ocr-audit.json": "fe5728c058b3637f3dc39ddbcf7de57defa5f4d299b751d3888f0de20fa8e567",
+    "artifacts/ocr-completeness-v2/assistant-grades.json": "6e1220b1ef764036084d42d05faf16b4b1922c672fbf1193751699906f629766",
+    "artifacts/ocr-completeness-v2/answers/answer-check.json": "29103428718b8ec59d553f9b9357768c631bd0b9b61515707bc2b3f9bafb491a",
+    "artifacts/ocr-completeness-v2/answers-combined/answer-check.json": "94c5806e482d73967300d29e97945688200e5937c1e7c8024e7651956dcff7fe",
+    "artifacts/ocr-completeness-v2/recent200/retrieval-ablation.json": "fe0be70484c36d3d2119870c49341730197ca6605119e99de40e9dfabb552d99",
+    "artifacts/ocr-completeness-v2/legacy200/retrieval-ablation.json": "615f0b3870223bc39fb9fc4354a90ccf1e7d70afeb4f714eb5be66931540ccb6",
+    "artifacts/ocr-completeness-v2/final/answer-reviews.csv": "572701e758a33909994347c33450cde6c674d5bcc6c9b898f269550bdcbc9c2c"
+  }
+}
