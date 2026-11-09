@@ -340,7 +340,10 @@ class Engine:
                 seen_passages.add(passage)
                 candidates.append((len(content_terms(passage)&query_terms),source_index,index,passage))
         candidates.sort(key=lambda item:(-item[0],item[1],item[2]))
-        threshold=max(min(2,len(query_terms)),candidates[0][0]*.6) if candidates else 0
+        # A shorter general rule may share fewer words than a specific rule.
+        # Keep both when each meets the evidence threshold; relative pruning
+        # can silently discard the prerequisite/initial-recognition paragraph.
+        threshold=min(2,len(query_terms))
         selected=[c for c in candidates if query_terms and c[0]>=threshold][:3]
         for _,source_index,_,passage in sorted(selected,key=lambda item:(item[1],item[2])):
             citation=evidence[source_index]

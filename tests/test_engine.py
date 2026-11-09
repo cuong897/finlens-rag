@@ -19,6 +19,16 @@ from finlens.store import Store
 
 
 class EngineTests(unittest.TestCase):
+    def test_fallback_keeps_shorter_initial_policy_alongside_longer_closing_rule(self):
+        first='Transactions in currencies other than VND are translated at the rates ruling at the transaction dates.'
+        closing='Monetary assets and liabilities in currencies other than VND are translated at buying and selling exchange rates at the reporting date.'
+        associate='Assets and liabilities of associates in currencies other than VND are translated into VND at exchange rates at the end of the accounting period.'
+        hit={**self.store.chunks()[0],'text':'\n\n'.join([first,closing,associate]),'score':1}
+        with patch.object(self.engine,'retrieve',return_value=([hit],'bm25',[])):
+            result=self.engine.answer(self.request('Giải thích cách quy đổi các giao dịch ngoại tệ tại thời điểm phát sinh.',years=[2024]))
+        self.assertIn(first,result['answer'])
+        self.assertEqual(result['mode'],'extractive')
+
     def test_outage_quotes_the_whole_wrapped_rule_without_claiming_generation(self):
         class Unavailable:
             def generate_with_report(self,q,e):
