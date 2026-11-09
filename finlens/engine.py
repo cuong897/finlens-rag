@@ -12,7 +12,7 @@ from finlens.store import Store
 from finlens.query_language import canonical_query
 from finlens.financial_retrieval import profile, label_strength, clean, contains
 from finlens.accounting_policy import policy_intent
-from finlens.excerpts import source_passages
+from finlens.excerpts import source_passages, policy_passage
 
 ALIASES = {
     "revenue": ["doanh thu", "revenue"],
@@ -332,15 +332,20 @@ class Engine:
         excerpts = []
         seen_passages = set()
         query_terms = content_terms(financial_query(request.question))
-        for citation in evidence[:3]:
-            candidates = [(len(content_terms(p) & query_terms), index, p)
-                          for index,p in enumerate(source_passages(citation['excerpt'])) if p not in seen_passages]
-            candidates.sort(key=lambda item:(-item[0],item[1]))
-            selected=[c for c in candidates if query_terms and c[0]>=min(2,len(query_terms))][:2]
-            for _,_,passage in sorted(selected,key=lambda item:item[1]):
-                excerpts.append(f"“{passage}” [{citation['id']}]")
+        intent=policy_intent(request.question)
+        candidates=[]
+        for source_index,citation in enumerate(evidence[:3]):
+            for index,passage in enumerate(source_passages(citation['excerpt'])):
+                if passage in seen_passages or not policy_passage(passage,intent):continue
                 seen_passages.add(passage)
-            if selected:
+                candidates.append((len(content_terms(passage)&query_terms),source_index,index,passage))
+        candidates.sort(key=lambda item:(-item[0],item[1],item[2]))
+        threshold=max(min(2,len(query_terms)),candidates[0][0]*.6) if candidates else 0
+        selected=[c for c in candidates if query_terms and c[0]>=threshold][:3]
+        for _,source_index,_,passage in sorted(selected,key=lambda item:(item[1],item[2])):
+            citation=evidence[source_index]
+            excerpts.append(f"“{passage}” [{citation['id']}]")
+            if citation not in result['citations']:
                 result["citations"].append(citation)
         if excerpts:
             result["status"] = "partial" if numeric_answer else "evidence_found"

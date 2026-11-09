@@ -1,6 +1,6 @@
 import unittest
 
-from finlens.excerpts import source_passages
+from finlens.excerpts import source_passages, policy_passage
 
 
 class SourcePassageTests(unittest.TestCase):
@@ -22,3 +22,13 @@ class SourcePassageTests(unittest.TestCase):
     def test_duplicate_paragraphs_and_short_headings_are_not_repeated(self):
         text='The group records sales revenue when significant risks and rewards are transferred.'
         self.assertEqual(source_passages('Goods sold\n\n'+text+'\n\n'+text),[text])
+
+    def test_policy_quotes_exclude_unrelated_topics_and_amount_tables(self):
+        intent={'topics':['inventory']}
+        self.assertFalse(policy_passage('Cash equivalents are highly liquid short term investments.',intent))
+        self.assertFalse(policy_passage('Inventories 1.234.567.890 2.345.678.901 3.456.789.012',intent))
+        self.assertTrue(policy_passage('Hàng tồn kho được ghi nhận theo giá thấp hơn giữa giá gốc và giá trị thuần.',intent))
+
+    def test_useful_lives_and_percentages_do_not_make_a_policy_a_numeric_table(self):
+        intent={'topics':['depreciation']}
+        self.assertTrue(policy_passage('Depreciation is straight line over 5 to 45 years for buildings and 3 to 30 years for machinery.',intent))

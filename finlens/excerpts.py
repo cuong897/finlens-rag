@@ -2,6 +2,7 @@
 import re
 
 from finlens.text import tokens
+from finlens.accounting_policy import TOPICS, source_has
 
 
 def source_passages(text):
@@ -17,3 +18,14 @@ def source_passages(text):
         if len(passage)>=40 and len(tokens(passage))>=6 and passage not in passages:
             passages.append(passage)
     return passages
+
+
+def policy_passage(passage, intent):
+    """Keep narrative policies distinct from unrelated notes/numeric tables."""
+    if not intent:
+        return True
+    if not any(source_has(passage,alias) for topic in intent['topics'] for alias in TOPICS[topic]):
+        return False
+    digits=sum(c.isdigit() for c in passage)
+    letters=sum(c.isalpha() for c in passage)
+    return digits*2<=letters
