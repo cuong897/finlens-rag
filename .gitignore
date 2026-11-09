@@ -21,3 +21,6 @@ docs/
 *.pdf
 *.docx
 *.pptx
+
+# Publish the repository overview; keep other working documents local.
+!/README.md
