@@ -12,6 +12,7 @@ from finlens.store import Store
 from finlens.query_language import canonical_query
 from finlens.financial_retrieval import profile, label_strength, clean, contains
 from finlens.accounting_policy import policy_intent
+from finlens.excerpts import source_passages
 
 ALIASES = {
     "revenue": ["doanh thu", "revenue"],
@@ -327,15 +328,19 @@ class Engine:
                 result["generation_error"] = {"code": exc.code, "retryable": exc.retryable}
                 result["generation_attempts"] = exc.attempts or result["generation_attempts"]
                 result["warnings"].append(str(exc) + " Đã chuyển sang trích xuất nguồn.")
-        # Extract sentences rather than pretending retrieval alone proves an answer.
+        # Preserve wrapped paragraphs and their conditions in the evidence view.
         excerpts = []
+        seen_passages = set()
         query_terms = content_terms(financial_query(request.question))
         for citation in evidence[:3]:
-            sentences = re.split(r"(?<=[.!?])\s+|\n", citation["excerpt"])
-            candidates = [(len(content_terms(s) & query_terms), s.strip()) for s in sentences if len(s.strip()) >= 25]
-            candidates.sort(key=lambda pair: -pair[0])
-            if candidates and candidates[0][0] >= min(2, len(query_terms)) and query_terms:
-                excerpts.append(f"“{candidates[0][1]}” [{citation['id']}]")
+            candidates = [(len(content_terms(p) & query_terms), index, p)
+                          for index,p in enumerate(source_passages(citation['excerpt'])) if p not in seen_passages]
+            candidates.sort(key=lambda item:(-item[0],item[1]))
+            selected=[c for c in candidates if query_terms and c[0]>=min(2,len(query_terms))][:2]
+            for _,_,passage in sorted(selected,key=lambda item:item[1]):
+                excerpts.append(f"“{passage}” [{citation['id']}]")
+                seen_passages.add(passage)
+            if selected:
                 result["citations"].append(citation)
         if excerpts:
             result["status"] = "partial" if numeric_answer else "evidence_found"

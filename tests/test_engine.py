@@ -19,6 +19,22 @@ from finlens.store import Store
 
 
 class EngineTests(unittest.TestCase):
+    def test_outage_quotes_the_whole_wrapped_rule_without_claiming_generation(self):
+        class Unavailable:
+            def generate_with_report(self,q,e):
+                raise ProviderError('Offline',code='service_unavailable',retryable=True)
+        engine=Engine(self.store,ModelConfig(chat_model='test'),Unavailable())
+        passage='Chi phí logistics tăng do giá cước vận tải tăng,\nnhưng chỉ áp dụng cho các tuyến quốc tế; tuyến nội địa không thay đổi.'
+        hit={**self.store.chunks()[0],'text':'Chi phí logistics\n\n'+passage,'score':1}
+        with patch.object(engine,'retrieve',return_value=([hit],'bm25',[])):
+            result=engine.answer(self.request('Vì sao chi phí logistics tăng?',years=[2024]))
+        self.assertEqual(result['mode'],'extractive')
+        self.assertEqual(result['status'],'evidence_found')
+        self.assertEqual(result['generation_error']['code'],'service_unavailable')
+        self.assertIn('tuyến nội địa không thay đổi.',result['answer'])
+        self.assertIn(' '.join(passage.split()),result['answer'])
+        self.assertEqual(len(result['citations']),1)
+
     def test_usage_and_network_attempt_survive_answer_validation_failure(self):
         class InvalidReply:
             def generate_with_report(self, question, evidence):
