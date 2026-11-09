@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "date": "2026-11-09",
+  "product_commit": "04c9e292f1af48fe549d20f1a56fb2fbd38b9fdd",
+  "tests_passed": 289,
+  "role": "Exposed development regression; no independent-test claim.",
+  "retrieval": {
+    "recent200": {
+      "recall_at_5": 0.9825,
+      "mrr_at_5": 0.965,
+      "questions_with_source": 197,
+      "latency_p50_ms": 477.05,
+      "latency_p95_ms": 582.27,
+      "evidence_cases": 200,
+      "evidence_recall_at_5": 0.9,
+      "evidence_complete_questions": 177,
+      "evidence_mrr_at_5": 0.8375,
+      "page_hit_without_complete_evidence": 20
+    },
+    "legacy200": {
+      "recall_at_5": 1.0,
+      "mrr_at_5": 0.9652,
+      "questions_with_source": 200,
+      "latency_p50_ms": 537.47,
+      "latency_p95_ms": 635.84,
+      "evidence_cases": 200,
+      "evidence_recall_at_5": 1.0,
+      "evidence_complete_questions": 200,
+      "evidence_mrr_at_5": 0.9102,
+      "page_hit_without_complete_evidence": 0
+    }
+  },
+  "ocr_anchor_misses_before": 20,
+  "ocr_anchor_misses_after": 6,
+  "interrupted_answer_check": {
+    "planned": 40,
+    "completed": 12,
+    "unexecuted": 28,
+    "observed_answerable": 10,
+    "observed_unsupported": 2,
+    "fully_correct_answerable": 5,
+    "correct_negative_refusals": 1,
+    "provider_error_cases": 6,
+    "reviewer_supplied_metrics_on_completed_only": {
+      "fully_correct_rate": 0.5,
+      "fully_complete_rate": 0.5,
+      "fully_supported_rate": 1.0,
+      "source_support_denominator": 11,
+      "abstention_judged_count": 2,
+      "correct_abstention_rate": 0.5
+    },
+    "full_benchmark_quality_available": false
+  },
+  "provider_posts_in_interrupted_run": 13,
+  "targeted_live": {
+    "id": "mwg-sales-recognition",
+    "posts": 3,
+    "model": "gemini-3.5-flash-lite",
+    "source_review": {
+      "reviewer": "Codex same-assistant source review; not independent human grading",
+      "target_id": "mwg-sales-recognition",
+      "correctness": 2,
+      "completeness": 2,
+      "source_support": 2,
+      "notes": "Page 20 S1 explicitly contains the general probable/reliably determinable economic-benefits prerequisite, fair-value measurement net of discounts/returns, and the goods-transfer condition. All three output statements agree with cited S1/S2. Previously omitted general prerequisite is now included. One selected development case, not an overall quality result.",
+      "offline_replay": {
+        "simulated_provider_failures": 6,
+        "cloud_calls": 0,
+        "answerable_cases_with_core_passage_restored": 5,
+        "answerable_cases": 5,
+        "remaining_issue": "Unsupported breach question still produces an irrelevant officer-name quotation in extractive mode. Retaining text does not establish relevance or a complete answer for arbitrary questions."
+      }
+    }
+  },
+  "release_checks": {
+    "health": 200,
+    "home": 200,
+    "numeric_calculated_without_generation": true,
+    "facts_sha256": "e3625986449d06a89381e8a510a4917a128678a9542da77933901a0c79c03774",
+    "retrieval_unchanged_since_400_case_measurement": true,
+    "generation_path_unchanged_since_targeted_check": true,
+    "prior_results_unchanged": true
+  },
+  "limitations": [
+    "28 of 40 planned questions were not executed because two provider windows stopped; no full-benchmark answer-quality claim.",
+    "The targeted MWG answer is separate and never replaces first-pass failures.",
+    "OCR anchors repeat across queries; 20 to 6 is not a character error rate or proof of every number.",
+    "Main-store cached PDF text was not migrated; new OCR applies when importing/reprocessing. Confirmed facts unchanged.",
+    "Fallback evidence can still contain unrelated context; it is displayed as source excerpts, not a generated or verified answer."
+  ],
+  "sha256": {
+    "artifacts/excerpt-repair-release-20261109/source-review.json": "90192f60212b0bfddc89c2e9410b3d233bb884ce8c0aa3f3d53f595f574adc01",
+    "artifacts/excerpt-repair-release-20261109/replay.json": "d7443247f30c25205e15a4fedc39cb3dea1def92ed911e6005d155664d25724a",
+    "artifacts/excerpt-repair-release-20261109/protocol.json": "fc98e9fa607551b170c1a3d583eeea35d44d34df83eca39b5bc52fc50adfa1a8",
+    "artifacts/excerpt-repair-release-20261109/release-check.json": "98d4e4ec04716af0e0befc0f3d32553f0275af28fa9feac93bc81a2a0b60c4ef",
+    "artifacts/excerpt-repair-20261109/targeted.json": "b0ff7e594a095ac58a3c4dca970c905b04e7721a1c7537b7ea93abc1764a581a",
+    "artifacts/ocr-completeness-v2/final/summary.json": "94822d0b9e4606979a14ebbcafd68a5e6c7500f34a89c0a238da8d2d1f0e2925",
+    "artifacts/excerpt-repair-final-20261109/tests-final.log": "1d714649541c28991294afdc7bc02cafbcb30729d21f084173c51e9e300b59ae"
+  }
+}
